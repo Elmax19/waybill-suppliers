@@ -1,0 +1,21 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <include relativeToChangelogFile="true" file="./changeset/create-address-table.xml"/>
+    <include relativeToChangelogFile="true" file="./changeset/create-customer-table.xml"/>
+    <include relativeToChangelogFile="true" file="./changeset/create-user-table.xml"/>
+    <include relativeToChangelogFile="true" file="./changeset/create-car-table.xml"/>
+    <include relativeToChangelogFile="true" file="./changeset/create-warehouse-table.xml"/>
+    <include relativeToChangelogFile="true" file="./changeset/create-waybill-table.xml"/>
+    <include relativeToChangelogFile="true" file="./changeset/create-application-table.xml"/>
+    <include relativeToChangelogFile="true" file="./changeset/create-retailer-table.xml"/>
+    <include relativeToChangelogFile="true" file="./changeset/create-item-category-table.xml"/>
+    <include relativeToChangelogFile="true" file="./changeset/create-item-table.xml"/>
+    <include relativeToChangelogFile="true" file="./changeset/create-retailer-warehouse-table.xml"/>
+    <include relativeToChangelogFile="true" file="./changeset/create-warehouse-dispatcher-table.xml"/>
+    <include relativeToChangelogFile="true" file="./changeset/create-write-off-table.xml"/>
+    <include relativeToChangelogFile="true" file="./changeset/create-write-off-item-table.xml"/>
+    <include relativeToChangelogFile="true" file="./changeset/create-application-item-table.xml"/>
+</databaseChangeLog>

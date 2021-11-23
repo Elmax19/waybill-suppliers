@@ -1,0 +1,31 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet id="create-retailer-warehouse" author="Elmax19">
+        <createTable tableName="retailer_warehouse">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="warehouse_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="retailer_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseColumnNames="warehouse_id"
+                                 baseTableName="retailer_warehouse"
+                                 constraintName="fk-retailer-warehouse-id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="warehouse"/>
+
+        <addForeignKeyConstraint baseColumnNames="retailer_id"
+                                 baseTableName="retailer_warehouse"
+                                 constraintName="fk-warehouse-retailer-id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="retailer"/>
+    </changeSet>
+</databaseChangeLog>
