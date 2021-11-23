@@ -1,15 +1,21 @@
-databaseChangeLog:
-  - include:
-      file: db/changelog/changeset/create-address-table.yaml
-  - include:
-      file: db/changelog/changeset/create-customer-table.yaml
-  - include:
-      file: db/changelog/changeset/create-user-table.yaml
-  - include:
-      file: db/changelog/changeset/create-warehouse-table.yaml
-  - include:
-      file: db/changelog/changeset/create-warehouse-dispatcher-table.yaml
-  - include:
-      file: db/changelog/changeset/create-retailer-table.yaml
-  - include:
-      file: db/changelog/changeset/create-retailer-warehouse-table.yaml
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <include file="src/main/resources/db/changelog/changeset/create-address-table.xml"/>
+    <include file="src/main/resources/db/changelog/changeset/create-customer-table.xml"/>
+    <include file="src/main/resources/db/changelog/changeset/create-user-table.xml"/>
+    <include file="src/main/resources/db/changelog/changeset/create-car-table.xml"/>
+    <include file="src/main/resources/db/changelog/changeset/create-warehouse-table.xml"/>
+    <include file="src/main/resources/db/changelog/changeset/create-waybill-table.xml"/>
+    <include file="src/main/resources/db/changelog/changeset/create-application-table.xml"/>
+    <include file="src/main/resources/db/changelog/changeset/create-retailer-table.xml"/>
+    <include file="src/main/resources/db/changelog/changeset/create-item-category-table.xml"/>
+    <include file="src/main/resources/db/changelog/changeset/create-item-table.xml"/>
+    <include file="src/main/resources/db/changelog/changeset/create-retailer-warehouse-table.xml"/>
+    <include file="src/main/resources/db/changelog/changeset/create-warehouse-dispatcher-table.xml"/>
+    <include file="src/main/resources/db/changelog/changeset/create-write-off-table.xml"/>
+    <include file="src/main/resources/db/changelog/changeset/create-write-off-item-table.xml"/>
+    <include file="src/main/resources/db/changelog/changeset/create-application-item-table.xml"/>
+</databaseChangeLog>
