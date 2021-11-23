@@ -3,6 +3,7 @@ mvnw
 mvnw.cmd
 target/
 .mvn
+.gradle
 !**/src/main/**/target/
 !**/src/test/**/target/
 
