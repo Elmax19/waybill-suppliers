@@ -1,29 +1,22 @@
-databaseChangeLog:
-  - changeSet: 
-      id: create-customer
-      author: Elmax19
-      changes:
-        - createTable:
-            tableName: customer
-            columns:
-              - column:
-                  name: id
-                  type: int
-                  autoIncrement: true
-                  constraints:
-                    primaryKey: true
-                    nullable: false
-              - column:
-                  name: name
-                  type: varchar(200)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: registration_date
-                  type: date
-                  constraints:
-                    nullable: false
-              - column:
-                  name: is_active
-                  type: boolean
-                  defaultValue: 'true'
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet id="create-customer" author="Elmax19">
+        <createTable tableName="customer">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="registration_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_active" type="boolean" defaultValue="1">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

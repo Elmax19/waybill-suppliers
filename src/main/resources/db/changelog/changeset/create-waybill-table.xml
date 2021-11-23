@@ -1,0 +1,65 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet id="create-waybill" author="Elmax19">
+        <createTable tableName="waybill">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="number" type="int">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="source_address_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="car_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="creating_user_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updating_user_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="driver_id" type="double">
+                <constraints nullable="false"/>
+            </column>
+            <column name="registration_date_time" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_update_date_time" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="state" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseColumnNames="source_address_id"
+                                 baseTableName="waybill"
+                                 constraintName="fk-waybill-source-address-id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="address"/>
+
+        <addForeignKeyConstraint baseColumnNames="car_id"
+                                 baseTableName="waybill"
+                                 constraintName="fk-waybill-car-id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="car"/>
+
+        <addForeignKeyConstraint baseColumnNames="creating_user_id"
+                                 baseTableName="waybill"
+                                 constraintName="fk-waybill-creating-user-id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user"/>
+
+        <addForeignKeyConstraint baseColumnNames="updating_user_id"
+                                 baseTableName="waybill"
+                                 constraintName="fk-waybill-updating-user-id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user"/>
+
+    </changeSet>
+</databaseChangeLog>

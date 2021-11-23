@@ -1,0 +1,31 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet id="create-application-item" author="Elmax19">
+        <createTable tableName="application_item">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="application_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="item_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseColumnNames="application_id"
+                                 baseTableName="application_item"
+                                 constraintName="fk-item-application-id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="application"/>
+
+        <addForeignKeyConstraint baseColumnNames="item_id"
+                                 baseTableName="application_item"
+                                 constraintName="fk-application-item-id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="item"/>
+    </changeSet>
+</databaseChangeLog>

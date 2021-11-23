@@ -1,35 +1,25 @@
-databaseChangeLog:
-  - changeSet:
-      id: create-address
-      author: Elmax19
-      changes:
-        - createTable:
-            tableName: address
-            columns:
-              - column:
-                  name: id
-                  type: int
-                  autoIncrement: true
-                  constraints:
-                    primaryKey: true
-                    nullable: false
-              - column:
-                  name: state
-                  type: varchar(100)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: city
-                  type: varchar(100)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: address_line_1
-                  type: varchar(255)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: address_line_2
-                  type: varchar(255)
-                  constraints:
-                    nullable: false
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet id="create-address" author="Elmax19">
+        <createTable tableName="address">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="state" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="city" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="address_line_1" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="address_line_2" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,73 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet id="create-application" author="Elmax19">
+        <createTable tableName="application">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="number" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="warehouse_address_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="destination_address_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="registration_date_time" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_update_date_time" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="creating_user_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updating_user_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="waybill_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_outgoing" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseColumnNames="warehouse_address_id"
+                                 baseTableName="application"
+                                 constraintName="fk-application-warehouse-id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="warehouse"/>
+
+        <addForeignKeyConstraint baseColumnNames="destination_address_id"
+                                 baseTableName="application"
+                                 constraintName="fk-application-destination-id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="address"/>
+
+        <addForeignKeyConstraint baseColumnNames="creating_user_id"
+                                 baseTableName="application"
+                                 constraintName="fk-creating-user-id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user"/>
+
+        <addForeignKeyConstraint baseColumnNames="updating_user_id"
+                                 baseTableName="application"
+                                 constraintName="fk-updating-user-id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user"/>
+
+        <addForeignKeyConstraint baseColumnNames="waybill_id"
+                                 baseTableName="application"
+                                 constraintName="fk-application-waybill-id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="waybill"/>
+    </changeSet>
+</databaseChangeLog>
