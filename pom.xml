@@ -8,7 +8,7 @@
 		<version>2.6.0</version>
 		<relativePath/>
 	</parent>
-	<groupId>com.itechart.students_lab</groupId>
+	<groupId>com.itechart</groupId>
 	<artifactId>waybill_suppliers</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
@@ -49,7 +49,6 @@
 		<dependency>
 			<groupId>org.liquibase</groupId>
 			<artifactId>liquibase-core</artifactId>
-			<version>4.4.2</version>
 		</dependency>
 
 		<dependency>
