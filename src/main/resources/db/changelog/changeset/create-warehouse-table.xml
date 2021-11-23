@@ -1,0 +1,44 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-warehouse
+      author: Elmax19
+      changes:
+        - createTable:
+            tableName: warehouse
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: address_id
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: warehouse-address-fk
+                    references: address(id)
+              - column:
+                  name: type
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: total_capacity
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: available_capacity
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: customer_id
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: warehouse-customer-fk
+                    references: customer(id)

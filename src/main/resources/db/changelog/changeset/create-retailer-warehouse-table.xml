@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-retailer-warehouse
+      author: Elmax19
+      changes:
+        - createTable:
+            tableName: retailer_warehouse
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: warehouse_id
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: retailer-warehouse-id-fk
+                    references: warehouse(id)
+              - column:
+                  name: retailer_id
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: warehouse-retailer-id-fk
+                    references: retailer(id)

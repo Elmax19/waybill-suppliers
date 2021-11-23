@@ -1,0 +1,35 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-address
+      author: Elmax19
+      changes:
+        - createTable:
+            tableName: address
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: state
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: city
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: address_line_1
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: address_line_2
+                  type: varchar(255)
+                  constraints:
+                    nullable: false

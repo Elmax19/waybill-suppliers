@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-retailer
+      author: Elmax19
+      changes:
+        - createTable:
+            tableName: retailer
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: full_name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false

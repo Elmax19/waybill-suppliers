@@ -1,0 +1,37 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet id="create-write-off-item" author="Elmax19">
+        <createTable tableName="write_off_item">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="write_off_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="item_UPC" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="amount" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="reason" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseColumnNames="write_off_id"
+                                 baseTableName="write_off_item"
+                                 constraintName="fk-write-off-id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="write_off"/>
+
+        <addForeignKeyConstraint baseColumnNames="item_UPC"
+                                 baseTableName="write_off_item"
+                                 constraintName="fk-write-off-item-upc"
+                                 referencedColumnNames="UPC"
+                                 referencedTableName="item"/>
+    </changeSet>
+</databaseChangeLog>

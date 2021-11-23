@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-warehouse-dispatcher
+      author: Elmax19
+      changes:
+        - createTable:
+            tableName: warehouse_dispatcher
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: warehouse_id
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: dispatcher-warehouse-id-fk
+                    references: warehouse(id)
+              - column:
+                  name: user_id
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: warehouse-dispatcher-id-fk
+                    references: user(id)
