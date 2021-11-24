@@ -20,7 +20,7 @@ public class Customer extends BaseEntity{
     @Temporal(TemporalType.DATE)
     private Date registrationDate;
 
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     @Column(name = "is_active")
     private ActiveStatus activeStatus;
 

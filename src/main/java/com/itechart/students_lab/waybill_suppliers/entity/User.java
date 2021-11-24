@@ -24,7 +24,7 @@ public class User extends BaseEntity{
     @Column(name = "password")
     private String password;
 
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     @Column(name = "is_active")
     private ActiveStatus activeStatus;
 }

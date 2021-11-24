@@ -60,14 +60,14 @@ public class SecurityUser implements UserDetails {
         return isActive;
     }
 
-//    public static UserDetails fromUser(User user){
-//        return new org.springframework.security.core.userdetails.User(
-//                user.getLogin(), user.getPassword(),
-//                user.getActiveStatus().equals(ActiveStatus.ACTIVE),
-//                user.getActiveStatus().equals(ActiveStatus.ACTIVE),
-//                user.getActiveStatus().equals(ActiveStatus.ACTIVE),
-//                user.getActiveStatus().equals(ActiveStatus.ACTIVE),
-//
-//        );
-//    }
+    public static UserDetails fromUser(User user){
+        return new org.springframework.security.core.userdetails.User(
+                user.getLogin(), user.getPassword(),
+                user.getActiveStatus().equals(ActiveStatus.ACTIVE),
+                user.getActiveStatus().equals(ActiveStatus.ACTIVE),
+                user.getActiveStatus().equals(ActiveStatus.ACTIVE),
+                user.getActiveStatus().equals(ActiveStatus.ACTIVE),
+                user.getRole().getAuthorities()
+        );
+    }
 }
