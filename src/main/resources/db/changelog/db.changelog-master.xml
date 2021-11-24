@@ -20,6 +20,7 @@
     <include relativeToChangelogFile="true" file="./changeset/create-application-item-table.xml"/>
     <include relativeToChangelogFile="true" file="./changeset/change-user-is-active-column-type.xml"/>
     <include relativeToChangelogFile="true" file="./changeset/add-user-table-user-type-column.xml"/>
+    <include relativeToChangelogFile="true" file="./changeset/alter-user-password-varchar-size.xml"/>
     <include relativeToChangelogFile="true" file="./changeset/change-nullable-constraints-for-user-table.xml"/>
     <include relativeToChangelogFile="true" file="./changeset/alter-table-customer-alter-column-is-active.xml"/>
     <include relativeToChangelogFile="true" file="./changeset/insert-system-admin-into-users.xml"/>

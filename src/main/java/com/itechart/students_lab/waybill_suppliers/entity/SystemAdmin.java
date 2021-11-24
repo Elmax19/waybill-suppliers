@@ -10,5 +10,5 @@ import javax.persistence.Entity;
 @Data
 @NoArgsConstructor
 @DiscriminatorValue("SYSTEM_ADMIN")
-public class SystemAdmin extends User{
+public class SystemAdmin extends User {
 }

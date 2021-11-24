@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @DiscriminatorValue("EMPLOYEE")
-public class Employee extends User{
+public class Employee extends User {
 
     @Embedded
     private ContactInformation contactInformation;

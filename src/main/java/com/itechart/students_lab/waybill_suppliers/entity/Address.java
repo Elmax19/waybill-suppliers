@@ -2,7 +2,6 @@ package com.itechart.students_lab.waybill_suppliers.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -11,7 +10,7 @@ import javax.persistence.Table;
 @Table(name = "address")
 @NoArgsConstructor
 @Data
-public class Address extends BaseEntity{
+public class Address extends BaseEntity {
 
     @Column(name = "state")
     private String state;
