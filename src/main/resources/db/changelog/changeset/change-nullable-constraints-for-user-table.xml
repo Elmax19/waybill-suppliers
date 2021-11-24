@@ -1,0 +1,28 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet id="drop-nullable-for-user-columns" author="Ichiteru">
+        <dropNotNullConstraint columnDataType="VARCHAR(100)"
+                                columnName="name"
+                                schemaName="suppliers"
+                                tableName="user"/>
+        <dropNotNullConstraint columnDataType="VARCHAR(100)"
+                               columnName="surname"
+                               schemaName="suppliers"
+                               tableName="user"/>
+        <dropNotNullConstraint columnDataType="date"
+                               columnName="birthday"
+                               schemaName="suppliers"
+                               tableName="user"/>
+        <dropNotNullConstraint columnDataType="int"
+                               columnName="address_id"
+                               schemaName="suppliers"
+                               tableName="user"/>
+        <dropNotNullConstraint columnDataType="int"
+                               columnName="customer_id"
+                               schemaName="suppliers"
+                               tableName="user"/>
+    </changeSet>
+</databaseChangeLog>

@@ -15,16 +15,16 @@ discriminatorType = DiscriminatorType.STRING)
 public class User extends BaseEntity{
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "role")
+    @Column(name = "role", nullable = false)
     private UserRole role;
 
-    @Column(name = "login")
+    @Column(name = "login", nullable = false)
     private String login;
 
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "is_active")
+    @Column(name = "is_active", nullable = false, columnDefinition = "ACTIVE")
     private ActiveStatus activeStatus;
 }

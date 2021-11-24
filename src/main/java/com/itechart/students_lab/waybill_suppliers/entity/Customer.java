@@ -13,15 +13,15 @@ import java.util.Set;
 @NoArgsConstructor
 public class Customer extends BaseEntity{
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "registration_date")
+    @Column(name = "registration_date", nullable = false)
     @Temporal(TemporalType.DATE)
     private Date registrationDate;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "is_active")
+    @Column(name = "is_active", nullable = false)
     private ActiveStatus activeStatus;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")

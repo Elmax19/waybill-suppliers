@@ -1,0 +1,19 @@
+<databaseChangeLog
+xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+<changeSet id="insert-system-admin-into-user-table" author="Ichiteru">
+    <insert schemaName="suppliers"
+             tableName="user">
+        <column  name="id"  value="1"/>
+        <column  name="email"  value="systemadminsuppliers@gmail.com"/>
+        <column  name="email"  value="systemadminsuppliers@gmail.com"/>
+        <column  name="login"  value="admin"/>
+        <column  name="password"  value="admin"/>
+        <column  name="role"  value="ROLE_SYSTEM_ADMIN"/>
+        <column  name="is_active"  value="ACTIVE"/>
+        <column  name="user_type"  value="SYSTEM_ADMIN"/>
+    </insert>
+</changeSet>
+</databaseChangeLog>
