@@ -1,0 +1,13 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet author="Elmax19" id="drop-user-name-unique-constraint">
+        <dropUniqueConstraint
+                constraintName="name"
+                schemaName="suppliers"
+                tableName="user"
+                uniqueColumns="name"/>
+    </changeSet>
+</databaseChangeLog>

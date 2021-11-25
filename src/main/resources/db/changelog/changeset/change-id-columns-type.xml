@@ -1,0 +1,197 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet id="change-id-types" author="Elmax19">
+        <modifyDataType columnName="id"
+                        newDataType="bigint"
+                        schemaName="suppliers"
+                        tableName="address"/>
+
+        <modifyDataType columnName="id"
+                        newDataType="bigint"
+                        schemaName="suppliers"
+                        tableName="application"/>
+
+        <modifyDataType columnName="warehouse_address_id"
+                        newDataType="bigint"
+                        schemaName="suppliers"
+                        tableName="application"/>
+
+        <modifyDataType columnName="destination_address_id"
+                        newDataType="bigint"
+                        schemaName="suppliers"
+                        tableName="application"/>
+
+        <modifyDataType columnName="creating_user_id"
+                        newDataType="bigint"
+                        schemaName="suppliers"
+                        tableName="application"/>
+
+        <modifyDataType columnName="updating_user_id"
+                        newDataType="bigint"
+                        schemaName="suppliers"
+                        tableName="application"/>
+
+        <modifyDataType columnName="waybill_id"
+                        newDataType="bigint"
+                        schemaName="suppliers"
+                        tableName="application"/>
+
+        <modifyDataType columnName="id"
+                        newDataType="bigint"
+                        schemaName="suppliers"
+                        tableName="application_item"/>
+
+        <modifyDataType columnName="application_id"
+                        newDataType="bigint"
+                        schemaName="suppliers"
+                        tableName="application_item"/>
+
+        <modifyDataType columnName="item_id"
+                        newDataType="bigint"
+                        schemaName="suppliers"
+                        tableName="application_item"/>
+
+        <modifyDataType columnName="id"
+                        newDataType="bigint"
+                        schemaName="suppliers"
+                        tableName="car"/>
+
+        <modifyDataType columnName="last_address_id"
+                        newDataType="bigint"
+                        schemaName="suppliers"
+                        tableName="car"/>
+
+        <modifyDataType columnName="id"
+                        newDataType="bigint"
+                        schemaName="suppliers"
+                        tableName="customer"/>
+
+        <modifyDataType columnName="id"
+                        newDataType="bigint"
+                        schemaName="suppliers"
+                        tableName="item"/>
+
+        <modifyDataType columnName="category_id"
+                        newDataType="bigint"
+                        schemaName="suppliers"
+                        tableName="item"/>
+
+        <modifyDataType columnName="id"
+                        newDataType="bigint"
+                        schemaName="suppliers"
+                        tableName="item_category"/>
+
+        <modifyDataType columnName="id"
+                        newDataType="bigint"
+                        schemaName="suppliers"
+                        tableName="retailer"/>
+
+        <modifyDataType columnName="id"
+                        newDataType="bigint"
+                        schemaName="suppliers"
+                        tableName="retailer_warehouse"/>
+
+        <modifyDataType columnName="warehouse_id"
+                        newDataType="bigint"
+                        schemaName="suppliers"
+                        tableName="retailer_warehouse"/>
+
+        <modifyDataType columnName="retailer_id"
+                        newDataType="bigint"
+                        schemaName="suppliers"
+                        tableName="retailer_warehouse"/>
+
+        <modifyDataType columnName="id"
+                        newDataType="bigint"
+                        schemaName="suppliers"
+                        tableName="user"/>
+
+        <modifyDataType columnName="address_id"
+                        newDataType="bigint"
+                        schemaName="suppliers"
+                        tableName="user"/>
+
+        <modifyDataType columnName="customer_id"
+                        newDataType="bigint"
+                        schemaName="suppliers"
+                        tableName="user"/>
+
+        <modifyDataType columnName="id"
+                        newDataType="bigint"
+                        schemaName="suppliers"
+                        tableName="warehouse"/>
+
+        <modifyDataType columnName="address_id"
+                        newDataType="bigint"
+                        schemaName="suppliers"
+                        tableName="warehouse"/>
+
+        <modifyDataType columnName="customer_id"
+                        newDataType="bigint"
+                        schemaName="suppliers"
+                        tableName="warehouse"/>
+
+        <modifyDataType columnName="id"
+                        newDataType="bigint"
+                        schemaName="suppliers"
+                        tableName="warehouse_dispatcher"/>
+
+        <modifyDataType columnName="warehouse_id"
+                        newDataType="bigint"
+                        schemaName="suppliers"
+                        tableName="warehouse_dispatcher"/>
+
+        <modifyDataType columnName="user_id"
+                        newDataType="bigint"
+                        schemaName="suppliers"
+                        tableName="warehouse_dispatcher"/>
+
+        <modifyDataType columnName="id"
+                        newDataType="bigint"
+                        schemaName="suppliers"
+                        tableName="waybill"/>
+
+        <modifyDataType columnName="source_address_id"
+                        newDataType="bigint"
+                        schemaName="suppliers"
+                        tableName="waybill"/>
+
+        <modifyDataType columnName="car_id"
+                        newDataType="bigint"
+                        schemaName="suppliers"
+                        tableName="waybill"/>
+
+        <modifyDataType columnName="creating_user_id"
+                        newDataType="bigint"
+                        schemaName="suppliers"
+                        tableName="waybill"/>
+
+        <modifyDataType columnName="updating_user_id"
+                        newDataType="bigint"
+                        schemaName="suppliers"
+                        tableName="waybill"/>
+
+        <modifyDataType columnName="id"
+                        newDataType="bigint"
+                        schemaName="suppliers"
+                        tableName="write_off"/>
+
+        <modifyDataType columnName="id"
+                        newDataType="bigint"
+                        schemaName="suppliers"
+                        tableName="write_off_item"/>
+
+        <modifyDataType columnName="write_off_id"
+                        newDataType="bigint"
+                        schemaName="suppliers"
+                        tableName="write_off_item"/>
+
+        <modifyDataType columnName="item_id"
+                        newDataType="bigint"
+                        schemaName="suppliers"
+                        tableName="write_off_item"/>
+    </changeSet>
+</databaseChangeLog>
