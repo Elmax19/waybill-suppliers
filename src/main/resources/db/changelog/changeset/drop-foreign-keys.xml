@@ -1,0 +1,141 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet id="drop-application-item-foreign-keys" author="Elmax19">
+        <dropForeignKeyConstraint
+                baseTableName="application_item"
+                baseTableSchemaName="suppliers"
+                constraintName="fk-item-application-id"/>
+
+        <dropForeignKeyConstraint
+                baseTableName="application_item"
+                baseTableSchemaName="suppliers"
+                constraintName="fk-application-item-id"/>
+    </changeSet>
+
+    <changeSet id="drop-application-foreign-keys" author="Elmax19">
+        <dropForeignKeyConstraint
+                baseTableName="application"
+                baseTableSchemaName="suppliers"
+                constraintName="fk-application-warehouse-id"/>
+
+        <dropForeignKeyConstraint
+                baseTableName="application"
+                baseTableSchemaName="suppliers"
+                constraintName="fk-application-destination-id"/>
+
+        <dropForeignKeyConstraint
+                baseTableName="application"
+                baseTableSchemaName="suppliers"
+                constraintName="fk-creating-user-id"/>
+
+        <dropForeignKeyConstraint
+                baseTableName="application"
+                baseTableSchemaName="suppliers"
+                constraintName="fk-updating-user-id"/>
+
+        <dropForeignKeyConstraint
+                baseTableName="application"
+                baseTableSchemaName="suppliers"
+                constraintName="fk-application-waybill-id"/>
+    </changeSet>
+
+    <changeSet id="drop-car-foreign-key" author="Elmax19">
+        <dropForeignKeyConstraint
+                baseTableName="car"
+                baseTableSchemaName="suppliers"
+                constraintName="fk-car-last-address-id"/>
+    </changeSet>
+
+    <changeSet id="drop-item-foreign-key" author="Elmax19">
+        <dropForeignKeyConstraint
+                baseTableName="item"
+                baseTableSchemaName="suppliers"
+                constraintName="fk-item-category-id"/>
+    </changeSet>
+
+    <changeSet id="drop-retailer-warehouse-foreign-keys" author="Elmax19">
+        <dropForeignKeyConstraint
+                baseTableName="retailer_warehouse"
+                baseTableSchemaName="suppliers"
+                constraintName="fk-retailer-warehouse-id"/>
+
+        <dropForeignKeyConstraint
+                baseTableName="retailer_warehouse"
+                baseTableSchemaName="suppliers"
+                constraintName="fk-warehouse-retailer-id"/>
+    </changeSet>
+
+    <changeSet id="drop-user-foreign-keys" author="Elmax19">
+        <dropForeignKeyConstraint
+                baseTableName="user"
+                baseTableSchemaName="suppliers"
+                constraintName="fk-user-address-id"/>
+
+        <dropForeignKeyConstraint
+                baseTableName="user"
+                baseTableSchemaName="suppliers"
+                constraintName="fk-user-customer-id"/>
+    </changeSet>
+
+    <changeSet id="drop-warehouse-dispatcher-foreign-keys" author="Elmax19">
+        <dropForeignKeyConstraint
+                baseTableName="warehouse_dispatcher"
+                baseTableSchemaName="suppliers"
+                constraintName="fk-dispatcher-warehouse-id"/>
+
+        <dropForeignKeyConstraint
+                baseTableName="warehouse_dispatcher"
+                baseTableSchemaName="suppliers"
+                constraintName="fk-warehouse-dispatcher-id"/>
+    </changeSet>
+
+    <changeSet id="drop-warehouse-foreign-keys" author="Elmax19">
+        <dropForeignKeyConstraint
+                baseTableName="warehouse"
+                baseTableSchemaName="suppliers"
+                constraintName="fk-warehouse-address-id"/>
+
+        <dropForeignKeyConstraint
+                baseTableName="warehouse"
+                baseTableSchemaName="suppliers"
+                constraintName="fk-warehouse-customer-id"/>
+    </changeSet>
+
+    <changeSet id="drop-waybill-foreign-keys" author="Elmax19">
+        <dropForeignKeyConstraint
+                baseTableName="waybill"
+                baseTableSchemaName="suppliers"
+                constraintName="fk-waybill-source-address-id"/>
+
+        <dropForeignKeyConstraint
+                baseTableName="waybill"
+                baseTableSchemaName="suppliers"
+                constraintName="fk-waybill-car-id"/>
+
+        <dropForeignKeyConstraint
+                baseTableName="waybill"
+                baseTableSchemaName="suppliers"
+                constraintName="fk-waybill-creating-user-id"/>
+
+        <dropForeignKeyConstraint
+                baseTableName="waybill"
+                baseTableSchemaName="suppliers"
+                constraintName="fk-waybill-updating-user-id"/>
+    </changeSet>
+
+    <changeSet id="drop-write-off-foreign-keys" author="Elmax19">
+        <dropForeignKeyConstraint
+                baseTableName="write_off_item"
+                baseTableSchemaName="suppliers"
+                constraintName="fk-write-off-id"/>
+
+        <dropForeignKeyConstraint
+                baseTableName="write_off_item"
+                baseTableSchemaName="suppliers"
+                constraintName="fk-write-off-item-id"/>
+    </changeSet>
+
+</databaseChangeLog>
