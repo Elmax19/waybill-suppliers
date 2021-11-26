@@ -29,4 +29,6 @@
     <include relativeToChangelogFile="true" file="./changeset/add-foreign-keys.xml"/>
     <include relativeToChangelogFile="true" file="./changeset/change-retailer-is-active-column-type.xml"/>
     <include relativeToChangelogFile="true" file="./changeset/drop-unique-constraint-for-user-name.xml"/>
+    <include relativeToChangelogFile="true" file="./changeset/create-warehouse-item-table.xml"/>
+    <include relativeToChangelogFile="true" file="./changeset/change-application-warehouse-id.xml"/>
 </databaseChangeLog>
