@@ -25,7 +25,7 @@ public class Item extends BaseEntity {
     private ItemCategory itemCategory;
 
     @Column(name = "units", nullable = false)
-    private String units;
+    private int units;
 
     @Column(name = "price", nullable = false)
     private double price;
