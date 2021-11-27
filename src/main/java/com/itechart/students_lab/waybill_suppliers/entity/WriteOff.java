@@ -6,9 +6,9 @@ import lombok.NoArgsConstructor;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -17,9 +17,8 @@ import java.util.List;
 @NoArgsConstructor
 public class WriteOff extends BaseEntity{
     @Column(name = "date_time", nullable = false)
-    private String fullName;
+    private LocalDateTime dateTime;
 
-    @JoinTable
-    @OneToMany(mappedBy = "write_off", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "writeOff", cascade = CascadeType.ALL)
     private List<WriteOffItem> writeOffItems;
 }
