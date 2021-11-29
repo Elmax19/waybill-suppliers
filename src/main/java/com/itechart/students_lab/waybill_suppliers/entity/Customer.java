@@ -2,9 +2,12 @@ package com.itechart.students_lab.waybill_suppliers.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -25,5 +28,7 @@ public class Customer extends BaseEntity {
     private ActiveStatus activeStatus;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
+//    @NonNull
     private Set<Employee> employees;
+
 }
