@@ -24,4 +24,12 @@
     <include relativeToChangelogFile="true" file="./changeset/change-nullable-constraints-for-user-table.xml"/>
     <include relativeToChangelogFile="true" file="./changeset/alter-table-customer-alter-column-is-active.xml"/>
     <include relativeToChangelogFile="true" file="./changeset/insert-system-admin-into-users.xml"/>
+    <include relativeToChangelogFile="true" file="./changeset/drop-foreign-keys.xml"/>
+    <include relativeToChangelogFile="true" file="./changeset/change-id-columns-type.xml"/>
+    <include relativeToChangelogFile="true" file="./changeset/add-foreign-keys.xml"/>
+    <include relativeToChangelogFile="true" file="./changeset/change-retailer-is-active-column-type.xml"/>
+    <include relativeToChangelogFile="true" file="./changeset/drop-unique-constraint-for-user-name.xml"/>
+    <include relativeToChangelogFile="true" file="./changeset/create-warehouse-item-table.xml"/>
+    <include relativeToChangelogFile="true" file="./changeset/change-application-warehouse-id.xml"/>
+    <include relativeToChangelogFile="true" file="./changeset/alter-warehouse-add-name-column.xml"/>
 </databaseChangeLog>

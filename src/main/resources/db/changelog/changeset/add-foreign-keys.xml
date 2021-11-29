@@ -1,0 +1,164 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet id="add-application-item-foreign-keys" author="Elmax19">
+        <addForeignKeyConstraint baseColumnNames="application_id"
+                                 baseTableName="application_item"
+                                 constraintName="fk-item-application-id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="application"/>
+
+        <addForeignKeyConstraint baseColumnNames="item_id"
+                                 baseTableName="application_item"
+                                 constraintName="fk-application-item-id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="item"/>
+    </changeSet>
+
+    <changeSet id="add-application-foreign-keys" author="Elmax19">
+        <addForeignKeyConstraint baseColumnNames="warehouse_address_id"
+                                 baseTableName="application"
+                                 constraintName="fk-application-warehouse-id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="warehouse"/>
+
+        <addForeignKeyConstraint baseColumnNames="destination_address_id"
+                                 baseTableName="application"
+                                 constraintName="fk-application-destination-id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="address"/>
+
+        <addForeignKeyConstraint baseColumnNames="creating_user_id"
+                                 baseTableName="application"
+                                 constraintName="fk-creating-user-id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user"/>
+
+        <addForeignKeyConstraint baseColumnNames="updating_user_id"
+                                 baseTableName="application"
+                                 constraintName="fk-updating-user-id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user"/>
+
+        <addForeignKeyConstraint baseColumnNames="waybill_id"
+                                 baseTableName="application"
+                                 constraintName="fk-application-waybill-id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="waybill"/>
+    </changeSet>
+
+    <changeSet id="add-car-foreign-key" author="Elmax19">
+        <addForeignKeyConstraint baseColumnNames="last_address_id"
+                                 baseTableName="car"
+                                 constraintName="fk-car-last-address-id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="address"/>
+    </changeSet>
+
+    <changeSet id="add-item-foreign-key" author="Elmax19">
+        <addForeignKeyConstraint baseColumnNames="category_id"
+                                 baseTableName="item"
+                                 constraintName="fk-item-category-id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="item_category"/>
+    </changeSet>
+
+    <changeSet id="add-retailer-warehouse-foreign-keys" author="Elmax19">
+        <addForeignKeyConstraint baseColumnNames="warehouse_id"
+                                 baseTableName="retailer_warehouse"
+                                 constraintName="fk-retailer-warehouse-id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="warehouse"/>
+
+        <addForeignKeyConstraint baseColumnNames="retailer_id"
+                                 baseTableName="retailer_warehouse"
+                                 constraintName="fk-warehouse-retailer-id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="retailer"/>
+    </changeSet>
+
+    <changeSet id="add-user-foreign-keys" author="Elmax19">
+        <addForeignKeyConstraint baseColumnNames="address_id"
+                                 baseTableName="user"
+                                 constraintName="fk-user-address-id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="address"/>
+
+        <addForeignKeyConstraint baseColumnNames="customer_id"
+                                 baseTableName="user"
+                                 constraintName="fk-user-customer-id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="customer"/>
+    </changeSet>
+
+    <changeSet id="add-warehouse-dispatcher-foreign-keys" author="Elmax19">
+        <addForeignKeyConstraint baseColumnNames="warehouse_id"
+                                 baseTableName="warehouse_dispatcher"
+                                 constraintName="fk-dispatcher-warehouse-id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="warehouse"/>
+
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="warehouse_dispatcher"
+                                 constraintName="fk-warehouse-dispatcher-id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user"/>
+    </changeSet>
+
+    <changeSet id="add-warehouse-foreign-keys" author="Elmax19">
+        <addForeignKeyConstraint baseColumnNames="address_id"
+                                 baseTableName="warehouse"
+                                 constraintName="fk-warehouse-address-id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="address"/>
+
+        <addForeignKeyConstraint baseColumnNames="customer_id"
+                                 baseTableName="warehouse"
+                                 constraintName="fk-warehouse-customer-id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="customer"/>
+    </changeSet>
+
+    <changeSet id="add-waybill-foreign-keys" author="Elmax19">
+        <addForeignKeyConstraint baseColumnNames="source_address_id"
+                                 baseTableName="waybill"
+                                 constraintName="fk-waybill-source-address-id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="address"/>
+
+        <addForeignKeyConstraint baseColumnNames="car_id"
+                                 baseTableName="waybill"
+                                 constraintName="fk-waybill-car-id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="car"/>
+
+        <addForeignKeyConstraint baseColumnNames="creating_user_id"
+                                 baseTableName="waybill"
+                                 constraintName="fk-waybill-creating-user-id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user"/>
+
+        <addForeignKeyConstraint baseColumnNames="updating_user_id"
+                                 baseTableName="waybill"
+                                 constraintName="fk-waybill-updating-user-id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user"/>
+    </changeSet>
+
+    <changeSet id="add-write-off-foreign-keys" author="Elmax19">
+        <addForeignKeyConstraint baseColumnNames="write_off_id"
+                                 baseTableName="write_off_item"
+                                 constraintName="fk-write-off-id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="write_off"/>
+
+        <addForeignKeyConstraint baseColumnNames="item_id"
+                                 baseTableName="write_off_item"
+                                 constraintName="fk-write-off-item-id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="item"/>
+    </changeSet>
+
+</databaseChangeLog>
