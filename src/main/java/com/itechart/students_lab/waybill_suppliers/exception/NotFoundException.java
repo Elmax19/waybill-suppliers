@@ -1,11 +1,10 @@
 package com.itechart.students_lab.waybill_suppliers.exception;
 
-public class NotFoundException extends RuntimeException{
-    public NotFoundException() {
-        super();
-    }
+import org.springframework.http.HttpStatus;
+import org.springframework.web.client.HttpClientErrorException;
 
-    public NotFoundException(String message) {
-        super(message);
+public class NotFoundException extends HttpClientErrorException {
+    public NotFoundException(String statusText) {
+        super(HttpStatus.NOT_FOUND, statusText);
     }
 }

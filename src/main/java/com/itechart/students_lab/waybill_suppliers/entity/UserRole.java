@@ -9,7 +9,7 @@ public enum UserRole {
     ROLE_ADMIN(Set.of()),
     ROLE_DRIVER(Set.of()),
     ROLE_LOGISTICS_SPECIALIST(Set.of()),
-    ROLE_DISPATCHER(Set.of()),
+    ROLE_DISPATCHER(Set.of(Permission.ITEMS_WRITE, Permission.ITEMS_READ)),
     ROLE_DIRECTOR(Set.of());
 
     private final Set<Permission> permissions;
