@@ -9,7 +9,6 @@ import com.itechart.students_lab.waybill_suppliers.repository.ItemCategoryRepo;
 import com.itechart.students_lab.waybill_suppliers.repository.ItemRepo;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.awt.print.Pageable;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -34,19 +32,19 @@ public class ItemController {
 
     @PreAuthorize("hasAuthority('items:read')")
     @GetMapping("/items")
-    List<ItemDto> findByPage(@RequestParam(required = false, defaultValue = "0") int page, @RequestParam(required = false, defaultValue = "10") int count) {
-        return convertToDtoList(itemRepo.findAll(PageRequest.of(page,count)).getContent());
+    List<ItemDto> findAll(@RequestParam(required = false, defaultValue = "0") int page, @RequestParam(required = false, defaultValue = "10") int count) {
+        return itemMapper.map(itemRepo.findAll(PageRequest.of(page,count)).getContent());
     }
 
     @PreAuthorize("hasAuthority('items:read')")
-    @GetMapping("/items/{id}")
+    @GetMapping("/item/{id}")
     ItemDto findById(@PathVariable Long id) {
         return itemRepo.findById(id).map(itemMapper::convertToDto)
                 .orElseThrow(() -> new NotFoundException("No such Item with id: " + id));
     }
 
     @PreAuthorize("hasAuthority('items:write')")
-    @PostMapping("/items")
+    @PostMapping("/item")
     ItemDto createItem(@RequestBody ItemDto newItemDto) {
         Item newItem = itemMapper.convertToEntity(newItemDto);
         Optional<ItemCategory> itemCategory = itemCategoryRepo.findByName(newItemDto.getItemCategory().getName());
@@ -55,12 +53,8 @@ public class ItemController {
     }
 
     @PreAuthorize("hasAuthority('items:write')")
-    @DeleteMapping("/items/{id}")
+    @DeleteMapping("/item/{id}")
     void deleteItem(@PathVariable Long id) {
         itemRepo.deleteById(id);
-    }
-
-    private List<ItemDto> convertToDtoList(List<Item> items){
-        return items.stream().map(itemMapper::convertToDto).collect(Collectors.toList());
     }
 }
