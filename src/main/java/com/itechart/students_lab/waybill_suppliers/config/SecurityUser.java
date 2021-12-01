@@ -38,7 +38,7 @@ public class SecurityUser implements UserDetails {
         return isActive;
     }
 
-    public static UserDetails fromUser(User user){
+    public static UserDetails fromUser(User user) {
         boolean status = user.getActiveStatus().equals(ActiveStatus.ACTIVE);
         return new org.springframework.security.core.userdetails.User(
                 user.getLogin(), user.getPassword(),

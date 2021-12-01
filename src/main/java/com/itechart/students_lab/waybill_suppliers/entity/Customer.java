@@ -1,13 +1,13 @@
 package com.itechart.students_lab.waybill_suppliers.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.ToString;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -27,8 +27,10 @@ public class Customer extends BaseEntity {
     @Column(name = "is_active", nullable = false)
     private ActiveStatus activeStatus;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
-//    @NonNull
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer", cascade = {CascadeType.PERSIST})
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @JsonManagedReference("customer")
     private Set<Employee> employees;
 
 }
