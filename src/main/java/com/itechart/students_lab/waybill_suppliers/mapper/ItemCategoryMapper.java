@@ -7,5 +7,6 @@ import org.mapstruct.Mapper;
 @Mapper
 public interface ItemCategoryMapper {
     ItemCategory convertToEntity(ItemCategoryDto itemDto);
+
     ItemCategoryDto convertToDto(ItemCategory item);
 }

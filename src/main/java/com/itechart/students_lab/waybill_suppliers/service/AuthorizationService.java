@@ -9,7 +9,6 @@ import com.itechart.students_lab.waybill_suppliers.repository.EmployeeRepo;
 import com.itechart.students_lab.waybill_suppliers.repository.UserRepo;
 import com.itechart.students_lab.waybill_suppliers.validation.EmailValidator;
 import com.itechart.students_lab.waybill_suppliers.validation.RegexPattern;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,18 +36,15 @@ public class AuthorizationService {
     }
 
     @Transactional
-    public ResponseEntity addNewCustomer(Customer customer){
+    public ResponseEntity addNewCustomer(Customer customer) {
         Employee adminUser = customer.getEmployees().stream().findFirst().get();
-        if (!EmailValidator.isValid(adminUser.getContactInformation().getEmail(), RegexPattern.EMAIL)){
+        if (!EmailValidator.isValid(adminUser.getContactInformation().getEmail(), RegexPattern.EMAIL)) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Email not valid!");
         }
-        if (customerRepo.existsByNameIgnoreCase(customer.getName())){
+        if (customerRepo.existsByNameIgnoreCase(customer.getName())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Customer with this name already exists!"); // 409
         }
-        if (customerRepo.existsByNameIgnoreCase(customer.getName())){
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Customer with this name already exists!"); // 409
-        }
-        if (employeeRepo.existsByContactInformationEmailIgnoreCase(adminUser.getContactInformation().getEmail())){
+        if (employeeRepo.existsByContactInformationEmailIgnoreCase(adminUser.getContactInformation().getEmail())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Customer with this email already exists!");
         }
         adminUser = getNewCustomerAdmin(adminUser);
@@ -57,10 +53,10 @@ public class AuthorizationService {
         customer.setEmployees(Set.of(adminUser));
         customerRepo.save(customer);
         return ResponseEntity.created(URI.create("/customers"))
-                    .body(customer);
+                .body(customer);
     }
 
-    public Employee getNewCustomerAdmin(Employee admin){
+    public Employee getNewCustomerAdmin(Employee admin) {
         admin.setLogin(admin.getContactInformation().getEmail());
         admin.setPassword(passwordEncoder.encode("test_password"));
         admin.setRole(UserRole.ROLE_ADMIN);
@@ -68,7 +64,7 @@ public class AuthorizationService {
         return admin;
     }
 
-    public Customer getNewCustomer(Customer customer){
+    public Customer getNewCustomer(Customer customer) {
         customer.getEmployees().clear();
         customer.setRegistrationDate(new Date());
         customer.setActiveStatus(ActiveStatus.ACTIVE);
