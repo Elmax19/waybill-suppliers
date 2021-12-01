@@ -22,7 +22,7 @@ public class Item extends BaseEntity {
     @Column(name = "label", nullable = false)
     private String label;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private ItemCategory itemCategory;
 

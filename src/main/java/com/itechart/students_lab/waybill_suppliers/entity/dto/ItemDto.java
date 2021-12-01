@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class ItemDto {
+    private Long id;
     private Long upc;
     private String label;
     private ItemCategoryDto itemCategory;
