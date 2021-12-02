@@ -11,7 +11,7 @@
 	<groupId>com.itechart</groupId>
 	<artifactId>waybill_suppliers</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>Waybill Suppliers</name>
 	<description>Waybill Suppliers project</description>
 	<properties>

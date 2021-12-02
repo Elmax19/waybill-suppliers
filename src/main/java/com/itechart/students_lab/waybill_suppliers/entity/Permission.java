@@ -4,7 +4,9 @@ public enum Permission {
     CUSTOMERS_WRITE("customers:write"),
     CUSTOMERS_READ("customers:read"),
     ITEMS_WRITE("items:write"),
-    ITEMS_READ("items:read");
+    ITEMS_READ("items:read"),
+    WAREHOUSE_ITEMS_WRITE("warehouseItems:write"),
+    WAREHOUSE_ITEMS_READ("warehouseItems:read");
 
     private final String permission;
 

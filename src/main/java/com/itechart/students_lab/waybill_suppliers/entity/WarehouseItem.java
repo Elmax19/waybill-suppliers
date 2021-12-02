@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -24,4 +26,8 @@ public class WarehouseItem extends BaseEntity {
 
     @Column(name = "count", nullable = false)
     private int count;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "is_active", nullable = false)
+    private ActiveStatus activeStatus;
 }
