@@ -33,4 +33,5 @@
     <include relativeToChangelogFile="true" file="./changeset/change-application-warehouse-id.xml"/>
     <include relativeToChangelogFile="true" file="./changeset/alter-warehouse-add-name-column.xml"/>
     <include relativeToChangelogFile="true" file="./changeset/alter-warehouse-item-add-is-active-column.xml"/>
+    <include relativeToChangelogFile="true" file="./changeset/add-warehouse-item-unique-constraint.xml"/>
 </databaseChangeLog>

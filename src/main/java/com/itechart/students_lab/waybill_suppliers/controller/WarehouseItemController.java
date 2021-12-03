@@ -1,9 +1,7 @@
 package com.itechart.students_lab.waybill_suppliers.controller;
 
 import com.itechart.students_lab.waybill_suppliers.entity.ActiveStatus;
-import com.itechart.students_lab.waybill_suppliers.entity.WarehouseItem;
 import com.itechart.students_lab.waybill_suppliers.entity.dto.WarehouseItemDto;
-import com.itechart.students_lab.waybill_suppliers.exception.NotFoundException;
 import com.itechart.students_lab.waybill_suppliers.mapper.WarehouseItemMapper;
 import com.itechart.students_lab.waybill_suppliers.repository.ItemRepo;
 import com.itechart.students_lab.waybill_suppliers.repository.WarehouseItemRepo;
@@ -16,7 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,8 +23,6 @@ import java.util.List;
 @RestController
 public class WarehouseItemController {
     private final WarehouseItemRepo warehouseItemRepo;
-    private final WarehouseRepo warehouseRepo;
-    private final ItemRepo itemRepo;
     private final WarehouseItemMapper warehouseItemMapper = Mappers.getMapper(WarehouseItemMapper.class);
 
     @PreAuthorize("hasAuthority('warehouseItems:read')")
@@ -48,16 +43,6 @@ public class WarehouseItemController {
     @PreAuthorize("hasAuthority('warehouseItems:write')")
     @PostMapping("/warehouse/{warehouseId}/item/{itemId}")
     void createWarehouseItem(@PathVariable Long warehouseId, @PathVariable Long itemId, @RequestParam int count) {
-        if(!warehouseRepo.existsById(warehouseId)){
-            throw new NotFoundException("No such Warehouse with id: " + warehouseId);
-        }
-        if(!itemRepo.existsById(itemId)){
-            throw new NotFoundException("No such Item with id: " + itemId);
-        }
-        if(warehouseItemRepo.existsByWarehouseIdAndItemId(warehouseId, itemId)) {
-            warehouseItemRepo.updateWarehouseItemCount(warehouseId, itemId, count);
-        } else {
-            warehouseItemRepo.save(warehouseId, itemId, count, ActiveStatus.ACTIVE.name());
-        }
+        warehouseItemRepo.save(warehouseId, itemId, count, ActiveStatus.ACTIVE.name());
     }
 }
