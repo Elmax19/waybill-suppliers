@@ -1,6 +1,7 @@
 package com.itechart.students_lab.waybill_suppliers.entity;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
 import java.util.Set;
 import java.util.stream.Collectors;
 

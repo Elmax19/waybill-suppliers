@@ -9,6 +9,8 @@ import java.util.List;
 @Mapper
 public interface ItemMapper {
     Item convertToEntity(ItemDto itemDto);
+
     ItemDto convertToDto(Item item);
+
     List<ItemDto> map(List<Item> items);
 }
