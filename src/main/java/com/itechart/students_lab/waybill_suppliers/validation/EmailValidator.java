@@ -1,13 +1,13 @@
 package com.itechart.students_lab.waybill_suppliers.validation;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.regex.Pattern;
 
-@Component
+@Service
 public class EmailValidator {
 
-    public static boolean isValid(String value, String regex){
+    public boolean isValid(String value, String regex){
         return Pattern.compile(regex).matcher(value).matches();
     }
 

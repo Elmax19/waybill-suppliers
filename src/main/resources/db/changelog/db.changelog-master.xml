@@ -32,4 +32,6 @@
     <include relativeToChangelogFile="true" file="./changeset/create-warehouse-item-table.xml"/>
     <include relativeToChangelogFile="true" file="./changeset/change-application-warehouse-id.xml"/>
     <include relativeToChangelogFile="true" file="./changeset/alter-warehouse-add-name-column.xml"/>
+    <include relativeToChangelogFile="true" file="./changeset/add-unique-constraint-name-customers-table.xml"/>
+    <include relativeToChangelogFile="true" file="./changeset/add-unique-constraint-email-user-table.xml"/>
 </databaseChangeLog>

@@ -5,48 +5,27 @@ import com.itechart.students_lab.waybill_suppliers.entity.Customer;
 import com.itechart.students_lab.waybill_suppliers.entity.Employee;
 import com.itechart.students_lab.waybill_suppliers.entity.UserRole;
 import com.itechart.students_lab.waybill_suppliers.repository.CustomerRepo;
-import com.itechart.students_lab.waybill_suppliers.repository.EmployeeRepo;
-import com.itechart.students_lab.waybill_suppliers.repository.UserRepo;
-import com.itechart.students_lab.waybill_suppliers.validation.EmailValidator;
-import com.itechart.students_lab.waybill_suppliers.validation.RegexPattern;
-import org.springframework.http.HttpStatus;
+import com.itechart.students_lab.waybill_suppliers.utils.PasswordGenerator;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.net.URI;
 import java.util.Date;
 import java.util.Set;
 
 @Service
+@RequiredArgsConstructor
 public class AuthorizationService {
 
-    private final UserRepo userRepo;
     private final CustomerRepo customerRepo;
-    private final EmployeeRepo employeeRepo;
     private final PasswordEncoder passwordEncoder;
-
-    public AuthorizationService(UserRepo userRepo,
-                                CustomerRepo customerRepo, EmployeeRepo employeeRepo, PasswordEncoder passwordEncoder) {
-        this.userRepo = userRepo;
-        this.customerRepo = customerRepo;
-        this.employeeRepo = employeeRepo;
-        this.passwordEncoder = passwordEncoder;
-    }
+    private final PasswordGenerator passwordGenerator;
 
     @Transactional
     public ResponseEntity addNewCustomer(Customer customer) {
         Employee adminUser = customer.getEmployees().stream().findFirst().get();
-        if (!EmailValidator.isValid(adminUser.getContactInformation().getEmail(), RegexPattern.EMAIL)) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Email not valid!");
-        }
-        if (customerRepo.existsByNameIgnoreCase(customer.getName())) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Customer with this name already exists!"); // 409
-        }
-        if (employeeRepo.existsByContactInformationEmailIgnoreCase(adminUser.getContactInformation().getEmail())) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Customer with this email already exists!");
-        }
         adminUser = getNewCustomerAdmin(adminUser);
         customer = getNewCustomer(customer);
         adminUser.setCustomer(customer);
@@ -58,7 +37,7 @@ public class AuthorizationService {
 
     public Employee getNewCustomerAdmin(Employee admin) {
         admin.setLogin(admin.getContactInformation().getEmail());
-        admin.setPassword(passwordEncoder.encode("test_password"));
+        admin.setPassword(passwordEncoder.encode(passwordGenerator.generateRandomSpecialCharacters(15)));
         admin.setRole(UserRole.ROLE_ADMIN);
         admin.setActiveStatus(ActiveStatus.ACTIVE);
         return admin;
