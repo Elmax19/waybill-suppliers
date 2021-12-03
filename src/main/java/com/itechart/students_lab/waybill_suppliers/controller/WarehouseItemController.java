@@ -13,8 +13,10 @@ import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,24 +31,23 @@ public class WarehouseItemController {
     private final WarehouseItemMapper warehouseItemMapper = Mappers.getMapper(WarehouseItemMapper.class);
 
     @PreAuthorize("hasAuthority('warehouseItems:read')")
-    @GetMapping("/warehouseItems")
-    List<WarehouseItemDto> findAll(@RequestParam Long warehouseId,
+    @GetMapping("/warehouse/{id}/items")
+    List<WarehouseItemDto> findAll(@PathVariable Long id,
                                    @RequestParam(required = false, defaultValue = "0") int page,
                                    @RequestParam(required = false, defaultValue = "10") int count) {
-        return warehouseItemMapper.map(warehouseItemRepo.findAllByWarehouseId(warehouseId, PageRequest.of(page, count)));
+        return warehouseItemMapper.map(warehouseItemRepo.findAllByWarehouseId(id, PageRequest.of(page, count)));
     }
 
     @PreAuthorize("hasAuthority('warehouseItems:write')")
-    @PutMapping("/warehouseItem")
-    void changeWarehouseItemStatus(@RequestParam Long warehouseId, @RequestParam Long itemId) {
-        WarehouseItem warehouseItem = warehouseItemRepo.findByWarehouseAndItem(itemId, warehouseId);
-        ActiveStatus activeStatus = warehouseItem.getActiveStatus().equals(ActiveStatus.ACTIVE) ? ActiveStatus.INACTIVE : ActiveStatus.ACTIVE;
-        warehouseItemRepo.updateWarehouseItem(warehouseItem.getCount(), activeStatus.name(), warehouseItem.getId());
+    @PutMapping("/warehouse/{warehouseId}/item/{itemId}")
+    void changeWarehouseItemStatus(@PathVariable Long warehouseId, @PathVariable Long itemId, @RequestParam String status) {
+        ActiveStatus activeStatus = ActiveStatus.valueOf(status);
+        warehouseItemRepo.updateWarehouseItemStatus(warehouseId, itemId, activeStatus.name());
     }
 
     @PreAuthorize("hasAuthority('warehouseItems:write')")
-    @PostMapping("/warehouseItem")
-    void createWarehouseItem(@RequestParam Long warehouseId, @RequestParam Long itemId, @RequestParam int count) {
+    @PostMapping("/warehouse/{warehouseId}/item/{itemId}")
+    void createWarehouseItem(@PathVariable Long warehouseId, @PathVariable Long itemId, @RequestParam int count) {
         if(!warehouseRepo.existsById(warehouseId)){
             throw new NotFoundException("No such Warehouse with id: " + warehouseId);
         }
@@ -54,10 +55,9 @@ public class WarehouseItemController {
             throw new NotFoundException("No such Item with id: " + itemId);
         }
         if(warehouseItemRepo.existsByWarehouseIdAndItemId(warehouseId, itemId)) {
-            WarehouseItem warehouseItem = warehouseItemRepo.findByWarehouseAndItem(warehouseId, itemId);
-            warehouseItemRepo.updateWarehouseItem(warehouseItem.getCount()+count, warehouseItem.getActiveStatus().name(), warehouseItem.getId());
+            warehouseItemRepo.updateWarehouseItemCount(warehouseId, itemId, count);
         } else {
-            warehouseItemRepo.saveWarehouseItem(warehouseId, itemId, count);
+            warehouseItemRepo.save(warehouseId, itemId, count, ActiveStatus.ACTIVE.name());
         }
     }
 }
