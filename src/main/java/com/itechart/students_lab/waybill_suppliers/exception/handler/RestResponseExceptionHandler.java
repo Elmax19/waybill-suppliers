@@ -1,5 +1,6 @@
 package com.itechart.students_lab.waybill_suppliers.exception.handler;
 
+import com.itechart.students_lab.waybill_suppliers.exception.BadRequestException;
 import com.itechart.students_lab.waybill_suppliers.exception.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,5 +19,10 @@ public class RestResponseExceptionHandler {
     @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
     public ResponseEntity<String> handleConstraintViolationException(SQLIntegrityConstraintViolationException e){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Entered value is not unique");
+    }
+
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<String> handleBadRequestException(BadRequestException e){
+        return new ResponseEntity<>(e.getLocalizedMessage(), e.getStatusCode());
     }
 }
