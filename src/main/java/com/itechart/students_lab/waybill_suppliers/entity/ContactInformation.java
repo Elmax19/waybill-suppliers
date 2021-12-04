@@ -2,7 +2,6 @@ package com.itechart.students_lab.waybill_suppliers.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import java.util.Date;
 
@@ -21,7 +20,7 @@ public class ContactInformation {
     @Temporal(TemporalType.DATE)
     private Date birthday;
 
-    @Column(name = "email")
+    @Column(name = "email", nullable = false)
     private String email;
 
     @OneToOne

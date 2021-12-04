@@ -3,16 +3,7 @@ package com.itechart.students_lab.waybill_suppliers.entity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -47,12 +38,12 @@ public class Application extends BaseEntity {
     private Employee updatingUser;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status" , nullable = false)
+    @Column(name = "status", nullable = false)
     private ApplicationStatus status;
 
     @ManyToMany
     @JoinTable(name = "application_item",
-        joinColumns = @JoinColumn(name = "application_id"),
+            joinColumns = @JoinColumn(name = "application_id"),
             inverseJoinColumns = @JoinColumn(name = "item_id"))
     private Set<Item> items;
 }

@@ -1,7 +1,10 @@
 package com.itechart.students_lab.waybill_suppliers.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -24,6 +27,10 @@ public class Customer extends BaseEntity {
     @Column(name = "is_active", nullable = false)
     private ActiveStatus activeStatus;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer", cascade = {CascadeType.PERSIST})
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @JsonManagedReference("customer")
     private Set<Employee> employees;
+
 }
