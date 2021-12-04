@@ -25,4 +25,9 @@ public class RestResponseExceptionHandler {
     public ResponseEntity<String> handleBadRequestException(BadRequestException e){
         return new ResponseEntity<>(e.getLocalizedMessage(), e.getStatusCode());
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handleIllegalArgument(IllegalArgumentException e) {
+        return new ResponseEntity<>(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
+    }
 }
