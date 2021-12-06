@@ -1,5 +1,6 @@
 package com.itechart.students_lab.waybill_suppliers.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import javax.persistence.MappedSuperclass;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @MappedSuperclass
 public abstract class BaseEntity {
 

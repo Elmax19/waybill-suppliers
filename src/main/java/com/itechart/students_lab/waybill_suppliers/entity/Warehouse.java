@@ -39,4 +39,8 @@ public class Warehouse extends BaseEntity {
     @ManyToOne(optional = false)
     @JoinColumn(name = "customer_id", nullable = false, referencedColumnName = "id")
     private Customer customer;
+
+    public Warehouse(Customer customer) {
+        this.customer = customer;
+    }
 }

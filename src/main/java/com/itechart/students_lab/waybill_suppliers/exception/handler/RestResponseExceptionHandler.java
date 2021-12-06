@@ -17,6 +17,8 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.itechart.students_lab.waybill_suppliers.service.WarehouseService.warehouseProcessSQLIntegrityConstraintViolationException;
+
 @ControllerAdvice
 public class RestResponseExceptionHandler {
     @ExceptionHandler(NotFoundException.class)
@@ -26,7 +28,10 @@ public class RestResponseExceptionHandler {
 
     @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
     public ResponseEntity<String> handleConstraintViolationException(SQLIntegrityConstraintViolationException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Entered value is not unique");
+        String message = warehouseProcessSQLIntegrityConstraintViolationException(e);
+        return new ResponseEntity<>(message == null
+                ? e.getLocalizedMessage()
+                : message, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(BadRequestException.class)
