@@ -20,10 +20,10 @@ public class ContactInformation {
     @Temporal(TemporalType.DATE)
     private Date birthday;
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "email")
     private String email;
 
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.PERSIST})
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
 }
