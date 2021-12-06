@@ -1,0 +1,15 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="alter-warehouse-add-not-null-constraints-address-id-customer-id" author="anto-belo">
+        <addNotNullConstraint columnDataType="bigint"
+                              columnName="address_id"
+                              tableName="warehouse"/>
+        <addNotNullConstraint columnDataType="bigint"
+                              columnName="customer_id"
+                              tableName="warehouse"/>
+    </changeSet>
+</databaseChangeLog>
