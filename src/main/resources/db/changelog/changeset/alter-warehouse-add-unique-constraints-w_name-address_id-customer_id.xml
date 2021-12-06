@@ -1,0 +1,19 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="alter-warehouse-add-unique-constraints-w_name-address_id-customer_id"
+               author="anto-belo">
+        <addUniqueConstraint columnNames="w_name, address_id"
+                             tableName="warehouse"
+                             constraintName="w_name_address_id"/>
+        <addUniqueConstraint columnNames="w_name, customer_id"
+                             tableName="warehouse"
+                             constraintName="w_name_customer_id"/>
+        <addUniqueConstraint columnNames="address_id, customer_id"
+                             tableName="warehouse"
+                             constraintName="address_id_customer_id"/>
+    </changeSet>
+</databaseChangeLog>
