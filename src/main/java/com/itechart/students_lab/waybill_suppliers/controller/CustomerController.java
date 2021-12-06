@@ -10,6 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -34,18 +35,16 @@ public class CustomerController {
     @PostMapping("/customers/disable")
     @PreAuthorize("hasAuthority('customers:write')")
     public ResponseEntity<String> disable(@RequestBody List<Customer> customers){
-        for (Customer c : customers) {
-            customerRepo.setCustomerActiveStatus(ActiveStatus.INACTIVE.toString(), c.getId());
-        }
+        List<Long> ids = customers.stream().map(c -> c.getId()).collect(Collectors.toList());
+        customerRepo.setCustomerActiveStatus(ActiveStatus.INACTIVE.toString(), ids);
         return ResponseEntity.ok("Selected customers successfully disabled!");
     }
 
     @PostMapping("/customers/enable")
     @PreAuthorize("hasAuthority('customers:write')")
     public ResponseEntity<String> enable(@RequestBody List<Customer> customers){
-        for (Customer c : customers) {
-            customerRepo.setCustomerActiveStatus(ActiveStatus.ACTIVE.toString(), c.getId());
-        }
+        List<Long> ids = customers.stream().map(c -> c.getId()).collect(Collectors.toList());
+        customerRepo.setCustomerActiveStatus(ActiveStatus.ACTIVE.toString(), ids);
         return ResponseEntity.ok("Selected customers successfully enabled!");
     }
 }

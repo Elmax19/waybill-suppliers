@@ -28,7 +28,7 @@ public interface CustomerRepo extends JpaRepository<Customer, Long> {
             " set customer.is_active = :status," +
             " user.is_active = :status" +
             " where user.customer_id = customer.id" +
-            " and customer.id = :id", nativeQuery = true)
+            " and customer.id IN :ids", nativeQuery = true)
     void setCustomerActiveStatus(@Param("status") String newStatus,
-                                      @Param("id") Long id);
+                                      @Param("ids") List<Long> id);
 }
