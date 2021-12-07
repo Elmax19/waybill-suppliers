@@ -36,4 +36,8 @@
     <include relativeToChangelogFile="true" file="./changeset/add-warehouse-item-unique-constraint.xml"/>
     <include relativeToChangelogFile="true" file="./changeset/add-unique-constraint-name-customers-table.xml"/>
     <include relativeToChangelogFile="true" file="./changeset/add-unique-constraint-email-user-table.xml"/>
+    <include relativeToChangelogFile="true" file="./changeset/alter-warehouse-add-available-capacity-column.xml"/>
+    <include relativeToChangelogFile="true" file="./changeset/alter-warehouse-add-not-null-constraints-address-id-customer-id.xml"/>
+    <include relativeToChangelogFile="true" file="./changeset/alter-address-add-unique-constraint-all-fields-except-id.xml"/>
+    <include relativeToChangelogFile="true" file="./changeset/alter-warehouse-add-unique-constraints-w_name-address_id-customer_id.xml"/>
 </databaseChangeLog>

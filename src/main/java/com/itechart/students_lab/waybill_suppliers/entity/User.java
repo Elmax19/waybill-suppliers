@@ -15,17 +15,17 @@ import javax.persistence.*;
 public class User extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "role", nullable = false)
+    @Column(name = "role")
     private UserRole role;
 
-    @Column(name = "login", nullable = false)
+    @Column(name = "login")
     private String login;
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "password")
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "is_active", nullable = false)
+    @Column(name = "is_active")
     private ActiveStatus activeStatus;
 
 }

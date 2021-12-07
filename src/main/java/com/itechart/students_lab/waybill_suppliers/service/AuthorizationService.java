@@ -5,6 +5,7 @@ import com.itechart.students_lab.waybill_suppliers.entity.Customer;
 import com.itechart.students_lab.waybill_suppliers.entity.Employee;
 import com.itechart.students_lab.waybill_suppliers.entity.UserRole;
 import com.itechart.students_lab.waybill_suppliers.repository.CustomerRepo;
+import com.itechart.students_lab.waybill_suppliers.repository.EmployeeRepo;
 import com.itechart.students_lab.waybill_suppliers.utils.PasswordGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ public class AuthorizationService {
     private final CustomerRepo customerRepo;
     private final PasswordEncoder passwordEncoder;
     private final PasswordGenerator passwordGenerator;
+    private final EmployeeRepo employeeRepo;
 
     @Transactional
     public ResponseEntity addNewCustomer(Customer customer) {
@@ -33,6 +35,16 @@ public class AuthorizationService {
         customerRepo.save(customer);
         return ResponseEntity.created(URI.create("/customers"))
                 .body(customer);
+    }
+
+    @Transactional
+    public ResponseEntity addNewEmployee(Employee employee, Customer customer){
+        employee.setActiveStatus(ActiveStatus.ACTIVE);
+        employee.setPassword(passwordEncoder.encode(passwordGenerator.generateRandomSpecialCharacters(15)));
+        employee.setCustomer(customer);
+        employee = employeeRepo.save(employee);
+        return ResponseEntity.created(URI.create("/customer/" + customer.getId() + "/employees"))
+                .body(employee);
     }
 
     public Employee getNewCustomerAdmin(Employee admin) {
