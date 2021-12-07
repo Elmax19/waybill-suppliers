@@ -6,7 +6,7 @@ import com.itechart.students_lab.waybill_suppliers.entity.Employee;
 import com.itechart.students_lab.waybill_suppliers.entity.UserRole;
 import com.itechart.students_lab.waybill_suppliers.repository.CustomerRepo;
 import com.itechart.students_lab.waybill_suppliers.repository.EmployeeRepo;
-import com.itechart.students_lab.waybill_suppliers.utils.MailSender;
+import com.itechart.students_lab.waybill_suppliers.utils.MailService;
 import com.itechart.students_lab.waybill_suppliers.utils.PasswordGenerator;
 import com.itechart.students_lab.waybill_suppliers.validation.RegexPattern;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.net.URI;
 import java.util.Date;
 import java.util.Set;
@@ -26,7 +27,7 @@ public class AuthorizationService {
     private final PasswordEncoder passwordEncoder;
     private final PasswordGenerator passwordGenerator;
     private final EmployeeRepo employeeRepo;
-    private final MailSender mailSender;
+    private final MailService mailService;
 
     @Transactional
     public ResponseEntity addNewCustomer(Customer customer) {
@@ -37,7 +38,7 @@ public class AuthorizationService {
         adminUser.setCustomer(customer);
         customer.setEmployees(Set.of(adminUser));
         customer = customerRepo.save(customer);
-        mailSender.send(adminUser.getContactInformation().getEmail(),
+        mailService.send(adminUser.getContactInformation().getEmail(),
                 String.format(RegexPattern.EMAIL_TITLE, adminUser.getLogin()),
                 String.format(RegexPattern.EMAIL_MESSAGE, password));
         return ResponseEntity.created(URI.create("/customers"))
@@ -45,13 +46,13 @@ public class AuthorizationService {
     }
 
     @Transactional
-    public ResponseEntity addNewEmployee(Employee employee, Customer customer){
+    public ResponseEntity addNewEmployee(Employee employee, Customer customer) {
         String password = passwordGenerator.generateRandomSpecialCharacters(15);
         employee.setActiveStatus(ActiveStatus.ACTIVE);
         employee.setPassword(passwordEncoder.encode(password));
         employee.setCustomer(customer);
         employee = employeeRepo.save(employee);
-        mailSender.send(employee.getContactInformation().getEmail(),
+        mailService.send(employee.getContactInformation().getEmail(),
                 String.format(RegexPattern.EMAIL_TITLE, customer.getName()),
                 String.format(RegexPattern.EMAIL_MESSAGE, password));
         return ResponseEntity.created(URI.create("/customer/" + customer.getId() + "/employees"))
