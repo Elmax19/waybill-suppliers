@@ -10,7 +10,9 @@ public enum Permission {
     EMPLOYEES_READ("employees:read"),
     EMPLOYEES_WRITE("employees:write"),
     WAREHOUSES_WRITE("warehouses:write"),
-    WAREHOUSES_READ("warehouses:read");
+    WAREHOUSES_READ("warehouses:read"),
+    ACCOUNT_READ("account:read"),
+    ACCOUNT_WRITE("account:write");
 
     private final String permission;
 
