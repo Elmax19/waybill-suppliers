@@ -40,4 +40,10 @@
     <include relativeToChangelogFile="true" file="./changeset/alter-warehouse-add-not-null-constraints-address-id-customer-id.xml"/>
     <include relativeToChangelogFile="true" file="./changeset/alter-address-add-unique-constraint-all-fields-except-id.xml"/>
     <include relativeToChangelogFile="true" file="./changeset/alter-warehouse-add-unique-constraints-w_name-address_id-customer_id.xml"/>
+    <include relativeToChangelogFile="true" file="./changeset/alter-car-exchange-available-capacity-with-status.xml"/>
+    <include relativeToChangelogFile="true" file="./changeset/alter-car-add-not-null-constraint-last-address-id.xml"/>
+    <include relativeToChangelogFile="true" file="./changeset/alter-car-add-customer_id.xml"/>
+    <include relativeToChangelogFile="true" file="./changeset/alter-application-item-add-count-and-price-columns.xml"/>
+    <include relativeToChangelogFile="true" file="./changeset/alter-waybill-change-driver-id-datatype.xml"/>
+    <include relativeToChangelogFile="true" file="./changeset/alter-waybill-add-fk-driver-id.xml"/>
 </databaseChangeLog>
