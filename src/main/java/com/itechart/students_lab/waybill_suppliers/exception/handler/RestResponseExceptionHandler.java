@@ -1,12 +1,11 @@
 package com.itechart.students_lab.waybill_suppliers.exception.handler;
 
+import com.itechart.students_lab.waybill_suppliers.exception.AccountNotMatchException;
 import com.itechart.students_lab.waybill_suppliers.exception.BadRequestException;
 import com.itechart.students_lab.waybill_suppliers.exception.NoAccessException;
 import com.itechart.students_lab.waybill_suppliers.exception.NotFoundException;
-import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.itechart.students_lab.waybill_suppliers.exception.ServiceException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -91,6 +90,12 @@ public class RestResponseExceptionHandler {
 
     @ExceptionHandler(NoAccessException.class)
     public ResponseEntity<String> handleNoAccessException(NoAccessException e) {
+        log.error(e.getLocalizedMessage());
+        return new ResponseEntity<>(e.getLocalizedMessage(), e.getStatusCode());
+    }
+
+    @ExceptionHandler(AccountNotMatchException.class)
+    public ResponseEntity<String> handleAccountNotMatchException(AccountNotMatchException e){
         log.error(e.getLocalizedMessage());
         return new ResponseEntity<>(e.getLocalizedMessage(), e.getStatusCode());
     }

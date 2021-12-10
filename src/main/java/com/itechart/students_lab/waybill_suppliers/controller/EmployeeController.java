@@ -2,14 +2,18 @@ package com.itechart.students_lab.waybill_suppliers.controller;
 
 import com.itechart.students_lab.waybill_suppliers.entity.ActiveStatus;
 import com.itechart.students_lab.waybill_suppliers.entity.Employee;
-import com.itechart.students_lab.waybill_suppliers.repository.CustomerRepo;
+import com.itechart.students_lab.waybill_suppliers.exception.AccountNotMatchException;
 import com.itechart.students_lab.waybill_suppliers.repository.EmployeeRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,6 +22,7 @@ import java.util.stream.Collectors;
 public class EmployeeController {
 
     private final EmployeeRepo employeeRepo;
+    private final PasswordEncoder passwordEncoder;
 
     @GetMapping("/customer/{id}/employees")
     @PreAuthorize("hasAuthority('employees:read')")
@@ -51,4 +56,25 @@ public class EmployeeController {
         return ResponseEntity.ok("Selected employees successfully enabled!");
     }
 
+    @GetMapping("/employee/{employee}")
+    @PreAuthorize("hasAuthority('account:read')")
+    public Employee getEmployee(@PathVariable Employee employee,
+                                @AuthenticationPrincipal UserDetails user){
+        if (!user.getUsername().equals(employee.getLogin())){
+            throw new AccountNotMatchException("Unauthorized request");
+        }
+        return employee;
+    }
+
+    @PutMapping("/employee")
+    @PreAuthorize("hasAuthority('account:write')")
+    public ResponseEntity updateEmployee(@RequestBody Employee employee,
+                                         @RequestParam(defaultValue = "false") boolean isPasswordChanged){
+        employee.setPassword(passwordEncoder.encode(employee.getPassword()));
+        employee = employeeRepo.save(employee);
+        if (isPasswordChanged){
+            return ResponseEntity.ok(URI.create("/logout"));
+        }
+        return ResponseEntity.ok(employee);
+    }
 }
