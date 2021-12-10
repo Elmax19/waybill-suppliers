@@ -2,6 +2,7 @@ package com.itechart.students_lab.waybill_suppliers.exception.handler;
 
 import com.itechart.students_lab.waybill_suppliers.exception.AccountNotMatchException;
 import com.itechart.students_lab.waybill_suppliers.exception.BadRequestException;
+import com.itechart.students_lab.waybill_suppliers.exception.NoAccessException;
 import com.itechart.students_lab.waybill_suppliers.exception.NotFoundException;
 import com.itechart.students_lab.waybill_suppliers.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
@@ -85,6 +86,12 @@ public class RestResponseExceptionHandler {
     public ResponseEntity<String> handleHttpMessageNotReadableException(ConstraintViolationException e) {
         log.error(e.getLocalizedMessage());
         return new ResponseEntity<>(e.getLocalizedMessage().split(": ")[1], HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(NoAccessException.class)
+    public ResponseEntity<String> handleNoAccessException(NoAccessException e) {
+        log.error(e.getLocalizedMessage());
+        return new ResponseEntity<>(e.getLocalizedMessage(), e.getStatusCode());
     }
 
     @ExceptionHandler(AccountNotMatchException.class)
