@@ -9,8 +9,9 @@ public enum UserRole {
     ROLE_SYSTEM_ADMIN(Set.of(Permission.CUSTOMERS_WRITE, Permission.CUSTOMERS_READ)),
     ROLE_ADMIN(Set.of(Permission.EMPLOYEES_READ, Permission.EMPLOYEES_WRITE, Permission.WAREHOUSES_WRITE, Permission.WAREHOUSES_READ)),
     ROLE_DRIVER(Set.of()),
-    ROLE_LOGISTICS_SPECIALIST(Set.of()),
-    ROLE_DISPATCHER(Set.of(Permission.ITEMS_WRITE, Permission.ITEMS_READ, Permission.WAREHOUSE_ITEMS_WRITE, Permission.WAREHOUSE_ITEMS_READ)),
+    ROLE_LOGISTICS_SPECIALIST(Set.of(Permission.DISPATCHING_APPLICATIONS_READ)),
+    ROLE_DISPATCHER(Set.of(Permission.ITEMS_WRITE, Permission.ITEMS_READ, Permission.WAREHOUSE_ITEMS_WRITE,
+            Permission.WAREHOUSE_ITEMS_READ, Permission.ALL_APPLICATIONS_READ, Permission.DISPATCHING_APPLICATIONS_READ)),
     ROLE_DIRECTOR(Set.of());
 
     private final Set<Permission> permissions;

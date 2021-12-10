@@ -1,7 +1,10 @@
 package com.itechart.students_lab.waybill_suppliers.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -41,10 +44,13 @@ public class Application extends BaseEntity {
     @Column(name = "status", nullable = false)
     private ApplicationStatus status;
 
-    @ManyToMany
-    @JoinTable(name = "application_item",
-            joinColumns = @JoinColumn(name = "application_id"),
-            inverseJoinColumns = @JoinColumn(name = "item_id"))
-    private Set<Item> items;
+    @Column(name = "is_outgoing", nullable = false)
+    private boolean outgoing;
+
+    @OneToMany(mappedBy = "application")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @JsonManagedReference("application")
+    private Set<ApplicationItem> items;
 }
 
