@@ -12,7 +12,9 @@ public enum Permission {
     WAREHOUSES_WRITE("warehouses:write"),
     WAREHOUSES_READ("warehouses:read"),
     DISPATCHING_APPLICATIONS_READ("applications.dispatching:read"),
+    DISPATCHING_APPLICATIONS_WRITE("applications.dispatching:write"),
     ALL_APPLICATIONS_READ("applications.all:read"),
+    ALL_APPLICATIONS_WRITE("applications.all:write"),
     ACCOUNT_READ("account:read"),
     ACCOUNT_WRITE("account:write");
 

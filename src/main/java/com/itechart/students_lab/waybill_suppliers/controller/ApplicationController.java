@@ -2,14 +2,16 @@ package com.itechart.students_lab.waybill_suppliers.controller;
 
 import com.itechart.students_lab.waybill_suppliers.entity.ApplicationStatus;
 import com.itechart.students_lab.waybill_suppliers.entity.dto.ApplicationDto;
-import com.itechart.students_lab.waybill_suppliers.mapper.ApplicationMapper;
-import com.itechart.students_lab.waybill_suppliers.repository.ApplicationRepo;
+import com.itechart.students_lab.waybill_suppliers.service.ApplicationService;
 import lombok.RequiredArgsConstructor;
-import org.mapstruct.factory.Mappers;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,47 +20,61 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 public class ApplicationController {
-    private final ApplicationRepo applicationRepo;
-    private final ApplicationMapper applicationMapper = Mappers.getMapper(ApplicationMapper.class);
-
+    private final ApplicationService applicationService;
 
     @GetMapping("/customer/{customerId}/applications")
     @PreAuthorize("hasAuthority('applications.all:read')")
     List<ApplicationDto> findAllApplications(@PathVariable Long customerId,
-                                          @RequestParam(required = false, defaultValue = "0") int page,
-                                          @RequestParam(required = false, defaultValue = "10") int count) {
-        return applicationMapper.map(applicationRepo.findAllByWarehouseCustomerId(customerId, PageRequest.of(page, count)));
+                                             @RequestParam(required = false, defaultValue = "0") int page,
+                                             @RequestParam(required = false, defaultValue = "10") int count) {
+        return applicationService.findAllApplications(customerId, page, count);
     }
 
-    @GetMapping("/customer/{customerId}/application/{applicationId}")
+    @GetMapping("/customer/{customerId}/application/{applicationNumber}")
     @PreAuthorize("hasAuthority('applications.all:read')")
-    ApplicationDto findApplication(@PathVariable Long customerId, @PathVariable Long applicationId) {
-        return applicationMapper.convertToDto(applicationRepo.findByIdAndWarehouseCustomerId(applicationId, customerId));
+    ApplicationDto findApplication(@PathVariable Long customerId, @PathVariable int applicationNumber) {
+        return applicationService.findApplication(customerId, applicationNumber);
     }
 
     @GetMapping("/customer/{customerId}/applications/{status}")
     @PreAuthorize("hasAuthority('applications.all:read')")
     List<ApplicationDto> findApplicationsByStatus(@PathVariable Long customerId,
-                                          @PathVariable ApplicationStatus status,
-                                          @RequestParam(required = false, defaultValue = "0") int page,
-                                          @RequestParam(required = false, defaultValue = "10") int count){
-        return applicationMapper.map(applicationRepo.findAllByStatusAndWarehouseCustomerId(status, customerId, PageRequest.of(page, count)));
+                                                  @PathVariable ApplicationStatus status,
+                                                  @RequestParam(required = false, defaultValue = "0") int page,
+                                                  @RequestParam(required = false, defaultValue = "10") int count) {
+        return applicationService.findApplicationsByStatus(customerId, status, page, count);
     }
 
     @GetMapping("/customer/{customerId}/applications/outgoing")
     @PreAuthorize("hasAuthority('applications.dispatching:read')")
     List<ApplicationDto> findAllOutgoingApplications(@PathVariable Long customerId,
-                                             @RequestParam(required = false, defaultValue = "0") int page,
-                                             @RequestParam(required = false, defaultValue = "10") int count) {
-        return applicationMapper.map(applicationRepo.findAllByOutgoingIsTrueAndWarehouseCustomerId(customerId, PageRequest.of(page, count)));
+                                                     @RequestParam(required = false, defaultValue = "0") int page,
+                                                     @RequestParam(required = false, defaultValue = "10") int count) {
+        return applicationService.findAllOutgoingApplications(customerId, page, count);
     }
 
     @GetMapping("/customer/{customerId}/applications/outgoing/{status}")
     @PreAuthorize("hasAuthority('applications.dispatching:read')")
     List<ApplicationDto> findOutgoingApplicationsByStatus(@PathVariable Long customerId,
-                                             @PathVariable ApplicationStatus status,
-                                             @RequestParam(required = false, defaultValue = "0") int page,
-                                             @RequestParam(required = false, defaultValue = "10") int count){
-        return applicationMapper.map(applicationRepo.findAllByOutgoingIsTrueAndStatusAndWarehouseCustomerId(status, customerId, PageRequest.of(page, count)));
+                                                          @PathVariable ApplicationStatus status,
+                                                          @RequestParam(required = false, defaultValue = "0") int page,
+                                                          @RequestParam(required = false, defaultValue = "10") int count) {
+        return applicationService.findOutgoingApplicationsByStatus(customerId, status, page, count);
     }
+
+    @PostMapping("/customer/{customerId}/application")
+    @PreAuthorize("hasAnyAuthority('applications.dispatching:write', 'applications.all:write')")
+    ApplicationDto createNewApplication(@PathVariable Long customerId, @RequestBody ApplicationDto applicationDto) {
+        return applicationService.createNewApplication(customerId, applicationDto);
+    }
+
+    @PutMapping("/customer/{customerId}/application/{applicationNumber}")
+    @PreAuthorize("hasAnyAuthority('applications.dispatching:write', 'applications.all:write')")
+    ApplicationDto changeApplicationStatus(@PathVariable Long customerId, @PathVariable int applicationNumber, @RequestParam ApplicationStatus status) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserName = authentication.getName();
+        return applicationService.changeApplicationStatus(currentUserName, customerId, applicationNumber, status);
+    }
+
+
 }

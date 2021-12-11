@@ -1,6 +1,5 @@
 package com.itechart.students_lab.waybill_suppliers.repository;
 
-import com.itechart.students_lab.waybill_suppliers.entity.Customer;
 import com.itechart.students_lab.waybill_suppliers.entity.Employee;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +22,9 @@ public interface EmployeeRepo extends JpaRepository<Employee, Long> {
     Page<Employee> findAllByActiveStatus(@Param("id") Long id, Pageable pageable);
 
     Employee findByLogin(String login);
+
+    @Query("select e.id from Employee e where e.login=:login")
+    Long findIdByLogin(String login);
 
     @Modifying
     @Transactional

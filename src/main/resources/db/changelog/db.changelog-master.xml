@@ -43,4 +43,6 @@
     <include relativeToChangelogFile="true" file="./changeset/alter-application-item-add-count-and-price-columns.xml"/>
     <include relativeToChangelogFile="true" file="./changeset/alter-waybill-change-driver-id-datatype.xml"/>
     <include relativeToChangelogFile="true" file="./changeset/alter-waybill-add-fk-driver-id.xml"/>
+    <include relativeToChangelogFile="true" file="./changeset/add-application-item-unique-constraint.xml"/>
+    <include relativeToChangelogFile="true" file="./changeset/add-warehouse-application-number-unique-constraint.xml"/>
 </databaseChangeLog>

@@ -26,9 +26,9 @@
     <changeSet author="Elmax19" id="alter-application-delivered-column">
         <addColumn tableName="application_item">
             <column afterColumn="price"
-                    name="delivered"
-                    type="boolean"
-                    defaultValue="false">
+                    name="placed_count"
+                    type="int"
+                    defaultValue="0">
                 <constraints nullable="false"/>
             </column>
         </addColumn>

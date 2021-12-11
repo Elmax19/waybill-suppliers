@@ -6,6 +6,7 @@ import javax.validation.constraints.NotBlank;
 
 @Data
 public class AddressDto {
+    private Long id;
     @NotBlank(message = "Address state must not be empty")
     private String state;
     @NotBlank(message = "Address city must not be empty")

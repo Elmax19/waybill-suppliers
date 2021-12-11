@@ -4,7 +4,9 @@ import lombok.Data;
 
 @Data
 public class ApplicationItemDto {
+    private Long id;
     private ItemDto item;
     private int count;
     private double price;
+    private int placedCount;
 }
