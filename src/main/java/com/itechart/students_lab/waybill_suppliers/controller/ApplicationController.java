@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.Min;
 import java.util.List;
 
 @RestController
@@ -32,8 +33,9 @@ public class ApplicationController {
 
     @GetMapping("/customer/{customerId}/application/{applicationNumber}")
     @PreAuthorize("hasAuthority('applications.all:read')")
-    ApplicationDto findApplication(@PathVariable Long customerId, @PathVariable int applicationNumber) {
-        return applicationService.findApplication(customerId, applicationNumber);
+    ApplicationDto findApplication(@PathVariable Long customerId,
+                                   @PathVariable int applicationNumber) {
+        return applicationService.findApplication(applicationNumber, customerId);
     }
 
     @GetMapping("/customer/{customerId}/applications/{status}")
@@ -63,18 +65,30 @@ public class ApplicationController {
     }
 
     @PostMapping("/customer/{customerId}/application")
-    @PreAuthorize("hasAnyAuthority('applications.dispatching:write', 'applications.all:write')")
-    ApplicationDto createNewApplication(@PathVariable Long customerId, @RequestBody ApplicationDto applicationDto) {
+    @PreAuthorize("hasAuthority('applications.all:write')")
+    ApplicationDto createNewApplication(@PathVariable Long customerId,
+                                        @RequestBody ApplicationDto applicationDto) {
         return applicationService.createNewApplication(customerId, applicationDto);
     }
 
     @PutMapping("/customer/{customerId}/application/{applicationNumber}")
     @PreAuthorize("hasAnyAuthority('applications.dispatching:write', 'applications.all:write')")
-    ApplicationDto changeApplicationStatus(@PathVariable Long customerId, @PathVariable int applicationNumber, @RequestParam ApplicationStatus status) {
+    ApplicationDto changeApplicationStatus(@PathVariable Long customerId,
+                                           @PathVariable int applicationNumber,
+                                           @RequestParam ApplicationStatus status) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserName = authentication.getName();
         return applicationService.changeApplicationStatus(currentUserName, customerId, applicationNumber, status);
     }
 
-
+    @PutMapping("/customer/{customerId}/application/{applicationNumber}/placeItem/{applicationItemId}")
+    @PreAuthorize("hasAuthority('applications.all:write')")
+    ApplicationDto acceptApplicationItem(@PathVariable Long customerId,
+                                         @PathVariable int applicationNumber,
+                                         @PathVariable Long applicationItemId,
+                                         @RequestParam int count) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserName = authentication.getName();
+        return applicationService.acceptApplicationItems(currentUserName, customerId, applicationNumber, applicationItemId, count);
+    }
 }
