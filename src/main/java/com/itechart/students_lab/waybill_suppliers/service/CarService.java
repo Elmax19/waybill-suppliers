@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityNotFoundException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -33,24 +34,24 @@ public class CarService {
 
     private final CustomerService customerService;
 
-    public String processSQLIntegrityConstraintViolationException
+    public Optional<String> processSQLIntegrityConstraintViolationException
             (SQLIntegrityConstraintViolationException e) {
         String message = e.getLocalizedMessage();
         if (message.startsWith("Duplicate entry")) {
             String[] tableAndColumn = ExceptionMessageParser.parseSqlDuplicateEntryMessage(message);
             if ("car".equals(tableAndColumn[0])) {
-                return CAR_WITH_NUMBER_EXISTS;
+                return Optional.of(CAR_WITH_NUMBER_EXISTS);
             }
         }
-        return null;
+        return Optional.empty();
     }
 
-    public String processHttpMessageNotReadableException(HttpMessageNotReadableException e) {
+    public Optional<String> processHttpMessageNotReadableException(HttpMessageNotReadableException e) {
         String message = e.getLocalizedMessage();
-        if (message.startsWith("JSON parse error")) {
-            return UNKNOWN_CAR_STATUS;
+        if (message.startsWith("JSON parse error") && message.contains("CarStatus")) {
+            return Optional.of(UNKNOWN_CAR_STATUS);
         }
-        return null;
+        return Optional.empty();
     }
 
     public List<CarDto> findByPage(int page, int size, Long customerId) {
@@ -81,9 +82,7 @@ public class CarService {
     }
 
     @Transactional
-    public void updateCarStatus(Long id, String statusString) {
-        CarStatus status = CarStatus.of(statusString).orElseThrow(
-                () -> new EntityNotFoundException(UNKNOWN_CAR_STATUS + statusString));
+    public void updateCarStatus(Long id, CarStatus status) {
         carRepo.updateCarStatus(id, status);
     }
 

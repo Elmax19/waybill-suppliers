@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -20,16 +19,12 @@ public class CustomerService {
     private final CustomerRepo customerRepo;
 
     public Customer getActiveCustomer(Long id) {
-        Optional<Customer> customer = customerRepo.findById(id);
-        if (customer.isPresent()) {
-            if (customer.get().getActiveStatus() == ActiveStatus.INACTIVE) {
-                throw new ServiceException(HttpStatus.CONFLICT,
-                        String.format(FAILED_GET_CUSTOMER_DEACTIVATED, id));
-            }
-            return customer.get();
-        } else {
-            throw new EntityNotFoundException(
-                    String.format(CUSTOMER_WITH_ID_NOT_FOUND, id));
+        Customer customer = customerRepo.findById(id).orElseThrow(
+                () -> new EntityNotFoundException(String.format(CUSTOMER_WITH_ID_NOT_FOUND, id)));
+        if (customer.getActiveStatus() == ActiveStatus.INACTIVE) {
+            throw new ServiceException(HttpStatus.CONFLICT,
+                    String.format(FAILED_GET_CUSTOMER_DEACTIVATED, id));
         }
+        return customer;
     }
 }

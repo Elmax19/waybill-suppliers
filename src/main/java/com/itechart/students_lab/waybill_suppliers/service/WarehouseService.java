@@ -39,16 +39,16 @@ public class WarehouseService {
     private final WarehouseRepo warehouseRepo;
     private final WarehouseMapper warehouseMapper = Mappers.getMapper(WarehouseMapper.class);
 
-    public String processSQLIntegrityConstraintViolationException
+    public Optional<String> processSQLIntegrityConstraintViolationException
             (SQLIntegrityConstraintViolationException e) {
         String message = e.getLocalizedMessage();
         if (message.startsWith("Duplicate entry")) {
             String[] tableAndColumn = ExceptionMessageParser.parseSqlDuplicateEntryMessage(message);
             if ("warehouse".equals(tableAndColumn[0])) {
-                return WAREHOUSE_WITH_NAME_CUSTOMER_EXISTS;
+                return Optional.of(WAREHOUSE_WITH_NAME_CUSTOMER_EXISTS);
             }
         }
-        return null;
+        return Optional.empty();
     }
 
     public List<WarehouseDto> findByPage(int page, int size, Long customerId) {

@@ -1,5 +1,6 @@
 package com.itechart.students_lab.waybill_suppliers.controller;
 
+import com.itechart.students_lab.waybill_suppliers.entity.CarStatus;
 import com.itechart.students_lab.waybill_suppliers.entity.dto.AddressDto;
 import com.itechart.students_lab.waybill_suppliers.entity.dto.CarDto;
 import com.itechart.students_lab.waybill_suppliers.service.CarService;
@@ -72,7 +73,7 @@ public class CarController {
     void setCarStatus(@Min(value = 1L, message = "Car id must be positive number")
                       @PathVariable Long id,
                       @NotNull(message = "Car status must be specified (s parameter)")
-                      @RequestParam(required = false) String s) {
+                      @RequestParam(required = false) CarStatus s) {
         carService.updateCarStatus(id, s);
     }
 

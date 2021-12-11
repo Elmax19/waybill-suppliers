@@ -23,6 +23,7 @@ import javax.validation.ConstraintViolationException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @ControllerAdvice
@@ -40,15 +41,9 @@ public class RestResponseExceptionHandler {
     @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
     public ResponseEntity<String> handleConstraintViolationException(SQLIntegrityConstraintViolationException e) {
         log.error(e.getLocalizedMessage());
-        String curMsg;
-        String message = (curMsg = warehouseService.processSQLIntegrityConstraintViolationException(e)) != null
-                ? curMsg
-                : (curMsg = carService.processSQLIntegrityConstraintViolationException(e)) != null
-                ? curMsg
-                : null;
-        return new ResponseEntity<>(message == null
-                ? e.getLocalizedMessage()
-                : message, HttpStatus.CONFLICT);
+        Optional<String> message = warehouseService.processSQLIntegrityConstraintViolationException(e)
+                .or(() -> carService.processSQLIntegrityConstraintViolationException(e));
+        return new ResponseEntity<>(message.orElse(e.getLocalizedMessage()), HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(BadRequestException.class)
@@ -102,14 +97,10 @@ public class RestResponseExceptionHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<String> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
         log.error(e.getLocalizedMessage());
-        String curMsg;
-        String message = (curMsg = carService.processHttpMessageNotReadableException(e)) != null
-                ? curMsg
-                : null;
-        return new ResponseEntity<>(message == null
-                ? e.getLocalizedMessage()
-                : message, HttpStatus.BAD_REQUEST);
-  
+        Optional<String> message = carService.processHttpMessageNotReadableException(e);
+        return new ResponseEntity<>(message.orElse(e.getLocalizedMessage()), HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(NoAccessException.class)
     public ResponseEntity<String> handleNoAccessException(NoAccessException e) {
         log.error(e.getLocalizedMessage());
