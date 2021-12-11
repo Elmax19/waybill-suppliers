@@ -1,14 +1,16 @@
 package com.itechart.students_lab.waybill_suppliers.controller;
 
-import com.itechart.students_lab.waybill_suppliers.entity.CarStatus;
+import com.itechart.students_lab.waybill_suppliers.entity.dto.AddressDto;
 import com.itechart.students_lab.waybill_suppliers.entity.dto.CarDto;
 import com.itechart.students_lab.waybill_suppliers.service.CarService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,6 +24,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @RestController
+@Validated
 @RequiredArgsConstructor
 public class CarController {
     private final CarService carService;
@@ -65,25 +68,19 @@ public class CarController {
     }
 
     //@PreAuthorize("hasAuthority('cars:write')")
-    @PostMapping("/cars/status/free")
-    void changeCarsStatusFree(@NotNull(message = "At least one car's id must be specified")
-                              @RequestParam(required = false) List<Long> id) {
-        carService.setCarsStatus(id, CarStatus.FREE);
+    @PatchMapping("/car/{id}/status")
+    void setCarStatus(@Min(value = 1L, message = "Car id must be positive number")
+                      @PathVariable Long id,
+                      @NotNull(message = "Car status must be specified (s parameter)")
+                      @RequestParam(required = false) String s) {
+        carService.updateCarStatus(id, s);
     }
 
     //@PreAuthorize("hasAuthority('cars:write')")
-    @PostMapping("/cars/status/on-way")
-    void changeCarsStatusOnWay(@NotNull(message = "At least one car's id must be specified")
-                               @RequestParam(required = false) List<Long> id) {
-        carService.setCarsStatus(id, CarStatus.ON_WAY);
-    }
-
-    //@PreAuthorize("hasAuthority('cars:write')")
-    @PostMapping("/cars/status/")
-    void changeCarsStatus(@NotNull(message = "At least one car's id must be specified")
-                          @RequestParam(required = false) List<Long> id,
-                          @NotNull(message = "Car status must be specified")
-                          @RequestParam CarStatus status) {
-        carService.setCarsStatus(id, status);
+    @PatchMapping("/car/{id}/address")
+    void setCarLastAddress(@Min(value = 1L, message = "Car id must be positive number")
+                           @PathVariable Long id,
+                           @Valid @RequestBody AddressDto addressDto) {
+        carService.updateCarLastAddress(id, addressDto);
     }
 }

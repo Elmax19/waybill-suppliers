@@ -8,6 +8,7 @@ import com.itechart.students_lab.waybill_suppliers.exception.ServiceException;
 import com.itechart.students_lab.waybill_suppliers.mapper.WarehouseMapper;
 import com.itechart.students_lab.waybill_suppliers.repository.CustomerRepo;
 import com.itechart.students_lab.waybill_suppliers.repository.WarehouseRepo;
+import com.itechart.students_lab.waybill_suppliers.utils.ExceptionMessageParser;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.Example;
@@ -31,8 +32,6 @@ public class WarehouseService {
             = "Failed to create warehouse, because the customer is deactivated";
     private static final String WAREHOUSE_WITH_NAME_CUSTOMER_EXISTS
             = "This customer already has a warehouse with the same name";
-    private static final String WAREHOUSE_WITH_ADDRESS_EXISTS
-            = "Warehouse with such address exists";
     private static final String CUSTOMER_WITH_ID_NOT_FOUND
             = "Customer with id %d not found";
 
@@ -40,20 +39,13 @@ public class WarehouseService {
     private final WarehouseRepo warehouseRepo;
     private final WarehouseMapper warehouseMapper = Mappers.getMapper(WarehouseMapper.class);
 
-    public static String warehouseProcessSQLIntegrityConstraintViolationException
+    public String processSQLIntegrityConstraintViolationException
             (SQLIntegrityConstraintViolationException e) {
         String message = e.getLocalizedMessage();
         if (message.startsWith("Duplicate entry")) {
-            String[] messageDetails = message.split(" ");
-            String columnInTable = messageDetails[messageDetails.length - 1];
-            String[] tableColumnDetails = columnInTable
-                    .substring(1, columnInTable.length() - 1)
-                    .split("\\.");
-            switch (tableColumnDetails[0]) {
-                case "address":
-                    return WAREHOUSE_WITH_ADDRESS_EXISTS;
-                case "warehouse":
-                    return WAREHOUSE_WITH_NAME_CUSTOMER_EXISTS;
+            String[] tableAndColumn = ExceptionMessageParser.parseSqlDuplicateEntryMessage(message);
+            if ("warehouse".equals(tableAndColumn[0])) {
+                return WAREHOUSE_WITH_NAME_CUSTOMER_EXISTS;
             }
         }
         return null;

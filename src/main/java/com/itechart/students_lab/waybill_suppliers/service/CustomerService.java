@@ -24,7 +24,7 @@ public class CustomerService {
         if (customer.isPresent()) {
             if (customer.get().getActiveStatus() == ActiveStatus.INACTIVE) {
                 throw new ServiceException(HttpStatus.CONFLICT,
-                        FAILED_GET_CUSTOMER_DEACTIVATED);
+                        String.format(FAILED_GET_CUSTOMER_DEACTIVATED, id));
             }
             return customer.get();
         } else {

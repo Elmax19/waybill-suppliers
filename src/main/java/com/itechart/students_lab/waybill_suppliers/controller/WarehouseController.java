@@ -51,14 +51,14 @@ public class WarehouseController {
                 : new ResponseEntity<>(warehouse, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('warehouses:write')")
+    //@PreAuthorize("hasAuthority('warehouses:write')")
     @PostMapping("/warehouse")
     @ResponseStatus(code = HttpStatus.CREATED)
     WarehouseDto create(@Valid @RequestBody WarehouseDto warehouseDto) {
         return warehouseService.create(warehouseDto);
     }
 
-    @PreAuthorize("hasAuthority('warehouses:write')")
+    //@PreAuthorize("hasAuthority('warehouses:write')")
     @DeleteMapping("/warehouses")
     void removeWarehouses(@NotNull(message = "At least one warehouse's id must be specified")
                           @RequestParam(required = false) List<Long> id) {

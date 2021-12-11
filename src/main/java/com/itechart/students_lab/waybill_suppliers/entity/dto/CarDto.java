@@ -15,12 +15,13 @@ public class CarDto {
     @NotBlank(message = "Car number must not be empty")
     private String carNumber;
     @Valid
-    @NotNull(message = "Car last location must not be null")
+    @NotNull(message = "Car last location must be specified")
     private AddressDto lastAddress;
-    @NotNull(message = "Car total capacity must be specified")
     @Min(value = 0, message = "Car total capacity must be positive number")
+    @NotNull(message = "Car total capacity must be specified")
     private Integer totalCapacity;
-    private CarStatus status = CarStatus.FREE;
+    @NotNull(message = "Car status must be specified")
+    private CarStatus status;
     @Min(value = 1L, message = "Car customer id must be positive number")
     private Long customerId;
 }
