@@ -29,7 +29,7 @@ import java.util.List;
 public class CarController {
     private final CarService carService;
 
-    //@PreAuthorize("hasAuthority('cars:read')")
+    @PreAuthorize("hasAuthority('cars:read')")
     @GetMapping("/customer/{id}/cars")
     ResponseEntity<List<CarDto>> getByPage(
             @Min(value = 1L, message = "Customer id must be positive number")
@@ -42,7 +42,7 @@ public class CarController {
                 : new ResponseEntity<>(cars, HttpStatus.OK);
     }
 
-    //@PreAuthorize("hasAuthority('cars:read')")
+    @PreAuthorize("hasAuthority('cars:read')")
     @GetMapping("/car/{id}")
     ResponseEntity<CarDto> getById(@Min(value = 1L,
             message = "Car id must be positive number")
@@ -53,21 +53,21 @@ public class CarController {
                 : new ResponseEntity<>(car, HttpStatus.OK);
     }
 
-    //@PreAuthorize("hasAuthority('cars:write')")
+    @PreAuthorize("hasAuthority('cars:write')")
     @PostMapping("/car")
     @ResponseStatus(code = HttpStatus.CREATED)
     CarDto create(@Valid @RequestBody CarDto carDto) {
         return carService.create(carDto);
     }
 
-    //@PreAuthorize("hasAuthority('cars:write')")
+    @PreAuthorize("hasAuthority('cars:write')")
     @DeleteMapping("/cars")
     void removeWarehouses(@NotNull(message = "At least one car's id must be specified")
                           @RequestParam(required = false) List<Long> id) {
         carService.deleteByIdIn(id);
     }
 
-    //@PreAuthorize("hasAuthority('cars:write')")
+    @PreAuthorize("hasAuthority('cars:write')")
     @PatchMapping("/car/{id}/status")
     void setCarStatus(@Min(value = 1L, message = "Car id must be positive number")
                       @PathVariable Long id,
@@ -76,7 +76,7 @@ public class CarController {
         carService.updateCarStatus(id, s);
     }
 
-    //@PreAuthorize("hasAuthority('cars:write')")
+    @PreAuthorize("hasAuthority('cars:write')")
     @PatchMapping("/car/{id}/address")
     void setCarLastAddress(@Min(value = 1L, message = "Car id must be positive number")
                            @PathVariable Long id,

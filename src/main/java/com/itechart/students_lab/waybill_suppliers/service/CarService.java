@@ -7,14 +7,12 @@ import com.itechart.students_lab.waybill_suppliers.entity.Customer;
 import com.itechart.students_lab.waybill_suppliers.entity.dto.AddressDto;
 import com.itechart.students_lab.waybill_suppliers.entity.dto.CarDto;
 import com.itechart.students_lab.waybill_suppliers.mapper.CarMapper;
-import com.itechart.students_lab.waybill_suppliers.repository.AddressRepo;
 import com.itechart.students_lab.waybill_suppliers.repository.CarRepo;
 import com.itechart.students_lab.waybill_suppliers.utils.ExceptionMessageParser;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +32,6 @@ public class CarService {
     private final CarMapper carMapper = Mappers.getMapper(CarMapper.class);
 
     private final CustomerService customerService;
-    private final AddressRepo addressRepo;
 
     public String processSQLIntegrityConstraintViolationException
             (SQLIntegrityConstraintViolationException e) {
