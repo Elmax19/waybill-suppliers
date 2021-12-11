@@ -2,6 +2,7 @@ package com.itechart.students_lab.waybill_suppliers.exception.handler;
 
 import com.itechart.students_lab.waybill_suppliers.exception.AccountNotMatchException;
 import com.itechart.students_lab.waybill_suppliers.exception.BadRequestException;
+import com.itechart.students_lab.waybill_suppliers.exception.NoAccessException;
 import com.itechart.students_lab.waybill_suppliers.exception.NotFoundException;
 import com.itechart.students_lab.waybill_suppliers.exception.ServiceException;
 import com.itechart.students_lab.waybill_suppliers.service.CarService;
@@ -108,6 +109,11 @@ public class RestResponseExceptionHandler {
         return new ResponseEntity<>(message == null
                 ? e.getLocalizedMessage()
                 : message, HttpStatus.BAD_REQUEST);
+  
+    @ExceptionHandler(NoAccessException.class)
+    public ResponseEntity<String> handleNoAccessException(NoAccessException e) {
+        log.error(e.getLocalizedMessage());
+        return new ResponseEntity<>(e.getLocalizedMessage(), e.getStatusCode());
     }
 
     @ExceptionHandler(AccountNotMatchException.class)
