@@ -11,6 +11,8 @@ public enum Permission {
     EMPLOYEES_WRITE("employees:write"),
     WAREHOUSES_WRITE("warehouses:write"),
     WAREHOUSES_READ("warehouses:read"),
+    CARS_WRITE("cars:write"),
+    CARS_READ("cars:read"),
     DISPATCHING_APPLICATIONS_READ("applications.dispatching:read"),
     DISPATCHING_APPLICATIONS_WRITE("applications.dispatching:write"),
     ALL_APPLICATIONS_READ("applications.all:read"),
