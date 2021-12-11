@@ -4,7 +4,6 @@ import com.itechart.students_lab.waybill_suppliers.exception.AccountNotMatchExce
 import com.itechart.students_lab.waybill_suppliers.exception.BadRequestException;
 import com.itechart.students_lab.waybill_suppliers.exception.NotFoundException;
 import com.itechart.students_lab.waybill_suppliers.exception.ServiceException;
-import com.itechart.students_lab.waybill_suppliers.service.AddressService;
 import com.itechart.students_lab.waybill_suppliers.service.CarService;
 import com.itechart.students_lab.waybill_suppliers.service.WarehouseService;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +27,6 @@ import java.util.Map;
 @ControllerAdvice
 @RequiredArgsConstructor
 public class RestResponseExceptionHandler {
-    private final AddressService addressService;
     private final WarehouseService warehouseService;
     private final CarService carService;
 
@@ -42,9 +40,7 @@ public class RestResponseExceptionHandler {
     public ResponseEntity<String> handleConstraintViolationException(SQLIntegrityConstraintViolationException e) {
         log.error(e.getLocalizedMessage());
         String curMsg;
-        String message = (curMsg = addressService.processSQLIntegrityConstraintViolationException(e)) != null
-                ? curMsg
-                : (curMsg = warehouseService.processSQLIntegrityConstraintViolationException(e)) != null
+        String message = (curMsg = warehouseService.processSQLIntegrityConstraintViolationException(e)) != null
                 ? curMsg
                 : (curMsg = carService.processSQLIntegrityConstraintViolationException(e)) != null
                 ? curMsg
