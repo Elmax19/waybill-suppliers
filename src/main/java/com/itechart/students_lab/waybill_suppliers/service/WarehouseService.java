@@ -67,18 +67,20 @@ public class WarehouseService {
         Customer customer = customerService.getActiveCustomer(warehouseDto.getCustomerId());
 
         Address address = warehouse.getAddress();
-        if (!warehouseRepo.findByAddress(
-                address.getState(),
-                address.getCity(),
-                address.getFirstAddressLine(),
-                address.getSecondAddressLine()
-        ).isEmpty()) {
-            throw new EntityExistsException(WAREHOUSE_WITH_ADDRESS_EXISTS + address);
-        }
+        synchronized (this) {
+            if (!warehouseRepo.findByAddress(
+                    address.getState(),
+                    address.getCity(),
+                    address.getFirstAddressLine(),
+                    address.getSecondAddressLine()
+            ).isEmpty()) {
+                throw new EntityExistsException(WAREHOUSE_WITH_ADDRESS_EXISTS + address);
+            }
 
-        warehouse.setCustomer(customer);
-        warehouse.setAvailableCapacity(warehouse.getTotalCapacity());
-        warehouse = warehouseRepo.save(warehouse);
+            warehouse.setCustomer(customer);
+            warehouse.setAvailableCapacity(warehouse.getTotalCapacity());
+            warehouse = warehouseRepo.save(warehouse);
+        }
         return warehouseMapper.warehouseToWarehouseDto(warehouse);
     }
 
