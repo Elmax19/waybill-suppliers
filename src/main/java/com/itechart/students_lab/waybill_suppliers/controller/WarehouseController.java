@@ -47,7 +47,7 @@ public class WarehouseController {
                                          @PathVariable Long id) {
         WarehouseDto warehouse = warehouseService.findById(id);
         return warehouse == null
-                ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
+                ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
                 : new ResponseEntity<>(warehouse, HttpStatus.OK);
     }
 

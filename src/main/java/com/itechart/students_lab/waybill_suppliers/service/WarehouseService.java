@@ -1,12 +1,10 @@
 package com.itechart.students_lab.waybill_suppliers.service;
 
-import com.itechart.students_lab.waybill_suppliers.entity.ActiveStatus;
+import com.itechart.students_lab.waybill_suppliers.entity.Address;
 import com.itechart.students_lab.waybill_suppliers.entity.Customer;
 import com.itechart.students_lab.waybill_suppliers.entity.Warehouse;
 import com.itechart.students_lab.waybill_suppliers.entity.dto.WarehouseDto;
-import com.itechart.students_lab.waybill_suppliers.exception.ServiceException;
 import com.itechart.students_lab.waybill_suppliers.mapper.WarehouseMapper;
-import com.itechart.students_lab.waybill_suppliers.repository.CustomerRepo;
 import com.itechart.students_lab.waybill_suppliers.repository.WarehouseRepo;
 import com.itechart.students_lab.waybill_suppliers.utils.ExceptionMessageParser;
 import lombok.RequiredArgsConstructor;
@@ -14,10 +12,10 @@ import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
@@ -28,16 +26,15 @@ import java.util.Optional;
 public class WarehouseService {
     private static final String WAREHOUSE_WITH_ID_NOT_FOUND
             = "Warehouse with id %d not found";
-    private static final String FAILED_CREATE_WAREHOUSE_CUSTOMER_DEACTIVATED
-            = "Failed to create warehouse, because the customer is deactivated";
     private static final String WAREHOUSE_WITH_NAME_CUSTOMER_EXISTS
             = "This customer already has a warehouse with the same name";
-    private static final String CUSTOMER_WITH_ID_NOT_FOUND
-            = "Customer with id %d not found";
+    private static final String WAREHOUSE_WITH_ADDRESS_EXISTS
+            = "Warehouse with such address exists: ";
 
-    private final CustomerRepo customerRepo;
     private final WarehouseRepo warehouseRepo;
     private final WarehouseMapper warehouseMapper = Mappers.getMapper(WarehouseMapper.class);
+
+    private final CustomerService customerService;
 
     public Optional<String> processSQLIntegrityConstraintViolationException
             (SQLIntegrityConstraintViolationException e) {
@@ -67,17 +64,19 @@ public class WarehouseService {
 
     public WarehouseDto create(WarehouseDto warehouseDto) {
         Warehouse warehouse = warehouseMapper.warehouseDtoToWarehouse(warehouseDto);
-        Optional<Customer> customer = customerRepo.findById(warehouseDto.getCustomerId());
-        if (customer.isPresent()) {
-            if (customer.get().getActiveStatus() == ActiveStatus.INACTIVE) {
-                throw new ServiceException(HttpStatus.CONFLICT,
-                        FAILED_CREATE_WAREHOUSE_CUSTOMER_DEACTIVATED);
-            }
-            warehouse.setCustomer(customer.get());
-        } else {
-            throw new EntityNotFoundException(
-                    String.format(CUSTOMER_WITH_ID_NOT_FOUND, warehouseDto.getCustomerId()));
+        Customer customer = customerService.getActiveCustomer(warehouseDto.getCustomerId());
+
+        Address address = warehouse.getAddress();
+        if (!warehouseRepo.findByAddress(
+                address.getState(),
+                address.getCity(),
+                address.getFirstAddressLine(),
+                address.getSecondAddressLine()
+        ).isEmpty()) {
+            throw new EntityExistsException(WAREHOUSE_WITH_ADDRESS_EXISTS + address);
         }
+
+        warehouse.setCustomer(customer);
         warehouse.setAvailableCapacity(warehouse.getTotalCapacity());
         warehouse = warehouseRepo.save(warehouse);
         return warehouseMapper.warehouseToWarehouseDto(warehouse);

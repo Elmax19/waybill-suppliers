@@ -11,18 +11,24 @@ import javax.validation.constraints.NotNull;
 public class WarehouseDto {
     @Min(value = 1L, message = "Warehouse id must be positive number")
     private Long id;
+
     @NotBlank(message = "Warehouse name must not be empty")
     private String name;
+
     @Valid
     @NotNull(message = "Warehouse address must not be null")
     private AddressDto address;
+
     @NotBlank(message = "Warehouse type must not be empty")
     private String type;
+
     @NotNull(message = "Warehouse total capacity must be specified")
     @Min(value = 0, message = "Warehouse total capacity must be positive number")
     private Integer totalCapacity;
+
     @Min(value = 0, message = "Warehouse available capacity must be positive number")
     private Integer availableCapacity;
+
     @Min(value = 1L, message = "Warehouse customer id must be positive number")
     private Long customerId;
 }
