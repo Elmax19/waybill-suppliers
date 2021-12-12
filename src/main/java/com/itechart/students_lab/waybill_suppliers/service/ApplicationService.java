@@ -60,7 +60,7 @@ public class ApplicationService {
     public ApplicationDto createNewApplication(Long customerId, ApplicationDto applicationDto) {
         Application newApplication = applicationMapper.convertToEntity(applicationDto);
         Address address = newApplication.getDestinationAddress();
-        addressRepo.saveOrUpdate(address.getId(), address.getState(), address.getCity(), address.getFirstAddressLine(), address.getSecondAddressLine());
+        addressRepo.save(address);
         newApplication.setWarehouse(warehouseRepo.findById(applicationDto.getWarehouseId()).orElseThrow(
                 () -> new NotFoundException("No such Warehouse with Id: " + applicationDto.getWarehouseId())));
         if (!newApplication.getWarehouse().getCustomer().getId().equals(customerId)) {
