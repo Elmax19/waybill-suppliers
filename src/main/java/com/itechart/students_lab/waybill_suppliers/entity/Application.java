@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -28,7 +29,7 @@ public class Application extends BaseEntity {
     @Column(name = "number", nullable = false)
     private int number;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "warehouse_id", referencedColumnName = "id")
     private Warehouse warehouse;
 

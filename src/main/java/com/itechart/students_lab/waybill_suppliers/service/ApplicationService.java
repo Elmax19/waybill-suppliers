@@ -66,10 +66,6 @@ public class ApplicationService {
         if (!newApplication.getWarehouse().getCustomer().getId().equals(customerId)) {
             throw new BadRequestException("Incorrect customer: " + customerId);
         }
-        newApplication.setCreatingUser(employeeRepo.findById(applicationDto.getCreatingUserId()).orElseThrow(
-                () -> new NotFoundException("No such User with Id: " + applicationDto.getUpdatingUserId())));
-        newApplication.setUpdatingUser(employeeRepo.findById(applicationDto.getCreatingUserId()).orElseThrow(
-                () -> new NotFoundException("No such User with Id: " + applicationDto.getUpdatingUserId())));
         for (ApplicationItem applicationItem : newApplication.getItems()) {
             applicationItem.setApplication(newApplication);
         }
