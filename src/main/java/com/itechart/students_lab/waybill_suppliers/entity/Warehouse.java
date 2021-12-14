@@ -23,7 +23,7 @@ public class Warehouse extends BaseEntity {
     @Column(name = "w_name", nullable = false)
     private String name;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "address_id", nullable = false, referencedColumnName = "id")
     private Address address;
 
