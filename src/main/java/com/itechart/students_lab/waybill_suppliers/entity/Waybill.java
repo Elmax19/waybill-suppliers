@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Entity
 @Data
 @NoArgsConstructor
-public class Waybill extends BaseEntity{
+public class Waybill extends BaseEntity {
 
     @Column(name = "number")
     private Integer number;
