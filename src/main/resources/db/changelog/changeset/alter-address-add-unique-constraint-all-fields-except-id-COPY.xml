@@ -1,0 +1,13 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="alter-address-add-unique-constraint-all-fields-except-id-COPY"
+               author="anto-belo">
+        <addUniqueConstraint columnNames="state, city, address_line_1, address_line_2"
+                             tableName="address"
+                             constraintName="unique-state-city-al1-al2"/>
+    </changeSet>
+</databaseChangeLog>

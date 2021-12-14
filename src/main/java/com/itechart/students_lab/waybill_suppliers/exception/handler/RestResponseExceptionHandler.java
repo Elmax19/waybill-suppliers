@@ -5,6 +5,7 @@ import com.itechart.students_lab.waybill_suppliers.exception.BadRequestException
 import com.itechart.students_lab.waybill_suppliers.exception.NoAccessException;
 import com.itechart.students_lab.waybill_suppliers.exception.NotFoundException;
 import com.itechart.students_lab.waybill_suppliers.exception.ServiceException;
+import com.itechart.students_lab.waybill_suppliers.service.AddressService;
 import com.itechart.students_lab.waybill_suppliers.service.CarService;
 import com.itechart.students_lab.waybill_suppliers.service.WarehouseService;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,7 @@ import java.util.Optional;
 @ControllerAdvice
 @RequiredArgsConstructor
 public class RestResponseExceptionHandler {
+    private final AddressService addressService;
     private final WarehouseService warehouseService;
     private final CarService carService;
 
@@ -41,7 +43,8 @@ public class RestResponseExceptionHandler {
     @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
     public ResponseEntity<String> handleConstraintViolationException(SQLIntegrityConstraintViolationException e) {
         log.error(e.getLocalizedMessage());
-        Optional<String> message = warehouseService.processSQLIntegrityConstraintViolationException(e)
+        Optional<String> message = addressService.processSQLIntegrityConstraintViolationException(e)
+                .or(() -> warehouseService.processSQLIntegrityConstraintViolationException(e))
                 .or(() -> carService.processSQLIntegrityConstraintViolationException(e));
         return new ResponseEntity<>(message.orElse(e.getLocalizedMessage()), HttpStatus.CONFLICT);
     }
