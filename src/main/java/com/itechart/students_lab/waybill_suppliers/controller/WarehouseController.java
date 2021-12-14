@@ -25,6 +25,9 @@ import java.util.List;
 @RestController
 @Validated
 public class WarehouseController {
+    private static final String FAILED_DELETE_EMPTY_NOT_EXIST_WAREHOUSES
+            = "Failed to delete %d out of %d warehouses, because they're not empty or don't exist";
+
     private final WarehouseService warehouseService;
 
     @PreAuthorize("hasAuthority('warehouses:read')")
@@ -60,8 +63,14 @@ public class WarehouseController {
 
     @PreAuthorize("hasAuthority('warehouses:write')")
     @DeleteMapping("/warehouses")
-    void removeWarehouses(@NotNull(message = "At least one warehouse's id must be specified")
-                          @RequestParam(required = false) List<Long> id) {
-        warehouseService.deleteByIdIn(id);
+    String removeEmptyWarehouses(@NotNull(message = "At least one warehouse's id must be specified")
+                            @RequestParam(required = false) List<Long> id) {
+        int deletedAmount = warehouseService.deleteEmptyByIdIn(id);
+        int allAmount = id.size();
+        if (deletedAmount != allAmount) {
+            return String.format(FAILED_DELETE_EMPTY_NOT_EXIST_WAREHOUSES,
+                    allAmount - deletedAmount, allAmount);
+        }
+        return "";
     }
 }
