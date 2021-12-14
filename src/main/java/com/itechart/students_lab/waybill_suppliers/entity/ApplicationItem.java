@@ -1,6 +1,7 @@
 package com.itechart.students_lab.waybill_suppliers.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +15,7 @@ import javax.persistence.Table;
 @Table(name = "application_item")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class ApplicationItem extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "application_id", nullable = false)
@@ -29,4 +31,7 @@ public class ApplicationItem extends BaseEntity {
 
     @Column(name = "price", nullable = false)
     private double price;
+
+    @Column(name = "placed_count", nullable = false)
+    private int placedCount;
 }

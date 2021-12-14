@@ -21,4 +21,8 @@ public interface WarehouseItemRepo extends JpaRepository<WarehouseItem, Long> {
     void save(Long warehouseId, Long itemId, int count, String status);
 
     List<WarehouseItem> findAllByWarehouseId(Long id, Pageable pageable);
+
+    @Modifying
+    @Query(value = "update warehouse_item set count=count+?3 where warehouse_id=?1 and item_id=?2", nativeQuery = true)
+    void updateWarehouseItemCount(Long warehouseId, Long itemId, int count);
 }
