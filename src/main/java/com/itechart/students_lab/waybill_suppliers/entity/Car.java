@@ -23,7 +23,7 @@ public class Car extends BaseEntity {
     @Column(name = "car_number", nullable = false)
     private String carNumber;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "last_address_id", referencedColumnName = "id", nullable = false)
     private Address lastAddress;
 

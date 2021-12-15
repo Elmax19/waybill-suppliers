@@ -1,11 +1,13 @@
 package com.itechart.students_lab.waybill_suppliers.service;
 
+import com.itechart.students_lab.waybill_suppliers.entity.ActiveStatus;
 import com.itechart.students_lab.waybill_suppliers.entity.Address;
 import com.itechart.students_lab.waybill_suppliers.entity.Car;
 import com.itechart.students_lab.waybill_suppliers.entity.CarStatus;
 import com.itechart.students_lab.waybill_suppliers.entity.Customer;
 import com.itechart.students_lab.waybill_suppliers.entity.dto.AddressDto;
 import com.itechart.students_lab.waybill_suppliers.entity.dto.CarDto;
+import com.itechart.students_lab.waybill_suppliers.exception.ServiceException;
 import com.itechart.students_lab.waybill_suppliers.mapper.CarMapper;
 import com.itechart.students_lab.waybill_suppliers.repository.CarRepo;
 import com.itechart.students_lab.waybill_suppliers.utils.ExceptionMessageParser;
@@ -13,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,11 +31,13 @@ public class CarService {
     private static final String CAR_WITH_ID_NOT_FOUND = "Car with id %d not found";
     private static final String CAR_WITH_NUMBER_EXISTS = "Car with such number exists";
     private static final String UNKNOWN_CAR_STATUS = "Unknown car status ";
+    private static final String CAR_CUSTOMER_DEACTIVATED = "Car's customer is deactivated";
 
     private final CarRepo carRepo;
     private final CarMapper carMapper = Mappers.getMapper(CarMapper.class);
 
     private final CustomerService customerService;
+    private final AddressService addressService;
 
     public Optional<String> processSQLIntegrityConstraintViolationException
             (SQLIntegrityConstraintViolationException e) {
@@ -70,8 +75,14 @@ public class CarService {
 
     public CarDto create(CarDto carDto) {
         Car car = carMapper.carDtoToCar(carDto);
+
         Customer customer = customerService.getActiveCustomer(carDto.getCustomerId());
         car.setCustomer(customer);
+
+        Address address = car.getLastAddress();
+        address = addressService.find(address).orElse(address);
+        car.setLastAddress(address);
+
         car = carRepo.save(car);
         return carMapper.carToCarDto(car);
     }
@@ -81,15 +92,28 @@ public class CarService {
         carRepo.deleteByIdIn(ids);
     }
 
-    @Transactional
     public void updateCarStatus(Long id, CarStatus status) {
-        carRepo.updateCarStatus(id, status);
+        Car car = getActiveCustomerCar(id);
+        car.setStatus(status);
+        carRepo.save(car);
     }
 
-    @Transactional
     public void updateCarLastAddress(Long id, AddressDto addressDto) {
+        Car car = getActiveCustomerCar(id);
+
         Address address = carMapper.addressDtoToAddress(addressDto);
-        carRepo.updateCarLastAddress(id, address.getState(), address.getCity(),
-                address.getFirstAddressLine(), address.getSecondAddressLine());
+        address = addressService.find(address).orElse(address);
+        car.setLastAddress(address);
+
+        carRepo.save(car);
+    }
+
+    public Car getActiveCustomerCar(Long id) {
+        Car car = carRepo.findById(id).orElseThrow(
+                () -> new EntityNotFoundException(String.format(CAR_WITH_ID_NOT_FOUND, id)));
+        if (car.getCustomer().getActiveStatus() == ActiveStatus.INACTIVE) {
+            throw new ServiceException(HttpStatus.CONFLICT, CAR_CUSTOMER_DEACTIVATED);
+        }
+        return car;
     }
 }
