@@ -74,7 +74,7 @@ public class WarehouseService {
         warehouse.setCustomer(customer);
 
         Address address = warehouse.getAddress();
-        address = addressService.findByAddress(address).orElse(address);
+        address = addressService.find(address).orElse(address);
         warehouse.setAddress(address);
 
         warehouse = warehouseRepo.save(warehouse);

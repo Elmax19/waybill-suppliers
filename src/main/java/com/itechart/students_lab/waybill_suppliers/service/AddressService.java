@@ -28,7 +28,7 @@ public class AddressService {
         return Optional.empty();
     }
 
-    public Optional<Address> findByAddress(Address address) {
+    public Optional<Address> find(Address address) {
         return addressRepo.findByStateAndCityAndFirstAddressLineAndSecondAddressLine(
                 address.getState(),
                 address.getCity(),
