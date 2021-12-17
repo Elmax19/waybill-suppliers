@@ -49,4 +49,5 @@
     <include relativeToChangelogFile="true" file="./changeset/alter-car-add-not-null-constraint-last-address-id.xml"/>
     <include relativeToChangelogFile="true" file="./changeset/alter-car-add-customer_id.xml"/>
     <include relativeToChangelogFile="true" file="./changeset/alter-address-remove-unique-constraint-all-fields-except-id.xml"/>
+    <include relativeToChangelogFile="true" file="./changeset/alter-write-off-add-columns.xml"/>
 </databaseChangeLog>

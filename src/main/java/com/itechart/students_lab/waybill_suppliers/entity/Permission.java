@@ -18,7 +18,10 @@ public enum Permission {
     ALL_APPLICATIONS_READ("applications.all:read"),
     ALL_APPLICATIONS_WRITE("applications.all:write"),
     ACCOUNT_READ("account:read"),
-    ACCOUNT_WRITE("account:write");
+    ACCOUNT_WRITE("account:write"),
+    WRITE_OFF_READ_ALL("writeOff:read"),
+    WRITE_OFF_READ_BY_WAREHOUSE("warehouseWriteOff:read"),
+    WRITE_OFF_READ_BY_DRIVER("driverWriteOff:read");
 
     private final String permission;
 

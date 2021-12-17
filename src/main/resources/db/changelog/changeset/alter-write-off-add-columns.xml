@@ -1,0 +1,33 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet author="Elmax19" id="alter-write-off-add-columns">
+        <addColumn tableName="write_off">
+            <column name="creating_user_id"
+                    type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="warehouse_id"
+                    type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Elmax19" id="alter-writ-off-add-foreign">
+        <addForeignKeyConstraint baseTableName="write_off"
+                                 baseColumnNames="creating_user_id"
+                                 constraintName="fk_write_off_user_id"
+                                 referencedTableName="user"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint baseTableName="write_off"
+                                 baseColumnNames="warehouse_id"
+                                 constraintName="fk_write_off_warehouse_id"
+                                 referencedTableName="warehouse"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+</databaseChangeLog>

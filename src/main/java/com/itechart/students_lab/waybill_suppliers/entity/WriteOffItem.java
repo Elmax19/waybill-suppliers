@@ -1,5 +1,6 @@
 package com.itechart.students_lab.waybill_suppliers.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,7 +11,7 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 public class WriteOffItem extends BaseEntity {
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     private Item item;
 
     @Column(name = "amount", nullable = false)
@@ -22,5 +23,6 @@ public class WriteOffItem extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "write_off_id", nullable = false)
+    @JsonBackReference("writeOff")
     private WriteOff writeOff;
 }
