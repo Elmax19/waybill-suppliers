@@ -17,6 +17,14 @@
         </addColumn>
     </changeSet>
 
+    <changeSet author="Elmax19" id="alter-write-off-add-car-id-column">
+        <addColumn tableName="write_off">
+            <column name="car_id"
+                    type="bigint">
+            </column>
+        </addColumn>
+    </changeSet>
+
     <changeSet author="Elmax19" id="alter-writ-off-add-foreign">
         <addForeignKeyConstraint baseTableName="write_off"
                                  baseColumnNames="creating_user_id"
@@ -28,6 +36,14 @@
                                  baseColumnNames="warehouse_id"
                                  constraintName="fk_write_off_warehouse_id"
                                  referencedTableName="warehouse"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet author="Elmax19" id="alter-writ-off-add-car-table-foreign">
+        <addForeignKeyConstraint baseTableName="write_off"
+                                 baseColumnNames="car_id"
+                                 constraintName="fk_write_off_car_id"
+                                 referencedTableName="car"
                                  referencedColumnNames="id"/>
     </changeSet>
 </databaseChangeLog>

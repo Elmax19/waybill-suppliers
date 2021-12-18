@@ -11,4 +11,5 @@ public class WriteOffDto {
     private Set<WriteOffItemDto> writeOffItems;
     private Long creatingUserId;
     private Long warehouseId;
+    private Long carId;
 }

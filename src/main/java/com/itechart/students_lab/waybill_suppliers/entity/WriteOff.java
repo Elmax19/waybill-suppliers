@@ -30,7 +30,10 @@ public class WriteOff extends BaseEntity {
     private Employee creatingUser;
 
     @ManyToOne
-
     @JoinColumn(name = "warehouse_id")
     private Warehouse warehouse;
+
+    @ManyToOne
+    @JoinColumn(name = "car_id")
+    private Car car;
 }

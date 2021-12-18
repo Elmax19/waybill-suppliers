@@ -29,7 +29,7 @@ public class WriteOffController {
     @GetMapping("/customer/{customerId}/writeOffs")
     @PreAuthorize("hasAuthority('writeOff:read')")
     List<WriteOffDto> findAllWriteOffs(@PathVariable Long customerId){
-        return writeOffMapper.map(writeOffRepo.findAllByWarehouseCustomerIdOrderByDateTime(customerId));
+        return writeOffMapper.map(writeOffRepo.findAllByWarehouseCustomerIdOrCarCustomerIdOrderByDateTime(customerId));
     }
 
     @GetMapping("/customer/{customerId}/writeOffs/warehouse/{warehouseId}")
@@ -50,6 +50,6 @@ public class WriteOffController {
         if(!driver.getLogin().equals(auth.getName())){
             throw new BadRequestException("Input driverId isn't your");
         }
-        return writeOffMapper.map(writeOffRepo.findAllByWarehouseCustomerIdAndCreatingUserIdOrderByDateTime(customerId, driverId));
+        return writeOffMapper.map(writeOffRepo.findAllByCarCustomerIdAndCreatingUserIdOrderByDateTime(customerId, driverId));
     }
 }

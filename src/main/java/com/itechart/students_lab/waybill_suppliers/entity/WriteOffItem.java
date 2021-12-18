@@ -12,6 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class WriteOffItem extends BaseEntity {
     @OneToOne
+    @JoinColumn(name = "item_id", nullable = false)
     private Item item;
 
     @Column(name = "amount", nullable = false)
