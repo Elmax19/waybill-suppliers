@@ -4,7 +4,12 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 @Data
@@ -20,4 +25,7 @@ public class Employee extends User {
     @JsonBackReference("customer")
     private Customer customer;
 
+    public Employee(Long id) {
+        super(id);
+    }
 }

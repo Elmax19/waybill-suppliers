@@ -58,4 +58,5 @@
     <include relativeToChangelogFile="true" file="./changeset/alter-car-table-add-available-capacity-column.xml"/>
     <include relativeToChangelogFile="true" file="./changeset/alter-write-off-make-id-autoincrement.xml"/>
     <include relativeToChangelogFile="true" file="./changeset/alter-item-add-customer-id-column.xml"/>
+    <include relativeToChangelogFile="true" file="./changeset/alter-waybill-replace-source_address_id-with-warehouse_id.xml"/>
 </databaseChangeLog>

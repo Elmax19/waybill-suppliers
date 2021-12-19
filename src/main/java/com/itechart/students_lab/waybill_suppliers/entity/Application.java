@@ -55,6 +55,10 @@ public class Application extends BaseEntity {
     @Column(name = "status", nullable = false)
     private ApplicationStatus status;
 
+    @ManyToOne
+    @JoinColumn(name = "waybill_id", referencedColumnName = "id")
+    private Waybill waybill;
+
     @Column(name = "is_outgoing", nullable = false)
     private boolean outgoing;
 
