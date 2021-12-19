@@ -55,4 +55,5 @@
     <include relativeToChangelogFile="true" file="./changeset/alter-address-add-unique-constraint-all-fields-except-id-COPY.xml"/>
     <include relativeToChangelogFile="true" file="./changeset/alter-warehouse_item-add-on-delete-warehouse_id-cascade.xml"/>
     <include relativeToChangelogFile="true" file="./changeset/alter-warehouse-remove-pair-unique-constraints-with-address_id.xml"/>
+    <include relativeToChangelogFile="true" file="./changeset/alter-item-add-customer-id-column.xml"/>
 </databaseChangeLog>
