@@ -11,12 +11,13 @@ public enum UserRole {
             Permission.EMPLOYEES_READ, Permission.EMPLOYEES_WRITE,
             Permission.WAREHOUSES_WRITE, Permission.WAREHOUSES_READ,
             Permission.CARS_WRITE, Permission.CARS_READ)),
-    ROLE_DRIVER(Set.of(Permission.ACCOUNT_READ, Permission.ACCOUNT_WRITE, Permission.WRITE_OFF_READ_BY_DRIVER)),
+    ROLE_DRIVER(Set.of(Permission.ACCOUNT_READ, Permission.ACCOUNT_WRITE, Permission.WRITE_OFF_READ_BY_DRIVER, Permission.WRITE_OFF_WRITE)),
     ROLE_LOGISTICS_SPECIALIST(Set.of(Permission.DISPATCHING_APPLICATIONS_READ, Permission.DISPATCHING_APPLICATIONS_WRITE,
             Permission.ACCOUNT_READ, Permission.ACCOUNT_WRITE)),
     ROLE_DISPATCHER(Set.of(Permission.ACCOUNT_READ, Permission.ACCOUNT_WRITE, Permission.ITEMS_WRITE, Permission.ITEMS_READ,
             Permission.WAREHOUSE_ITEMS_WRITE, Permission.WAREHOUSE_ITEMS_READ, Permission.ALL_APPLICATIONS_READ,
-            Permission.DISPATCHING_APPLICATIONS_READ, Permission.ALL_APPLICATIONS_WRITE, Permission.WRITE_OFF_READ_BY_WAREHOUSE)),
+            Permission.DISPATCHING_APPLICATIONS_READ, Permission.ALL_APPLICATIONS_WRITE, Permission.WRITE_OFF_READ_BY_WAREHOUSE,
+            Permission.WRITE_OFF_WRITE)),
     ROLE_DIRECTOR(Set.of(Permission.ACCOUNT_READ, Permission.ACCOUNT_WRITE, Permission.WRITE_OFF_READ_ALL));
 
     private final Set<Permission> permissions;

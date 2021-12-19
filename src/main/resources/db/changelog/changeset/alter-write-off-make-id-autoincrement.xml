@@ -1,0 +1,23 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="alter-write-off-add-id-auto-increment" author="Elmax19">
+        <dropForeignKeyConstraint
+                baseTableName="write_off_item"
+                baseTableSchemaName="suppliers"
+                constraintName="fk-write-off-id"/>
+
+        <addAutoIncrement tableName="write_off"
+                          columnName="id"
+                          columnDataType="bigint"/>
+
+        <addForeignKeyConstraint baseColumnNames="write_off_id"
+                                 baseTableName="write_off_item"
+                                 constraintName="fk-write-off-id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="write_off"/>
+    </changeSet>
+</databaseChangeLog>

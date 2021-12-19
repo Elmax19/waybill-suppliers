@@ -20,4 +20,12 @@ public interface WriteOffMapper {
     WriteOffItemDto convertToDto(WriteOffItem writeOffItem);
 
     List<WriteOffDto> map(List<WriteOff> writeOffList);
+
+    @Mapping(source = "writeOffDto.creatingUserId", target = "creatingUser.id")
+    @Mapping(source = "writeOffDto.warehouseId", target = "warehouse.id")
+    @Mapping(source = "writeOffDto.carId", target = "car.id")
+    WriteOff convertToEntity(WriteOffDto writeOffDto);
+
+    @Mapping(source = "writeOffItemDto.itemId", target = "item.id")
+    WriteOffItem convertToEntity(WriteOffItemDto writeOffItemDto);
 }

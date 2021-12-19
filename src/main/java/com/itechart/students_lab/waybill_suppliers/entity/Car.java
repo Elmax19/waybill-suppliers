@@ -30,6 +30,9 @@ public class Car extends BaseEntity {
     @Column(name = "total_capacity", nullable = false)
     private Integer totalCapacity;
 
+    @Column(name = "available_capacity", nullable = false)
+    private Integer availableCapacity;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "c_status", nullable = false)
     private CarStatus status;
