@@ -60,7 +60,7 @@ public class WriteOffController {
     @PostMapping("/customer/{customerId}/writeOff")
     @PreAuthorize("hasAuthority('writeOff:write')")
     WriteOffDto createNewWriteOff(@PathVariable Long customerId, @RequestBody WriteOffDto writeOffDto){
-        if((writeOffDto.getWarehouseId()==null && writeOffDto.getCarId()==null) || (writeOffDto.getWarehouseId()!=null && writeOffDto.getCarId()!=null)){
+        if(!(writeOffDto.getWarehouseId()==null ^ writeOffDto.getCarId()==null)){
             throw new BadRequestException("Should be not empty only one of Car and Warehouse");
         }
         return writeOffService.create(writeOffDto);
