@@ -1,9 +1,9 @@
 package com.itechart.students_lab.waybill_suppliers.controller;
 
+import com.itechart.students_lab.waybill_suppliers.entity.Customer;
 import com.itechart.students_lab.waybill_suppliers.entity.Item;
 import com.itechart.students_lab.waybill_suppliers.entity.ItemCategory;
 import com.itechart.students_lab.waybill_suppliers.entity.dto.ItemDto;
-import com.itechart.students_lab.waybill_suppliers.exception.NotFoundException;
 import com.itechart.students_lab.waybill_suppliers.mapper.ItemMapper;
 import com.itechart.students_lab.waybill_suppliers.repository.ItemCategoryRepo;
 import com.itechart.students_lab.waybill_suppliers.repository.ItemRepo;
@@ -24,30 +24,31 @@ public class ItemController {
     private final ItemMapper itemMapper = Mappers.getMapper(ItemMapper.class);
 
     @PreAuthorize("hasAuthority('items:read')")
-    @GetMapping("/items")
-    List<ItemDto> findAll(@RequestParam(required = false, defaultValue = "0") int page, @RequestParam(required = false, defaultValue = "10") int count) {
-        return itemMapper.map(itemRepo.findAll(PageRequest.of(page, count)).getContent());
+    @GetMapping("/customer/{customerId}/items")
+    List<ItemDto> findAll(@PathVariable Long customerId, @RequestParam(required = false, defaultValue = "0") int page, @RequestParam(required = false, defaultValue = "10") int count) {
+        return itemMapper.map(itemRepo.findAllByCustomerId(customerId, PageRequest.of(page, count)));
     }
 
     @PreAuthorize("hasAuthority('items:read')")
-    @GetMapping("/item/{id}")
-    ItemDto findById(@PathVariable Long id) {
-        return itemRepo.findById(id).map(itemMapper::convertToDto)
-                .orElseThrow(() -> new NotFoundException("No such Item with id: " + id));
+    @GetMapping("/customer/{customerId}/item/{id}")
+    ItemDto findById(@PathVariable Long customerId, @PathVariable Long id) {
+        return itemMapper.convertToDto(itemRepo.findByCustomerIdAndId(customerId, id));
     }
 
     @PreAuthorize("hasAuthority('items:write')")
-    @PostMapping("/item")
-    ItemDto createItem(@RequestBody ItemDto newItemDto) {
+    @PostMapping("/customer/{customerId}/item")
+    ItemDto createItem(@PathVariable Long customerId, @RequestBody ItemDto newItemDto) {
         Item newItem = itemMapper.convertToEntity(newItemDto);
         Optional<ItemCategory> itemCategory = itemCategoryRepo.findByName(newItemDto.getItemCategory().getName());
         itemCategory.ifPresent(newItem::setItemCategory);
+        newItem.setCustomer(new Customer());
+        newItem.getCustomer().setId(customerId);
         return itemMapper.convertToDto(itemRepo.save(newItem));
     }
 
     @PreAuthorize("hasAuthority('items:write')")
-    @DeleteMapping("/item/{id}")
-    void deleteItem(@PathVariable Long id) {
-        itemRepo.deleteById(id);
+    @DeleteMapping("/customer/{customerId}/item/{id}")
+    void deleteItem(@PathVariable Long customerId, @PathVariable Long id) {
+        itemRepo.deleteByCustomerIdAndId(customerId, id);
     }
 }
