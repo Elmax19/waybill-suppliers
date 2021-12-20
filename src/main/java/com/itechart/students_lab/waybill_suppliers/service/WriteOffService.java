@@ -58,8 +58,8 @@ public class WriteOffService {
         return writeOffDto;
     }
 
-    @SuppressWarnings("OptionalGetWithoutIsPresent")
     private Item findItemByWriteOffItemId(Long id){
-        return items.stream().filter(item -> item.getId().equals(id)).findAny().get();
+        return items.stream().filter(item -> item.getId().equals(id)).findAny().orElseThrow(
+                () -> new NotFoundException("No such Item with id: " + id));
     }
 }
