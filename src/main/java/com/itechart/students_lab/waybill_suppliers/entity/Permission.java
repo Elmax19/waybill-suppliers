@@ -21,7 +21,8 @@ public enum Permission {
     ACCOUNT_WRITE("account:write"),
     WRITE_OFF_READ_ALL("writeOff:read"),
     WRITE_OFF_READ_BY_WAREHOUSE("warehouseWriteOff:read"),
-    WRITE_OFF_READ_BY_DRIVER("driverWriteOff:read");
+    WRITE_OFF_READ_BY_DRIVER("driverWriteOff:read"),
+    WRITE_OFF_WRITE("writeOff:write");
 
     private final String permission;
 

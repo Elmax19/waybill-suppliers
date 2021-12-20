@@ -7,6 +7,7 @@ import com.itechart.students_lab.waybill_suppliers.mapper.WriteOffMapper;
 import com.itechart.students_lab.waybill_suppliers.repository.EmployeeRepo;
 import com.itechart.students_lab.waybill_suppliers.repository.WarehouseDispatcherRepo;
 import com.itechart.students_lab.waybill_suppliers.repository.WriteOffRepo;
+import com.itechart.students_lab.waybill_suppliers.service.WriteOffService;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,6 +15,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -21,6 +24,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 public class WriteOffController {
+    private final WriteOffService writeOffService;
     private final WriteOffRepo writeOffRepo;
     private final EmployeeRepo employeeRepo;
     private final WarehouseDispatcherRepo warehouseDispatcherRepo;
@@ -51,5 +55,14 @@ public class WriteOffController {
             throw new BadRequestException("Input driverId isn't your");
         }
         return writeOffMapper.map(writeOffRepo.findAllByCarCustomerIdAndCreatingUserIdOrderByDateTime(customerId, driverId));
+    }
+
+    @PostMapping("/customer/{customerId}/writeOff")
+    @PreAuthorize("hasAuthority('writeOff:write')")
+    WriteOffDto createNewWriteOff(@PathVariable Long customerId, @RequestBody WriteOffDto writeOffDto){
+        if((writeOffDto.getWarehouseId() == null) == (writeOffDto.getCarId() == null)){
+            throw new BadRequestException("Should be not empty only one of Car and Warehouse");
+        }
+        return writeOffService.create(writeOffDto);
     }
 }

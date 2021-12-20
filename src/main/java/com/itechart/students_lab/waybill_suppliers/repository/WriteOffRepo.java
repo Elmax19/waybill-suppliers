@@ -2,9 +2,11 @@ package com.itechart.students_lab.waybill_suppliers.repository;
 
 import com.itechart.students_lab.waybill_suppliers.entity.WriteOff;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -18,4 +20,8 @@ public interface WriteOffRepo extends JpaRepository<WriteOff, Long> {
     List<WriteOff> findAllByWarehouseCustomerIdAndWarehouseId(Long customerId, Long warehouseId);
 
     List<WriteOff> findAllByCarCustomerIdAndCreatingUserIdOrderByDateTime(Long customerId, Long userId);
+
+    @Modifying
+    @Query(value = "insert into write_off(date_time, creating_user_id, warehouse_id, car_id) value (?1,?2,?3,?4)", nativeQuery = true)
+    void create(LocalDateTime dateTime, Long creatingUserId, Long warehouseId, Long carId);
 }
