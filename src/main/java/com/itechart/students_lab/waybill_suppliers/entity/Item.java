@@ -25,5 +25,9 @@ public class Item extends BaseEntity {
 
     @Column(name = "price", nullable = false)
     private double price;
+
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
 }
 
