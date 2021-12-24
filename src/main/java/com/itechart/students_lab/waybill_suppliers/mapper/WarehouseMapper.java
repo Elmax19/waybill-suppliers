@@ -7,7 +7,7 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface WarehouseMapper {
     @Mapping(target = "customerId", expression = "java(warehouse.getCustomer().getId())")
     WarehouseDto warehouseToWarehouseDto(Warehouse warehouse);

@@ -27,7 +27,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class Application extends BaseEntity {
     @Column(name = "number", nullable = false)
-    private int number;
+    private Integer number;
 
     @ManyToOne
     @JoinColumn(name = "warehouse_id", referencedColumnName = "id")
@@ -62,10 +62,19 @@ public class Application extends BaseEntity {
     @Column(name = "is_outgoing", nullable = false)
     private boolean outgoing;
 
+    @Column(name = "sequence_number")
+    private Integer sequenceNumber;
+
     @OneToMany(mappedBy = "application", cascade = CascadeType.PERSIST)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @JsonManagedReference("application")
     private Set<ApplicationItem> items;
+
+    public Application(Warehouse warehouse, ApplicationStatus status, boolean outgoing) {
+        this.warehouse = warehouse;
+        this.status = status;
+        this.outgoing = outgoing;
+    }
 }
 

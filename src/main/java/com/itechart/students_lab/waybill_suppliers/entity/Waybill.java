@@ -13,7 +13,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -37,7 +36,7 @@ public class Waybill extends BaseEntity {
     @JsonManagedReference("waybill")
     private Set<Application> applications;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "car_id", referencedColumnName = "id")
     private Car car;
 
@@ -67,5 +66,10 @@ public class Waybill extends BaseEntity {
         this.warehouse = warehouse;
         this.creator = creator;
         this.state = state;
+    }
+
+    public Waybill(Long id, Warehouse warehouse) {
+        super(id);
+        this.warehouse = warehouse;
     }
 }

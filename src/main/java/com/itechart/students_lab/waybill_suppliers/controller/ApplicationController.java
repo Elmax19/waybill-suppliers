@@ -2,8 +2,11 @@ package com.itechart.students_lab.waybill_suppliers.controller;
 
 import com.itechart.students_lab.waybill_suppliers.entity.ApplicationStatus;
 import com.itechart.students_lab.waybill_suppliers.entity.dto.ApplicationDto;
+import com.itechart.students_lab.waybill_suppliers.entity.dto.ApplicationRecordDto;
 import com.itechart.students_lab.waybill_suppliers.service.ApplicationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.constraints.Min;
 import java.util.List;
 
 @RestController
@@ -49,19 +51,17 @@ public class ApplicationController {
 
     @GetMapping("/customer/{customerId}/applications/outgoing")
     @PreAuthorize("hasAuthority('applications.dispatching:read')")
-    List<ApplicationDto> findAllOutgoingApplications(@PathVariable Long customerId,
-                                                     @RequestParam(required = false, defaultValue = "0") int page,
-                                                     @RequestParam(required = false, defaultValue = "10") int count) {
-        return applicationService.findAllOutgoingApplications(customerId, page, count);
-    }
-
-    @GetMapping("/customer/{customerId}/applications/outgoing/{status}")
-    @PreAuthorize("hasAuthority('applications.dispatching:read')")
-    List<ApplicationDto> findOutgoingApplicationsByStatus(@PathVariable Long customerId,
-                                                          @PathVariable ApplicationStatus status,
-                                                          @RequestParam(required = false, defaultValue = "0") int page,
-                                                          @RequestParam(required = false, defaultValue = "10") int count) {
-        return applicationService.findOutgoingApplicationsByStatus(customerId, status, page, count);
+    ResponseEntity<List<ApplicationRecordDto>> findOutgoingApplications(
+            @PathVariable Long customerId,
+            @RequestParam(required = false) ApplicationStatus status,
+            @RequestParam(required = false) Long warehouseId,
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "10") int size) {
+        List<ApplicationRecordDto> applications = applicationService.findOutgoingApplications(
+                customerId, warehouseId, status, page, size);
+        return applications.isEmpty()
+                ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
+                : new ResponseEntity<>(applications, HttpStatus.OK);
     }
 
     @PostMapping("/customer/{customerId}/application")

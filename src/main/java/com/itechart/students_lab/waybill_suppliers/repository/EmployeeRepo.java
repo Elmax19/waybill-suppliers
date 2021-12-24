@@ -33,4 +33,18 @@ public interface EmployeeRepo extends JpaRepository<Employee, Long> {
             " where user.id IN :ids", nativeQuery = true)
     void setEmployeeActiveStatus(@Param("status") String newStatus,
                                  @Param("ids") List<Long> ids);
+
+    @Query(value = "SELECT * "
+            + "FROM user "
+            + "WHERE role = 'ROLE_DRIVER' "
+            + "AND customer_id = :id "
+            + "AND id NOT IN ("
+            + "SELECT driver_id "
+            + "FROM waybill "
+            + "WHERE state != 'FINISHED' "
+            + "AND driver_id IS NOT NULL) "
+            + "LIMIT :offset, :size", nativeQuery = true)
+    List<Employee> findFreeDrivers(@Param("id") Long customerId,
+                                   @Param("offset") int offset,
+                                   @Param("size") int size);
 }

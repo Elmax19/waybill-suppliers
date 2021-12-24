@@ -7,11 +7,16 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-public class WaybillRecordDto {
+public class WaybillDetailsDto {
+    private Long id;
     private Integer number;
     private WarehouseDto warehouse;
-    private List<ApplicationRecordDto> applications;
-    private LocalDateTime lastUpdateTime;
+    private List<ApplicationRecordDto> applicationRecords;
+    private CarDto car;
+    private EmployeeDto creator;
     private EmployeeDto lastUpdater;
+    private EmployeeDto driver;
+    private LocalDateTime registrationTime;
+    private LocalDateTime lastUpdateTime;
     private WaybillState state;
 }

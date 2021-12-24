@@ -4,8 +4,11 @@ import com.itechart.students_lab.waybill_suppliers.entity.Address;
 import com.itechart.students_lab.waybill_suppliers.entity.Application;
 import com.itechart.students_lab.waybill_suppliers.entity.ApplicationItem;
 import com.itechart.students_lab.waybill_suppliers.entity.ApplicationStatus;
+import com.itechart.students_lab.waybill_suppliers.entity.Customer;
 import com.itechart.students_lab.waybill_suppliers.entity.Item;
+import com.itechart.students_lab.waybill_suppliers.entity.Warehouse;
 import com.itechart.students_lab.waybill_suppliers.entity.dto.ApplicationDto;
+import com.itechart.students_lab.waybill_suppliers.entity.dto.ApplicationRecordDto;
 import com.itechart.students_lab.waybill_suppliers.exception.BadRequestException;
 import com.itechart.students_lab.waybill_suppliers.exception.NotFoundException;
 import com.itechart.students_lab.waybill_suppliers.mapper.ApplicationMapper;
@@ -18,11 +21,13 @@ import com.itechart.students_lab.waybill_suppliers.repository.WarehouseItemRepo;
 import com.itechart.students_lab.waybill_suppliers.repository.WarehouseRepo;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -48,12 +53,24 @@ public class ApplicationService {
         return applicationMapper.map(applicationRepo.findAllByStatusAndWarehouseCustomerId(status, customerId, PageRequest.of(page, count)));
     }
 
-    public List<ApplicationDto> findAllOutgoingApplications(Long customerId, int page, int count) {
-        return applicationMapper.map(applicationRepo.findAllByOutgoingIsTrueAndWarehouseCustomerId(customerId, PageRequest.of(page, count)));
-    }
-
-    public List<ApplicationDto> findOutgoingApplicationsByStatus(Long customerId, ApplicationStatus status, int page, int count) {
-        return applicationMapper.map(applicationRepo.findAllByOutgoingIsTrueAndStatusAndWarehouseCustomerId(status, customerId, PageRequest.of(page, count)));
+    public List<ApplicationRecordDto> findOutgoingApplications(Long customerId,
+                                                               Long warehouseId,
+                                                               ApplicationStatus status,
+                                                               int page,
+                                                               int size) {
+        Example<Application> applicationExample = Example.of(
+                new Application(
+                        new Warehouse(
+                                warehouseId,
+                                new Customer(customerId)
+                        ),
+                        status,
+                        true
+                )
+        );
+        return applicationMapper.applicationListToApplicationRecordDtoList(
+                applicationRepo.findAll(applicationExample, PageRequest.of(page, size))
+                        .getContent());
     }
 
     @Transactional
@@ -115,5 +132,9 @@ public class ApplicationService {
 
     private boolean checkOnClosedApplication(Application application) {
         return application.getItems().stream().filter(item -> item.getCount() != item.getPlacedCount()).count() == 1;
+    }
+
+    public List<Application> findByIdIn(Set<Long> ids) {
+        return applicationRepo.findAllById(ids);
     }
 }
