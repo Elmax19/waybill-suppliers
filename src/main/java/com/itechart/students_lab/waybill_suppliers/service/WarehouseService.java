@@ -6,7 +6,6 @@ import com.itechart.students_lab.waybill_suppliers.entity.ApplicationStatus;
 import com.itechart.students_lab.waybill_suppliers.entity.Customer;
 import com.itechart.students_lab.waybill_suppliers.entity.Warehouse;
 import com.itechart.students_lab.waybill_suppliers.entity.dto.WarehouseDto;
-import com.itechart.students_lab.waybill_suppliers.exception.BadRequestException;
 import com.itechart.students_lab.waybill_suppliers.exception.ServiceException;
 import com.itechart.students_lab.waybill_suppliers.mapper.WarehouseMapper;
 import com.itechart.students_lab.waybill_suppliers.repository.WarehouseRepo;
@@ -69,16 +68,10 @@ public class WarehouseService {
                                                                           int size,
                                                                           Long customerId,
                                                                           ApplicationStatus status) {
-        if (page < 0) {
-            throw new BadRequestException("Page index must not be less than zero!");
-        }
-        if (size < 1) {
-            throw new BadRequestException("Page size must not be less than one!");
-        }
-        int offset = page * size;
         return warehouseMapper.warehousesListToWarehousesDtoList(
-                warehouseRepo.findByPageAndContainingOutApplicationStatus
-                        (offset, size, customerId, status.name()));
+                warehouseRepo.findByPageAndContainingOutApplicationStatus(
+                                customerId, status, PageRequest.of(page, size))
+                        .getContent());
     }
 
     public WarehouseDto findById(Long id) {
