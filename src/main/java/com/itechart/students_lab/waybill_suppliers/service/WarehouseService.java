@@ -1,16 +1,19 @@
 package com.itechart.students_lab.waybill_suppliers.service;
 
+import com.itechart.students_lab.waybill_suppliers.entity.ActiveStatus;
 import com.itechart.students_lab.waybill_suppliers.entity.Address;
+import com.itechart.students_lab.waybill_suppliers.entity.ApplicationStatus;
 import com.itechart.students_lab.waybill_suppliers.entity.Customer;
 import com.itechart.students_lab.waybill_suppliers.entity.Warehouse;
 import com.itechart.students_lab.waybill_suppliers.entity.dto.WarehouseDto;
+import com.itechart.students_lab.waybill_suppliers.exception.ServiceException;
 import com.itechart.students_lab.waybill_suppliers.mapper.WarehouseMapper;
 import com.itechart.students_lab.waybill_suppliers.repository.WarehouseRepo;
 import com.itechart.students_lab.waybill_suppliers.utils.ExceptionMessageParser;
 import lombok.RequiredArgsConstructor;
-import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,9 +31,11 @@ public class WarehouseService {
             = "This customer already has a warehouse with the same name";
     private static final String WAREHOUSE_WITH_ADDRESS_EXISTS
             = "Warehouse with such address exists";
+    private static final String WAREHOUSE_CUSTOMER_DEACTIVATED
+            = "Warehouse's customer is deactivated";
 
     private final WarehouseRepo warehouseRepo;
-    private final WarehouseMapper warehouseMapper = Mappers.getMapper(WarehouseMapper.class);
+    private final WarehouseMapper warehouseMapper;
 
     private final CustomerService customerService;
     private final AddressService addressService;
@@ -59,6 +64,16 @@ public class WarehouseService {
                         PageRequest.of(page, size)).getContent());
     }
 
+    public List<WarehouseDto> findByPageAndContainingOutApplicationStatus(int page,
+                                                                          int size,
+                                                                          Long customerId,
+                                                                          ApplicationStatus status) {
+        return warehouseMapper.warehousesListToWarehousesDtoList(
+                warehouseRepo.findByPageAndContainingOutApplicationStatus(
+                                customerId, status, PageRequest.of(page, size))
+                        .getContent());
+    }
+
     public WarehouseDto findById(Long id) {
         Warehouse warehouse = warehouseRepo.findById(id).orElseThrow(
                 () -> new EntityNotFoundException(
@@ -84,5 +99,18 @@ public class WarehouseService {
     @Transactional
     public int deleteEmptyByIdIn(List<Long> ids) {
         return warehouseRepo.deleteEmptyByIdIn(ids);
+    }
+
+    public Warehouse getActiveCustomerWarehouse(Long id) {
+        if (id == null) {
+            return null;
+        }
+
+        Warehouse warehouse = warehouseRepo.findById(id).orElseThrow(()
+                -> new EntityNotFoundException(String.format(WAREHOUSE_WITH_ID_NOT_FOUND, id)));
+        if (warehouse.getCustomer().getActiveStatus() == ActiveStatus.INACTIVE) {
+            throw new ServiceException(HttpStatus.CONFLICT, WAREHOUSE_CUSTOMER_DEACTIVATED);
+        }
+        return warehouse;
     }
 }

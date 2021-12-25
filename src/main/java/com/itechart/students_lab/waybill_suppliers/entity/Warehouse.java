@@ -43,4 +43,9 @@ public class Warehouse extends BaseEntity {
     public Warehouse(Customer customer) {
         this.customer = customer;
     }
+
+    public Warehouse(Long id, Customer customer) {
+        super(id);
+        this.customer = customer;
+    }
 }

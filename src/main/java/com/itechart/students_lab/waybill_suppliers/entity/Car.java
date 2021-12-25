@@ -44,4 +44,9 @@ public class Car extends BaseEntity {
     public Car(Customer customer) {
         this.customer = customer;
     }
+
+    public Car(Integer totalCapacity, Customer customer) {
+        this.totalCapacity = totalCapacity;
+        this.customer = customer;
+    }
 }

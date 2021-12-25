@@ -1,6 +1,9 @@
 package com.itechart.students_lab.waybill_suppliers.repository;
 
+import com.itechart.students_lab.waybill_suppliers.entity.ApplicationStatus;
 import com.itechart.students_lab.waybill_suppliers.entity.Warehouse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -9,6 +12,17 @@ import org.springframework.data.repository.query.Param;
 import java.util.Collection;
 
 public interface WarehouseRepo extends JpaRepository<Warehouse, Long> {
+    @Query("SELECT DISTINCT w "
+            + "FROM Warehouse w "
+            + "JOIN Application a "
+            + "ON w.id = a.warehouse.id "
+            + "WHERE w.customer.id = :id "
+            + "AND a.status = :status "
+            + "AND a.outgoing = true")
+    Page<Warehouse> findByPageAndContainingOutApplicationStatus(@Param("id") Long customerId,
+                                                                @Param("status") ApplicationStatus applicationStatus,
+                                                                Pageable pageable);
+
     @Modifying
     @Query("DELETE FROM Warehouse w WHERE w.id IN :ids AND w.id NOT IN "
             + "(SELECT DISTINCT wi.warehouse.id FROM WarehouseItem wi WHERE wi.count <> 0)")

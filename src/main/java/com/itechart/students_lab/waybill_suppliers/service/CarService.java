@@ -8,11 +8,11 @@ import com.itechart.students_lab.waybill_suppliers.entity.Customer;
 import com.itechart.students_lab.waybill_suppliers.entity.dto.AddressDto;
 import com.itechart.students_lab.waybill_suppliers.entity.dto.CarDto;
 import com.itechart.students_lab.waybill_suppliers.exception.ServiceException;
+import com.itechart.students_lab.waybill_suppliers.mapper.AddressMapper;
 import com.itechart.students_lab.waybill_suppliers.mapper.CarMapper;
 import com.itechart.students_lab.waybill_suppliers.repository.CarRepo;
 import com.itechart.students_lab.waybill_suppliers.utils.ExceptionMessageParser;
 import lombok.RequiredArgsConstructor;
-import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -34,10 +34,11 @@ public class CarService {
     private static final String CAR_CUSTOMER_DEACTIVATED = "Car's customer is deactivated";
 
     private final CarRepo carRepo;
-    private final CarMapper carMapper = Mappers.getMapper(CarMapper.class);
+    private final CarMapper carMapper;
 
     private final CustomerService customerService;
     private final AddressService addressService;
+    private final AddressMapper addressMapper;
 
     public Optional<String> processSQLIntegrityConstraintViolationException
             (SQLIntegrityConstraintViolationException e) {
@@ -64,6 +65,17 @@ public class CarService {
         return carMapper.carsListToCarDtoList(
                 carRepo.findAll(carExample,
                         PageRequest.of(page, size)).getContent());
+    }
+
+    public List<CarDto> findByPageAndMinCapacity(int page,
+                                                 int size,
+                                                 Long customerId,
+                                                 Integer minCapacity) {
+        return carMapper.carsListToCarDtoList(
+                carRepo.findAllByTotalCapacityGreaterThanEqualAndCustomer_Id(
+                        minCapacity, customerId, PageRequest.of(page, size)
+                ).getContent()
+        );
     }
 
     public CarDto findById(Long id) {
@@ -101,7 +113,7 @@ public class CarService {
     public void updateCarLastAddress(Long id, AddressDto addressDto) {
         Car car = getActiveCustomerCar(id);
 
-        Address address = carMapper.addressDtoToAddress(addressDto);
+        Address address = addressMapper.addressDtoToAddress(addressDto);
         address = addressService.find(address).orElse(address);
         car.setLastAddress(address);
 
@@ -109,8 +121,12 @@ public class CarService {
     }
 
     public Car getActiveCustomerCar(Long id) {
-        Car car = carRepo.findById(id).orElseThrow(
-                () -> new EntityNotFoundException(String.format(CAR_WITH_ID_NOT_FOUND, id)));
+        if (id == null) {
+            return null;
+        }
+
+        Car car = carRepo.findById(id).orElseThrow(()
+                -> new EntityNotFoundException(String.format(CAR_WITH_ID_NOT_FOUND, id)));
         if (car.getCustomer().getActiveStatus() == ActiveStatus.INACTIVE) {
             throw new ServiceException(HttpStatus.CONFLICT, CAR_CUSTOMER_DEACTIVATED);
         }

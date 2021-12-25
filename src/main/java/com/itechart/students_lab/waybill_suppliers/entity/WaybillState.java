@@ -4,5 +4,5 @@ public enum WaybillState {
     OPEN,
     READY,
     IN_PROGRESS,
-    FINISHED;
+    FINISHED
 }

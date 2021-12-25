@@ -35,9 +35,12 @@ public class CarController {
     ResponseEntity<List<CarDto>> getByPage(
             @Min(value = 1L, message = "Customer id must be positive number")
             @PathVariable Long id,
+            @RequestParam(required = false) Integer minCapacity,
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "10") int size) {
-        List<CarDto> cars = carService.findByPage(page, size, id);
+        List<CarDto> cars = minCapacity == null
+                ? carService.findByPage(page, size, id)
+                : carService.findByPageAndMinCapacity(page, size, id, minCapacity);
         return cars.isEmpty()
                 ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
                 : new ResponseEntity<>(cars, HttpStatus.OK);

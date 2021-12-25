@@ -2,6 +2,7 @@ package com.itechart.students_lab.waybill_suppliers.mapper;
 
 import com.itechart.students_lab.waybill_suppliers.entity.Application;
 import com.itechart.students_lab.waybill_suppliers.entity.dto.ApplicationDto;
+import com.itechart.students_lab.waybill_suppliers.entity.dto.ApplicationRecordDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -22,4 +23,10 @@ public interface ApplicationMapper {
     Application convertToEntity(ApplicationDto applicationDto);
 
     List<ApplicationDto> map(List<Application> applications);
+
+    List<ApplicationRecordDto> applicationListToApplicationRecordDtoList(
+            List<Application> applications);
+
+    @Mapping(target = "warehouseId", expression = "java(application.getWarehouse().getId())")
+    ApplicationRecordDto applicationToApplicationRecordDto(Application application);
 }

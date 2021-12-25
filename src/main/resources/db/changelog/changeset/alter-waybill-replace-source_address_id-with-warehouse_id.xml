@@ -1,0 +1,26 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="alter-waybill-replace-source_address_id-with-warehouse_id" author="anto-belo">
+        <dropForeignKeyConstraint baseTableName="waybill"
+                                  constraintName="fk-waybill-source-address-id"/>
+        <dropColumn tableName="waybill"
+                    columnName="source_address_id"/>
+
+        <addColumn tableName="waybill">
+            <column afterColumn="number"
+                    name="warehouse_id"
+                    type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <addForeignKeyConstraint baseColumnNames="warehouse_id"
+                                 baseTableName="waybill"
+                                 constraintName="fk-waybill-warehouse-id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="warehouse"/>
+    </changeSet>
+</databaseChangeLog>

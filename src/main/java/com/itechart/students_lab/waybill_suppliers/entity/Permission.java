@@ -22,7 +22,9 @@ public enum Permission {
     WRITE_OFF_READ_ALL("writeOff:read"),
     WRITE_OFF_READ_BY_WAREHOUSE("warehouseWriteOff:read"),
     WRITE_OFF_READ_BY_DRIVER("driverWriteOff:read"),
-    WRITE_OFF_WRITE("writeOff:write");
+    WRITE_OFF_WRITE("writeOff:write"),
+    ALL_WAYBILLS_READ("waybills:read"),
+    ALL_WAYBILLS_WRITE("waybills:write");
 
     private final String permission;
 

@@ -1,5 +1,6 @@
 package com.itechart.students_lab.waybill_suppliers.controller;
 
+import com.itechart.students_lab.waybill_suppliers.entity.ApplicationStatus;
 import com.itechart.students_lab.waybill_suppliers.entity.dto.WarehouseDto;
 import com.itechart.students_lab.waybill_suppliers.service.WarehouseService;
 import lombok.RequiredArgsConstructor;
@@ -35,9 +36,13 @@ public class WarehouseController {
     ResponseEntity<List<WarehouseDto>> getByPage(
             @Min(value = 1L, message = "Customer id must be positive number")
             @PathVariable Long id,
+            @RequestParam(required = false) ApplicationStatus withApplicationStatus,
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "10") int size) {
-        List<WarehouseDto> warehouses = warehouseService.findByPage(page, size, id);
+        List<WarehouseDto> warehouses = withApplicationStatus == null
+                ? warehouseService.findByPage(page, size, id)
+                : warehouseService.findByPageAndContainingOutApplicationStatus(
+                page, size, id, withApplicationStatus);
         return warehouses.isEmpty()
                 ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
                 : new ResponseEntity<>(warehouses, HttpStatus.OK);
@@ -64,7 +69,7 @@ public class WarehouseController {
     @PreAuthorize("hasAuthority('warehouses:write')")
     @DeleteMapping("/warehouses")
     String removeEmptyWarehouses(@NotNull(message = "At least one warehouse's id must be specified")
-                            @RequestParam(required = false) List<Long> id) {
+                                 @RequestParam(required = false) List<Long> id) {
         int deletedAmount = warehouseService.deleteEmptyByIdIn(id);
         int allAmount = id.size();
         if (deletedAmount != allAmount) {
