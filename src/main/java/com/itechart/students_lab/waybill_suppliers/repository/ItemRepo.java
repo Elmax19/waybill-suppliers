@@ -14,6 +14,8 @@ import java.util.List;
 public interface ItemRepo extends JpaRepository<Item, Long> {
     List<Item> findAllByCustomerId(Long id, Pageable pageable);
 
+    List<Item> findAllByCustomerId(Long id);
+
     Item findByCustomerIdAndId(Long customerId, Long id);
 
     @Transactional

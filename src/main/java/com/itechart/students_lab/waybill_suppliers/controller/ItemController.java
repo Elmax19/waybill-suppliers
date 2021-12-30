@@ -18,6 +18,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 public class ItemController {
     private final ItemRepo itemRepo;
     private final ItemCategoryRepo itemCategoryRepo;
@@ -27,6 +28,12 @@ public class ItemController {
     @GetMapping("/customer/{customerId}/items")
     List<ItemDto> findAll(@PathVariable Long customerId, @RequestParam(required = false, defaultValue = "0") int page, @RequestParam(required = false, defaultValue = "10") int count) {
         return itemMapper.map(itemRepo.findAllByCustomerId(customerId, PageRequest.of(page, count)));
+    }
+
+    @PreAuthorize("hasAuthority('items:read')")
+    @GetMapping("/customer/{customerId}/items/count")
+    int getCountOfItems(@PathVariable Long customerId) {
+        return itemRepo.findAllByCustomerId(customerId).size();
     }
 
     @PreAuthorize("hasAuthority('items:read')")
