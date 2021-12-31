@@ -29,6 +29,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
 public class EmployeeController {
 
     private final EmployeeRepo employeeRepo;

@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class ItemCategoryDto {
     private String name;
-    private double tax_rate;
+    private double taxRate;
 }
