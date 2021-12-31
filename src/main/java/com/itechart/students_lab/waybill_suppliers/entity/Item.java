@@ -16,7 +16,7 @@ public class Item extends BaseEntity {
     @Column(name = "label", nullable = false)
     private String label;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private ItemCategory itemCategory;
 

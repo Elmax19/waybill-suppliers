@@ -16,5 +16,5 @@ public class ItemCategory extends BaseEntity {
     private String name;
 
     @Column(name = "tax_rate", nullable = false)
-    private double tax_rate;
+    private double taxRate;
 }
