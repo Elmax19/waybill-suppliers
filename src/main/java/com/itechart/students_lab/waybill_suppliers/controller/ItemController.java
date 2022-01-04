@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins={ "http://localhost:3000" })
 @RequiredArgsConstructor
@@ -31,9 +32,9 @@ public class ItemController {
     }
 
     @PreAuthorize("hasAuthority('items:read')")
-    @GetMapping("/customer/{customerId}/items/count")
-    int getCountOfItems(@PathVariable Long customerId) {
-        return itemRepo.findAllByCustomerId(customerId).size();
+    @GetMapping("/customer/{customerId}/items/upcList")
+    List<Long> getItemsUpcList(@PathVariable Long customerId) {
+        return itemRepo.findAllByCustomerId(customerId).stream().map(Item::getUpc).collect(Collectors.toList());
     }
 
     @PreAuthorize("hasAuthority('items:read')")
