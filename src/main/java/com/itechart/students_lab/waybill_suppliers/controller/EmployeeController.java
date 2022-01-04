@@ -40,6 +40,12 @@ public class EmployeeController {
         return employeeRepo.findAllByCustomerId(id, PageRequest.of(page, count)).getContent();
     }
 
+    @GetMapping("/customer/{id}/employees/total")
+    @PreAuthorize("hasAuthority('employees:read')")
+    public Integer getTotal(@PathVariable Long id) {
+        return employeeRepo.countByCustomerId(id);
+    }
+
     @GetMapping("/employee/{employeeName}/customer")
     public Customer getCustomer(@PathVariable String employeeName){
         Employee employee = employeeRepo.findByLogin(employeeName);

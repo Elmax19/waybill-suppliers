@@ -18,6 +18,8 @@ public interface EmployeeRepo extends JpaRepository<Employee, Long> {
     @Query("select e from Employee e where e.customer.id=:id")
     Page<Employee> findAllByCustomerId(@Param("id") Long id, Pageable pageable);
 
+    Integer countByCustomerId(Long id);
+
     @Query("select e from Employee e where e.customer.id=:id and e.activeStatus='ACTIVE'")
     Page<Employee> findAllByActiveStatus(@Param("id") Long id, Pageable pageable);
 
