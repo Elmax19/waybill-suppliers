@@ -43,7 +43,7 @@ public class EmployeeController {
     @GetMapping("/customer/{id}/employees/total")
     @PreAuthorize("hasAuthority('employees:read')")
     public Integer getTotal(@PathVariable Long id) {
-        return employeeRepo.findAllByCustomerId(id).size();
+        return employeeRepo.countByCustomerId(id);
     }
 
     @GetMapping("/employee/{employeeName}/customer")
