@@ -20,7 +20,7 @@ public class Employee extends User {
     @Embedded
     private ContactInformation contactInformation;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
     @JsonBackReference("customer")
     private Customer customer;

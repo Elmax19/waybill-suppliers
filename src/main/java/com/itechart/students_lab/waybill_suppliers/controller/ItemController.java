@@ -19,7 +19,6 @@ import java.util.Optional;
 @CrossOrigin(origins={ "http://localhost:3000" })
 @RequiredArgsConstructor
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
 public class ItemController {
     private final ItemRepo itemRepo;
     private final ItemCategoryRepo itemCategoryRepo;
