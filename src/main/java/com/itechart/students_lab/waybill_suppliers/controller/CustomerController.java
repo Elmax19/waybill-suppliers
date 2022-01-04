@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 @CrossOrigin(origins={ "http://localhost:3000" })
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
 public class CustomerController {
 
     private final CustomerRepo customerRepo;
