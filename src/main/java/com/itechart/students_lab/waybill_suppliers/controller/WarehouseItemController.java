@@ -3,9 +3,7 @@ package com.itechart.students_lab.waybill_suppliers.controller;
 import com.itechart.students_lab.waybill_suppliers.entity.ActiveStatus;
 import com.itechart.students_lab.waybill_suppliers.entity.dto.WarehouseItemDto;
 import com.itechart.students_lab.waybill_suppliers.mapper.WarehouseItemMapper;
-import com.itechart.students_lab.waybill_suppliers.repository.ItemRepo;
 import com.itechart.students_lab.waybill_suppliers.repository.WarehouseItemRepo;
-import com.itechart.students_lab.waybill_suppliers.repository.WarehouseRepo;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.PageRequest;
@@ -31,8 +29,21 @@ public class WarehouseItemController {
     @GetMapping("/warehouse/{id}/items")
     List<WarehouseItemDto> findAll(@PathVariable Long id,
                                    @RequestParam(required = false, defaultValue = "0") int page,
-                                   @RequestParam(required = false, defaultValue = "10") int count) {
-        return warehouseItemMapper.map(warehouseItemRepo.findAllByWarehouseId(id, PageRequest.of(page, count)));
+                                   @RequestParam(required = false, defaultValue = "10") int count,
+                                   @RequestParam(required = false, defaultValue="ALL") String activeStatus) {
+        if (activeStatus.equals("ALL")){
+            return warehouseItemMapper.map(warehouseItemRepo.findAllByWarehouseId(id, PageRequest.of(page, count)));
+        }
+        return warehouseItemMapper.map(warehouseItemRepo.findAllByWarehouseIdAndActiveStatus(id, ActiveStatus.valueOf(activeStatus), PageRequest.of(page, count)));
+    }
+
+    @PreAuthorize("hasAuthority('warehouseItems:read')")
+    @GetMapping("/warehouse/{id}/items/count")
+    int getCount(@PathVariable Long id, @RequestParam(required = false, defaultValue="ALL") String activeStatus) {
+        if (activeStatus.equals("ALL")) {
+            return warehouseItemRepo.findAllByWarehouseId(id).size();
+        }
+        return warehouseItemRepo.findAllByWarehouseIdAndActiveStatus(id, ActiveStatus.valueOf(activeStatus)).size();
     }
 
     @PreAuthorize("hasAuthority('warehouseItems:write')")
