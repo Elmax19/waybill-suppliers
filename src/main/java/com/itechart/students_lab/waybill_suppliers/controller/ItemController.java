@@ -11,13 +11,19 @@ import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-@CrossOrigin(origins={ "http://localhost:3000" })
+@CrossOrigin(origins = {"http://localhost:3000"})
 @RequiredArgsConstructor
 @RestController
 public class ItemController {
@@ -32,9 +38,9 @@ public class ItemController {
     }
 
     @PreAuthorize("hasAuthority('items:read')")
-    @GetMapping("/customer/{customerId}/items/upcList")
-    List<Long> getItemsUpcList(@PathVariable Long customerId) {
-        return itemRepo.findAllByCustomerId(customerId).stream().map(Item::getUpc).collect(Collectors.toList());
+    @GetMapping("/customer/{customerId}/items/count")
+    int getCountOfItems(@PathVariable Long customerId) {
+        return itemRepo.findAllByCustomerId(customerId).size();
     }
 
     @PreAuthorize("hasAuthority('items:read')")
