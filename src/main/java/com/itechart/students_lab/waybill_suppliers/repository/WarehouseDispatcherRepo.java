@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface WarehouseDispatcherRepo extends JpaRepository<WarehouseDispatcher, Long> {
     boolean existsByWarehouseIdAndDispatcherLogin(Long warehouseId, String dispatcherLogin);
+
+    WarehouseDispatcher findByDispatcherId(Long dispatcherId);
 }
