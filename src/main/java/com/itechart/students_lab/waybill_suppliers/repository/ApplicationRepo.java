@@ -14,7 +14,17 @@ import java.util.List;
 
 @Repository
 public interface ApplicationRepo extends JpaRepository<Application, Long> {
-    List<Application> findAllByWarehouseCustomerId(Long customerId, Pageable pageable);
+    List<Application> findAllByWarehouseCustomerIdAndOutgoingIsTrue(Long customerId, Pageable pageable);
+
+    List<Application> findAllByWarehouseCustomerIdAndOutgoingIsTrue(Long customerId);
+
+    List<Application> findAllByWarehouseId(Long warehouseId, Pageable pageable);
+
+    List<Application> findAllByWarehouseIdAndOutgoing(Long warehouseId, boolean outgoing, Pageable pageable);
+
+    List<Application> findAllByWarehouseId(Long warehouseId);
+
+    List<Application> findAllByWarehouseIdAndOutgoing(Long warehouseId, boolean outgoing);
 
     Application findByNumberAndWarehouseCustomerId(int number, Long customerId);
 

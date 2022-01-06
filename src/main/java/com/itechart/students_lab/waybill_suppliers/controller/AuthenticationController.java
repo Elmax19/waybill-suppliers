@@ -30,12 +30,11 @@ public class AuthenticationController {
             Employee employee = employeeRepo.getById(systemAdmin.getId());
             HttpHeaders headers = new HttpHeaders();
             headers.add("Customer-Id", String.valueOf(employee.getCustomer().getId()));
-            headers.set(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, "Customer-Id");
             if (systemAdmin.getRole().equals(UserRole.ROLE_DISPATCHER)) {
                 headers.add("Warehouse-Id",
                         String.valueOf(warehouseDispatcherRepo.findByDispatcherId(employee.getId()).getWarehouse().getId()));
-                headers.set(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, "Warehouse-Id");
             }
+            headers.set(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, "*");
             return ResponseEntity
                     .ok()
                     .headers(headers)
