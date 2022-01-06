@@ -12,12 +12,12 @@ import java.util.Set;
 public class ApplicationDto {
     private Long id;
     private int number;
-    private Long warehouseId;
+    private WarehouseDto warehouse;
     private AddressDto destinationAddress;
     private LocalDateTime registrationDateTime;
     private LocalDateTime lastUpdateDateTime;
-    private Long creatingUserId;
-    private Long updatingUserId;
+    private EmployeeDto creatingUser;
+    private EmployeeDto updatingUser;
     private ApplicationStatus status;
     private boolean outgoing;
     private Set<ApplicationItemDto> items;

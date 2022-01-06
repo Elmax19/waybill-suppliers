@@ -41,8 +41,34 @@ public class ApplicationService {
     private final EmployeeRepo employeeRepo;
     private final ApplicationMapper applicationMapper = Mappers.getMapper(ApplicationMapper.class);
 
-    public List<ApplicationDto> findAllApplications(Long customerId, int page, int count) {
-        return applicationMapper.map(applicationRepo.findAllByWarehouseCustomerId(customerId, PageRequest.of(page, count)));
+    public List<ApplicationDto> findAllApplicationsByCustomer(Long customerId, int page, int count) {
+        return applicationMapper.map(applicationRepo.findAllByWarehouseCustomerIdAndOutgoingIsTrue(customerId, PageRequest.of(page, count)));
+    }
+
+    public int findApplicationsCountByCustomer(Long customerId) {
+        return applicationRepo.countByWarehouseCustomerIdAndOutgoingIsTrue(customerId);
+    }
+
+    public List<ApplicationDto> findAllApplicationsByWarehouse(Long warehouseId, int page, int count, String status) {
+        switch (status) {
+            case "OUTGOING":
+                return applicationMapper.map(applicationRepo.findAllByWarehouseIdAndOutgoing(warehouseId, true, PageRequest.of(page, count)));
+            case "INCOMING":
+                return applicationMapper.map(applicationRepo.findAllByWarehouseIdAndOutgoing(warehouseId, false, PageRequest.of(page, count)));
+            default:
+                return applicationMapper.map(applicationRepo.findAllByWarehouseId(warehouseId, PageRequest.of(page, count)));
+        }
+    }
+
+    public int findApplicationsCountByWarehouse(Long warehouseId, String status) {
+        switch (status) {
+            case "OUTGOING":
+                return applicationRepo.countByWarehouseIdAndOutgoing(warehouseId, true);
+            case "INCOMING":
+                return applicationRepo.countByWarehouseIdAndOutgoing(warehouseId, false);
+            default:
+                return applicationRepo.countByWarehouseId(warehouseId);
+        }
     }
 
     public ApplicationDto findApplication(int applicationNumber, Long customerId) {
@@ -78,8 +104,6 @@ public class ApplicationService {
         Application newApplication = applicationMapper.convertToEntity(applicationDto);
         Address address = newApplication.getDestinationAddress();
         addressRepo.save(address);
-        newApplication.setWarehouse(warehouseRepo.findById(applicationDto.getWarehouseId()).orElseThrow(
-                () -> new NotFoundException("No such Warehouse with Id: " + applicationDto.getWarehouseId())));
         if (!newApplication.getWarehouse().getCustomer().getId().equals(customerId)) {
             throw new BadRequestException("Incorrect customer: " + customerId);
         }

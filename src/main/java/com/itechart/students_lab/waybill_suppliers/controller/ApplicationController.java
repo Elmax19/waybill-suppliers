@@ -28,11 +28,33 @@ public class ApplicationController {
     private final ApplicationService applicationService;
 
     @GetMapping("/customer/{customerId}/applications")
+    @PreAuthorize("hasAuthority('applications.dispatching:read')")
+    List<ApplicationDto> findAllApplicationsByCustomer(@PathVariable Long customerId,
+                                                       @RequestParam(required = false, defaultValue = "0") int page,
+                                                       @RequestParam(required = false, defaultValue = "10") int count) {
+        return applicationService.findAllApplicationsByCustomer(customerId, page, count);
+    }
+
+    @GetMapping("/customer/{customerId}/applications/count")
+    @PreAuthorize("hasAuthority('applications.dispatching:read')")
+    int getCountOfApplicationsByCustomer(@PathVariable Long customerId) {
+        return applicationService.findApplicationsCountByCustomer(customerId);
+    }
+
+    @GetMapping("/warehouse/{warehouseId}/applications")
     @PreAuthorize("hasAuthority('applications.all:read')")
-    List<ApplicationDto> findAllApplications(@PathVariable Long customerId,
-                                             @RequestParam(required = false, defaultValue = "0") int page,
-                                             @RequestParam(required = false, defaultValue = "10") int count) {
-        return applicationService.findAllApplications(customerId, page, count);
+    List<ApplicationDto> findAllApplicationsByWarehouse(@PathVariable Long warehouseId,
+                                                        @RequestParam(required = false, defaultValue = "0") int page,
+                                                        @RequestParam(required = false, defaultValue = "10") int count,
+                                                        @RequestParam(required = false, defaultValue = "ALL") String status) {
+        return applicationService.findAllApplicationsByWarehouse(warehouseId, page, count, status);
+    }
+
+    @GetMapping("/warehouse/{warehouseId}/applications/count")
+    @PreAuthorize("hasAuthority('applications.all:read')")
+    int getCountOfApplicationsByWarehouse(@PathVariable Long warehouseId,
+                                          @RequestParam(required = false, defaultValue = "ALL") String status) {
+        return applicationService.findApplicationsCountByWarehouse(warehouseId, status);
     }
 
     @GetMapping("/customer/{customerId}/application/{applicationNumber}")
