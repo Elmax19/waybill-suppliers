@@ -46,7 +46,7 @@ public class ApplicationService {
     }
 
     public int findApplicationsCountByCustomer(Long customerId) {
-        return applicationRepo.findAllByWarehouseCustomerIdAndOutgoingIsTrue(customerId).size();
+        return applicationRepo.countByWarehouseCustomerIdAndOutgoingIsTrue(customerId);
     }
 
     public List<ApplicationDto> findAllApplicationsByWarehouse(Long warehouseId, int page, int count, String status) {
@@ -63,11 +63,11 @@ public class ApplicationService {
     public int findApplicationsCountByWarehouse(Long warehouseId, String status) {
         switch (status) {
             case "OUTGOING":
-                return applicationRepo.findAllByWarehouseIdAndOutgoing(warehouseId, true).size();
+                return applicationRepo.countByWarehouseIdAndOutgoing(warehouseId, true);
             case "INCOMING":
-                return applicationRepo.findAllByWarehouseIdAndOutgoing(warehouseId, false).size();
+                return applicationRepo.countByWarehouseIdAndOutgoing(warehouseId, false);
             default:
-                return applicationRepo.findAllByWarehouseId(warehouseId).size();
+                return applicationRepo.countByWarehouseId(warehouseId);
         }
     }
 

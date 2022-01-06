@@ -16,15 +16,15 @@ import java.util.List;
 public interface ApplicationRepo extends JpaRepository<Application, Long> {
     List<Application> findAllByWarehouseCustomerIdAndOutgoingIsTrue(Long customerId, Pageable pageable);
 
-    List<Application> findAllByWarehouseCustomerIdAndOutgoingIsTrue(Long customerId);
+    Integer countByWarehouseCustomerIdAndOutgoingIsTrue(Long customerId);
 
     List<Application> findAllByWarehouseId(Long warehouseId, Pageable pageable);
 
     List<Application> findAllByWarehouseIdAndOutgoing(Long warehouseId, boolean outgoing, Pageable pageable);
 
-    List<Application> findAllByWarehouseId(Long warehouseId);
+    Integer countByWarehouseId(Long warehouseId);
 
-    List<Application> findAllByWarehouseIdAndOutgoing(Long warehouseId, boolean outgoing);
+    Integer countByWarehouseIdAndOutgoing(Long warehouseId, boolean outgoing);
 
     Application findByNumberAndWarehouseCustomerId(int number, Long customerId);
 
