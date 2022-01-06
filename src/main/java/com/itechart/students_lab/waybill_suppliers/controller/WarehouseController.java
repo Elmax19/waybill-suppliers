@@ -1,7 +1,11 @@
 package com.itechart.students_lab.waybill_suppliers.controller;
 
 import com.itechart.students_lab.waybill_suppliers.entity.ApplicationStatus;
+import com.itechart.students_lab.waybill_suppliers.entity.Employee;
+import com.itechart.students_lab.waybill_suppliers.entity.Warehouse;
+import com.itechart.students_lab.waybill_suppliers.entity.WarehouseDispatcher;
 import com.itechart.students_lab.waybill_suppliers.entity.dto.WarehouseDto;
+import com.itechart.students_lab.waybill_suppliers.repository.WarehouseDispatcherRepo;
 import com.itechart.students_lab.waybill_suppliers.service.WarehouseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -32,6 +36,7 @@ public class WarehouseController {
             = "Failed to delete %d out of %d warehouses, because they're not empty or don't exist";
 
     private final WarehouseService warehouseService;
+    private final WarehouseDispatcherRepo warehouseDispatcherRepo;
 
     @PreAuthorize("hasAuthority('warehouses:read')")
     @GetMapping("/customer/{id}/warehouses")
@@ -48,6 +53,16 @@ public class WarehouseController {
         return warehouses.isEmpty()
                 ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
                 : new ResponseEntity<>(warehouses, HttpStatus.OK);
+    }
+
+    @PostMapping("/employee/{employee}/warehouse/{warehouse}")
+    @PreAuthorize("hasAuthority('employees:write')")
+    public ResponseEntity bindDispatcherWithWarehouse(
+                                                      @PathVariable Employee employee,
+                                                      @PathVariable Warehouse warehouse){
+        WarehouseDispatcher warehouseDispatcher = new WarehouseDispatcher(warehouse, employee);
+        warehouseDispatcherRepo.save(warehouseDispatcher);
+        return ResponseEntity.ok().body("Dispatcher successfully bound with warehouse");
     }
 
     @PreAuthorize("hasAuthority('warehouses:read')")
