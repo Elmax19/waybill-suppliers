@@ -86,15 +86,16 @@ public class EmployeeController {
         return employee;
     }
 
-    @PutMapping("/employee")
+    @PutMapping("/customer/{customer}/employee")
     @PreAuthorize("hasAuthority('account:write')")
     public ResponseEntity updateEmployee(@RequestBody Employee employee,
-                                         @RequestParam(defaultValue = "false") boolean isPasswordChanged) {
-        employee.setPassword(passwordEncoder.encode(employee.getPassword()));
-        employee = employeeRepo.save(employee);
+                                         @RequestParam(defaultValue = "false") boolean isPasswordChanged,
+                                         @PathVariable Customer customer) {
+        employee.setCustomer(customer);
         if (isPasswordChanged) {
-            return ResponseEntity.ok(URI.create("/logout"));
+            employee.setPassword(passwordEncoder.encode(employee.getPassword()));
         }
+        employee = employeeRepo.save(employee);
         return ResponseEntity.ok(employee);
     }
 
