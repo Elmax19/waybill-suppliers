@@ -32,7 +32,7 @@ public class AuthorizationService {
     @Transactional
     public ResponseEntity addNewCustomer(Customer customer) {
         Employee adminUser = customer.getEmployees().stream().findFirst().get();
-        String password = passwordGenerator.generateRandomSpecialCharacters(15);
+        String password = passwordGenerator.generateRandomSpecialCharacters(10);
         adminUser = getNewCustomerAdmin(adminUser, password);
         customer = getNewCustomer(customer);
         adminUser.setCustomer(customer);
@@ -47,7 +47,7 @@ public class AuthorizationService {
 
     @Transactional
     public ResponseEntity addNewEmployee(Employee employee, Customer customer) {
-        String password = passwordGenerator.generateRandomSpecialCharacters(15);
+        String password = passwordGenerator.generateRandomSpecialCharacters(10);
         employee.setActiveStatus(ActiveStatus.ACTIVE);
         employee.setPassword(passwordEncoder.encode(password));
         employee.setCustomer(customer);
