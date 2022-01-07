@@ -31,4 +31,6 @@ public interface WarehouseRepo extends JpaRepository<Warehouse, Long> {
     @Modifying
     @Query(value = "update warehouse set available_capacity=warehouse.available_capacity-?2 where id=?1", nativeQuery = true)
     void updateAvailableCapacity(Long id, int places);
+
+    Integer countByCustomerId(Long id);
 }
