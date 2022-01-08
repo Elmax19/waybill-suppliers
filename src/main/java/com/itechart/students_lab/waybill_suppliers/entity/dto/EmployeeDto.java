@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 public class EmployeeDto {
-    private Integer id;
+    private Long id;
     private UserRole role;
     private ContactInformationRecordDto contactInformation;
 }
