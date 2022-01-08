@@ -64,6 +64,10 @@ public class WarehouseService {
                         PageRequest.of(page, size)).getContent());
     }
 
+    public Integer getTotal(Long id){
+        return warehouseRepo.countByCustomerId(id);
+    }
+
     public List<WarehouseDto> findByPageAndContainingOutApplicationStatus(int page,
                                                                           int size,
                                                                           Long customerId,

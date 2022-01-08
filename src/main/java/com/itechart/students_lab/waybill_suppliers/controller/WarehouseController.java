@@ -55,6 +55,12 @@ public class WarehouseController {
                 : new ResponseEntity<>(warehouses, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('warehouses:read')")
+    @GetMapping("/customer/{id}/warehouses/total")
+    Integer getTotal(@PathVariable Long id) {
+        return warehouseService.getTotal(id);
+    }
+
     @PostMapping("/employee/{employee}/warehouse/{warehouse}")
     @PreAuthorize("hasAuthority('employees:write')")
     public ResponseEntity bindDispatcherWithWarehouse(
@@ -86,13 +92,13 @@ public class WarehouseController {
     @PreAuthorize("hasAuthority('warehouses:write')")
     @DeleteMapping("/warehouses")
     String removeEmptyWarehouses(@NotNull(message = "At least one warehouse's id must be specified")
-                                 @RequestParam(required = false) List<Long> id) {
+                                 @RequestBody List<Long> id) {
         int deletedAmount = warehouseService.deleteEmptyByIdIn(id);
         int allAmount = id.size();
         if (deletedAmount != allAmount) {
             return String.format(FAILED_DELETE_EMPTY_NOT_EXIST_WAREHOUSES,
                     allAmount - deletedAmount, allAmount);
         }
-        return "";
+        return "Selected warehouses was successfully removed!";
     }
 }
