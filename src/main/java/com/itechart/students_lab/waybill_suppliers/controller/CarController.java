@@ -49,6 +49,14 @@ public class CarController {
     }
 
     @PreAuthorize("hasAuthority('cars:read')")
+    @GetMapping("/customer/{id}/cars/total")
+    Integer getTotalCarsCount(
+            @Min(value = 1L, message = "Customer id must be positive number")
+            @PathVariable Long id) {
+       return carService.getAllCustomerCars(id).size();
+    }
+
+    @PreAuthorize("hasAuthority('cars:read')")
     @GetMapping("/car/{id}")
     ResponseEntity<CarDto> getById(@Min(value = 1L,
             message = "Car id must be positive number")
@@ -69,7 +77,7 @@ public class CarController {
     @PreAuthorize("hasAuthority('cars:write')")
     @DeleteMapping("/cars")
     void removeWarehouses(@NotNull(message = "At least one car's id must be specified")
-                          @RequestParam(required = false) List<Long> id) {
+                          @RequestBody List<Long> id) {
         carService.deleteByIdIn(id);
     }
 

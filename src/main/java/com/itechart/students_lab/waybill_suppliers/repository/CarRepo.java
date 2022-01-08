@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface CarRepo extends JpaRepository<Car, Long> {
     Page<Car> findAllByTotalCapacityGreaterThanEqualAndCustomer_Id(
@@ -19,4 +20,6 @@ public interface CarRepo extends JpaRepository<Car, Long> {
     @Modifying
     @Query(value = "update car set available_capacity=available_capacity-?2 where id=?1", nativeQuery = true)
     void updateAvailableCapacity(Long id, int places);
+
+    List<Car> findAllByCustomerId(Long id);
 }
