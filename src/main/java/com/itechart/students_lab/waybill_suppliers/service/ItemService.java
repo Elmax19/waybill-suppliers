@@ -24,7 +24,7 @@ public class ItemService {
     }
 
     public ResponseEntity editTaxRate(ItemCategory itemCategory){
-        return itemCategory.getTaxRate() < 0.000 ?
+        return itemCategory.getTaxRate() < 0 ?
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Tax rate less than 0.000")
         : ResponseEntity.ok(itemCategoryRepo.save(itemCategory));
     }
