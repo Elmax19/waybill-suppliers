@@ -28,4 +28,8 @@ public class ItemService {
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Tax rate less than 0.000")
         : ResponseEntity.ok(itemCategoryRepo.save(itemCategory));
     }
+
+    public Integer getTotalCustomerCategories(Long id) {
+        return itemRepo.getTotalCustomerCategories(id).size();
+    }
 }
