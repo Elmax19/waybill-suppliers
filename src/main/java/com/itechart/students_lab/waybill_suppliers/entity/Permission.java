@@ -3,6 +3,8 @@ package com.itechart.students_lab.waybill_suppliers.entity;
 public enum Permission {
     CUSTOMERS_WRITE("customers:write"),
     CUSTOMERS_READ("customers:read"),
+    CATEGORIES_READ("categories:read"),
+    CATEGORIES_WRITE("categories:write"),
     ITEMS_WRITE("items:write"),
     ITEMS_READ("items:read"),
     WAREHOUSE_ITEMS_WRITE("warehouseItems:write"),
