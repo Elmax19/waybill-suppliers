@@ -31,6 +31,6 @@ public interface ItemRepo extends JpaRepository<Item, Long> {
             " count(it.itemCategory.id)) from Item as it where it.customer.id=:id group by it.itemCategory")
     Page<ItemCategoryWithItemsCount> findItemCategoriesAndItemsCount(@Param("id") Long id, Pageable pageable);
 
-    @Query("select it.itemCategory.id from Item as it where it.customer.id=:id group by it.itemCategory.id")
-    List<Integer> getTotalCustomerCategories(@Param("id") Long id);
+    @Query("select count(distinct it.itemCategory.id) from Item as it where it.customer.id=:id")
+    Integer getTotalCustomerCategories(@Param("id") Long id);
 }

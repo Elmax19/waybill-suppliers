@@ -30,6 +30,6 @@ public class ItemService {
     }
 
     public Integer getTotalCustomerCategories(Long id) {
-        return itemRepo.getTotalCustomerCategories(id).size();
+        return itemRepo.getTotalCustomerCategories(id);
     }
 }
