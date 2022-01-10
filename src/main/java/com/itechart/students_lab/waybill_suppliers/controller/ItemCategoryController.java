@@ -1,6 +1,5 @@
 package com.itechart.students_lab.waybill_suppliers.controller;
 
-import com.itechart.students_lab.waybill_suppliers.entity.Customer;
 import com.itechart.students_lab.waybill_suppliers.entity.ItemCategory;
 import com.itechart.students_lab.waybill_suppliers.entity.ItemCategoryWithItemsCount;
 import com.itechart.students_lab.waybill_suppliers.service.ItemService;
@@ -11,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = {"http:/localhost:3000"})
+@CrossOrigin(origins = {"http://localhost:3000"})
 @RestController
 @RequiredArgsConstructor
 public class ItemCategoryController {
@@ -25,6 +24,12 @@ public class ItemCategoryController {
                                                    @RequestParam(required = false, defaultValue = "10") int count
                                                    ){
         return itemService.getAll(id, page, count);
+    }
+
+    @GetMapping("/customer/{id}/categories/total")
+    @PreAuthorize("hasAuthority('categories:read')")
+    public Integer getTotalCustomerCategories(@PathVariable Long id){
+        return itemService.getTotalCustomerCategories(id);
     }
 
     @PutMapping("/category")
