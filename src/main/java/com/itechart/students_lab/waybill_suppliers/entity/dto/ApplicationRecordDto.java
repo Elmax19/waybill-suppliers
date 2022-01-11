@@ -5,7 +5,6 @@ import lombok.Data;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.util.Set;
 
 @Data
 public class ApplicationRecordDto {
@@ -17,7 +16,6 @@ public class ApplicationRecordDto {
     private Integer sequenceNumber;
 
     private Integer number;
-    private Set<ApplicationItemDto> items;
     private Long warehouseId;
     private AddressDto destinationAddress;
     private ApplicationStatus status;

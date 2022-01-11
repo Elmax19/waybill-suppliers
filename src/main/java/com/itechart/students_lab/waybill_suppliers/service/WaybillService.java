@@ -2,7 +2,6 @@ package com.itechart.students_lab.waybill_suppliers.service;
 
 import com.itechart.students_lab.waybill_suppliers.entity.Application;
 import com.itechart.students_lab.waybill_suppliers.entity.Customer;
-import com.itechart.students_lab.waybill_suppliers.entity.Employee;
 import com.itechart.students_lab.waybill_suppliers.entity.Warehouse;
 import com.itechart.students_lab.waybill_suppliers.entity.Waybill;
 import com.itechart.students_lab.waybill_suppliers.entity.WaybillState;
@@ -25,6 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,19 +51,23 @@ public class WaybillService {
                                             int size,
                                             Long customerId,
                                             Long creatorId,
-                                            WaybillState state) {
-        Example<Waybill> waybillExample = Example.of(
-                new Waybill(
-                        new Warehouse(
-                                new Customer(customerId)
-                        ),
-                        new Employee(creatorId),
-                        state
-                )
-        );
+                                            Collection<WaybillState> states) {
+        if (states == null) {
+            states = new ArrayList<>();
+            states.addAll(List.of(WaybillState.values()));
+        }
+
         return waybillMapper.waybillListToWaybillRecordDtoList(
-                waybillRepo.findAll(waybillExample,
-                        PageRequest.of(page, size)).getContent());
+                (creatorId != null
+                        ? waybillRepo.findByCreatorIdAndWarehouseCustomerIdAndStateIn(
+                        creatorId, customerId, states,
+                        PageRequest.of(page, size))
+                        : waybillRepo.findByWarehouseCustomerIdAndStateIn(
+                        customerId, states,
+                        PageRequest.of(page, size))
+                )
+                        .getContent()
+        );
     }
 
     public WaybillDetailsDto getById(Long customerId, Long waybillId) {
@@ -79,12 +84,25 @@ public class WaybillService {
                         .orElse(null));
     }
 
+    public long getCount(Long creatorId,
+                         Long customerId,
+                         Collection<WaybillState> states) {
+        if (states == null) {
+            states = new ArrayList<>();
+            states.addAll(List.of(WaybillState.values()));
+        }
+
+        return creatorId != null
+                ? waybillRepo.countByCreatorIdAndWarehouseCustomerIdAndStateIn(creatorId, customerId, states)
+                : waybillRepo.countByWarehouseCustomerIdAndStateIn(customerId, states);
+    }
+
     @Transactional
     public WaybillDetailsDto create(WaybillEditDto waybillEditDto) {
         if (waybillEditDto.getCreatorId() == null) {
             throw new ServiceException(HttpStatus.CONFLICT, CREATOR_ID_MUST_BE_SPECIFIED);
         }
-        
+
         Waybill waybill = waybillMapper.waybillEditDtoToWaybill(waybillEditDto);
 
         waybillValidator.waybillApplicationCompatibilityConstraint(

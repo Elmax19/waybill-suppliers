@@ -39,6 +39,16 @@ public class WarehouseController {
     private final WarehouseDispatcherRepo warehouseDispatcherRepo;
 
     @PreAuthorize("hasAuthority('warehouses:read')")
+    @GetMapping("/customer/{id}/warehouses/all")
+    ResponseEntity<List<WarehouseDto>> getAll(@Min(value = 1L, message = "Customer id must be positive number")
+                                              @PathVariable Long id) {
+        List<WarehouseDto> warehouses = warehouseService.findAll(id);
+        return warehouses.isEmpty()
+                ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
+                : new ResponseEntity<>(warehouses, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAuthority('warehouses:read')")
     @GetMapping("/customer/{id}/warehouses")
     ResponseEntity<List<WarehouseDto>> getByPage(
             @Min(value = 1L, message = "Customer id must be positive number")

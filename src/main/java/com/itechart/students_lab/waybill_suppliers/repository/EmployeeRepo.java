@@ -44,9 +44,6 @@ public interface EmployeeRepo extends JpaRepository<Employee, Long> {
             + "SELECT driver_id "
             + "FROM waybill "
             + "WHERE state != 'FINISHED' "
-            + "AND driver_id IS NOT NULL) "
-            + "LIMIT :offset, :size", nativeQuery = true)
-    List<Employee> findFreeDrivers(@Param("id") Long customerId,
-                                   @Param("offset") int offset,
-                                   @Param("size") int size);
+            + "AND driver_id IS NOT NULL)", nativeQuery = true)
+    List<Employee> findAllFreeDrivers(@Param("id") Long customerId);
 }
