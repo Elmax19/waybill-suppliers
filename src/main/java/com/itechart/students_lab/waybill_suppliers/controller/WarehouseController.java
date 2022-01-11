@@ -56,6 +56,17 @@ public class WarehouseController {
     }
 
     @PreAuthorize("hasAuthority('warehouses:read')")
+    @GetMapping("/customer/{id}/allWarehouses")
+    ResponseEntity<List<WarehouseDto>> getAll(
+            @Min(value = 1L, message = "Customer id must be positive number")
+            @PathVariable Long id) {
+        List<WarehouseDto> warehouses = warehouseService.findAll(id);
+        return warehouses.isEmpty()
+                ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
+                : new ResponseEntity<>(warehouses, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAuthority('warehouses:read')")
     @GetMapping("/customer/{id}/warehouses/total")
     Integer getTotal(@PathVariable Long id) {
         return warehouseService.getTotal(id);
@@ -64,8 +75,8 @@ public class WarehouseController {
     @PostMapping("/employee/{employee}/warehouse/{warehouse}")
     @PreAuthorize("hasAuthority('employees:write')")
     public ResponseEntity bindDispatcherWithWarehouse(
-                                                      @PathVariable Employee employee,
-                                                      @PathVariable Warehouse warehouse){
+            @PathVariable Employee employee,
+            @PathVariable Warehouse warehouse) {
         WarehouseDispatcher warehouseDispatcher = new WarehouseDispatcher(warehouse, employee);
         warehouseDispatcherRepo.save(warehouseDispatcher);
         return ResponseEntity.ok().body("Dispatcher successfully bound with warehouse");

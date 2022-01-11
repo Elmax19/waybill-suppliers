@@ -38,6 +38,12 @@ public class ItemController {
     }
 
     @PreAuthorize("hasAuthority('items:read')")
+    @GetMapping("/customer/{customerId}/items/all")
+    List<ItemDto> findAllItems(@PathVariable Long customerId) {
+        return itemMapper.map(itemRepo.findAllByCustomerId(customerId));
+    }
+
+    @PreAuthorize("hasAuthority('items:read')")
     @GetMapping("/customer/{customerId}/items/count")
     int getCountOfItems(@PathVariable Long customerId) {
         return itemRepo.findAllByCustomerId(customerId).size();

@@ -23,6 +23,8 @@ import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -104,13 +106,14 @@ public class ApplicationService {
         Application newApplication = applicationMapper.convertToEntity(applicationDto);
         Address address = newApplication.getDestinationAddress();
         addressRepo.save(address);
-        if (!newApplication.getWarehouse().getCustomer().getId().equals(customerId)) {
-            throw new BadRequestException("Incorrect customer: " + customerId);
-        }
         for (ApplicationItem applicationItem : newApplication.getItems()) {
             applicationItem.setApplication(newApplication);
         }
-        return applicationMapper.convertToDto(applicationRepo.save(newApplication));
+        newApplication = applicationRepo.save(newApplication);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserName = authentication.getName();
+        changeApplicationStatus(currentUserName, customerId, newApplication.getNumber(), ApplicationStatus.OPEN);
+        return applicationMapper.convertToDto(newApplication);
     }
 
     @Transactional
