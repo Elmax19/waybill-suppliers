@@ -24,6 +24,9 @@ public class CarDto {
     @NotNull(message = "Car total capacity must be specified")
     private Integer totalCapacity;
 
+    @Min(value = 0, message = "Car available capacity must be positive number")
+    private Integer availableCapacity;
+
     @NotNull(message = "Car status must be specified")
     private CarStatus status;
     

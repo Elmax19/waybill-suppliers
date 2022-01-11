@@ -87,6 +87,7 @@ public class CarService {
 
     public CarDto create(CarDto carDto) {
         Car car = carMapper.carDtoToCar(carDto);
+        car.setAvailableCapacity(car.getTotalCapacity());
 
         Customer customer = customerService.getActiveCustomer(carDto.getCustomerId());
         car.setCustomer(customer);
@@ -97,6 +98,10 @@ public class CarService {
 
         car = carRepo.save(car);
         return carMapper.carToCarDto(car);
+    }
+
+    public List<Car> getAllCustomerCars(Long id){
+        return carRepo.findAllByCustomerId(id);
     }
 
     @Transactional
