@@ -6,6 +6,7 @@ import com.itechart.students_lab.waybill_suppliers.entity.ApplicationItem;
 import com.itechart.students_lab.waybill_suppliers.entity.ApplicationStatus;
 import com.itechart.students_lab.waybill_suppliers.entity.Customer;
 import com.itechart.students_lab.waybill_suppliers.entity.Item;
+import com.itechart.students_lab.waybill_suppliers.entity.StateTaxes;
 import com.itechart.students_lab.waybill_suppliers.entity.Warehouse;
 import com.itechart.students_lab.waybill_suppliers.entity.dto.ApplicationDto;
 import com.itechart.students_lab.waybill_suppliers.entity.dto.ApplicationRecordDto;
@@ -110,9 +111,16 @@ public class ApplicationService {
             applicationItem.setApplication(newApplication);
         }
         newApplication = applicationRepo.save(newApplication);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUserName = authentication.getName();
-        changeApplicationStatus(currentUserName, customerId, newApplication.getNumber(), ApplicationStatus.OPEN);
+        Customer customer = new Customer();
+        customer.setId(customerId);
+        newApplication.getWarehouse().setCustomer(customer);
+        if(applicationDto.getId()!=null) {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String currentUserName = authentication.getName();
+            changeApplicationStatus(currentUserName, customerId, newApplication.getNumber(), ApplicationStatus.OPEN);
+        } else {
+            newApplication.getItems().forEach(applicationItemRepo::save);
+        }
         return applicationMapper.convertToDto(newApplication);
     }
 

@@ -26,7 +26,8 @@ public enum Permission {
     WRITE_OFF_READ_BY_DRIVER("driverWriteOff:read"),
     WRITE_OFF_WRITE("writeOff:write"),
     ALL_WAYBILLS_READ("waybills:read"),
-    ALL_WAYBILLS_WRITE("waybills:write");
+    ALL_WAYBILLS_WRITE("waybills:write"),
+    STATE_TAXES_READ("taxes:read");
 
     private final String permission;
 

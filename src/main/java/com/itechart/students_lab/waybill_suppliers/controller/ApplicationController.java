@@ -1,6 +1,7 @@
 package com.itechart.students_lab.waybill_suppliers.controller;
 
 import com.itechart.students_lab.waybill_suppliers.entity.ApplicationStatus;
+import com.itechart.students_lab.waybill_suppliers.entity.StateTaxes;
 import com.itechart.students_lab.waybill_suppliers.entity.dto.ApplicationDto;
 import com.itechart.students_lab.waybill_suppliers.entity.dto.ApplicationRecordDto;
 import com.itechart.students_lab.waybill_suppliers.service.ApplicationService;
@@ -115,4 +116,11 @@ public class ApplicationController {
         String currentUserName = authentication.getName();
         return applicationService.acceptApplicationItems(currentUserName, customerId, applicationNumber, applicationItemId, count);
     }
+
+    @GetMapping("/state/{state}/tax")
+    @PreAuthorize("hasAuthority('taxes:read')")
+    Double getTaxForState(@PathVariable String state){
+        return new StateTaxes().getTaxByState(state);
+    }
+
 }
