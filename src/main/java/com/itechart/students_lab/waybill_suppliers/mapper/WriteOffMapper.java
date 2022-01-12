@@ -1,7 +1,9 @@
 package com.itechart.students_lab.waybill_suppliers.mapper;
 
+import com.itechart.students_lab.waybill_suppliers.entity.Item;
 import com.itechart.students_lab.waybill_suppliers.entity.WriteOff;
 import com.itechart.students_lab.waybill_suppliers.entity.WriteOffItem;
+import com.itechart.students_lab.waybill_suppliers.entity.dto.ItemDto;
 import com.itechart.students_lab.waybill_suppliers.entity.dto.WriteOffDto;
 import com.itechart.students_lab.waybill_suppliers.entity.dto.WriteOffItemDto;
 import org.mapstruct.Mapper;
@@ -16,7 +18,6 @@ public interface WriteOffMapper {
     @Mapping(source = "writeOff.car.id", target = "carId")
     WriteOffDto convertToDto(WriteOff writeOff);
 
-    @Mapping(source = "writeOffItem.item.id", target = "itemId")
     WriteOffItemDto convertToDto(WriteOffItem writeOffItem);
 
     List<WriteOffDto> map(List<WriteOff> writeOffList);
@@ -26,6 +27,9 @@ public interface WriteOffMapper {
     @Mapping(source = "writeOffDto.carId", target = "car.id")
     WriteOff convertToEntity(WriteOffDto writeOffDto);
 
-    @Mapping(source = "writeOffItemDto.itemId", target = "item.id")
     WriteOffItem convertToEntity(WriteOffItemDto writeOffItemDto);
+
+    Item convertToEntity(ItemDto itemDto);
+
+    ItemDto convertToDto(Item item);
 }

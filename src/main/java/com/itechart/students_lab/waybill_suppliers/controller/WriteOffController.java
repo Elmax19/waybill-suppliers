@@ -10,6 +10,7 @@ import com.itechart.students_lab.waybill_suppliers.repository.WriteOffRepo;
 import com.itechart.students_lab.waybill_suppliers.service.WriteOffService;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -34,29 +36,64 @@ public class WriteOffController {
 
     @GetMapping("/customer/{customerId}/writeOffs")
     @PreAuthorize("hasAuthority('writeOff:read')")
-    List<WriteOffDto> findAllWriteOffs(@PathVariable Long customerId){
-        return writeOffMapper.map(writeOffRepo.findAllByWarehouseCustomerIdOrCarCustomerIdOrderByDateTime(customerId));
+    List<WriteOffDto> findAllWriteOffs(@PathVariable Long customerId,
+                                       @RequestParam(required = false, defaultValue = "0") int page,
+                                       @RequestParam(required = false, defaultValue = "10") int count){
+        return writeOffMapper.map(writeOffRepo.findAllByWarehouseCustomerIdOrCarCustomerIdOrderByDateTime(customerId, PageRequest.of(page, count)));
     }
 
     @GetMapping("/customer/{customerId}/writeOffs/warehouse/{warehouseId}")
     @PreAuthorize("hasAnyAuthority('writeOff:read', 'warehouseWriteOff:read')")
-    List<WriteOffDto> findAllWriteOffsByWarehouse(@PathVariable Long customerId, @PathVariable Long warehouseId){
+    List<WriteOffDto> findAllWriteOffsByWarehouse(@PathVariable Long customerId,
+                                                  @PathVariable Long warehouseId,
+                                                  @RequestParam(required = false, defaultValue = "0") int page,
+                                                  @RequestParam(required = false, defaultValue = "10") int count){
         final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if(!warehouseDispatcherRepo.existsByWarehouseIdAndDispatcherLogin(warehouseId, auth.getName())){
             throw new BadRequestException("You don't belong this Warehouse");
         }
-        return writeOffMapper.map(writeOffRepo.findAllByWarehouseCustomerIdAndWarehouseId(customerId, warehouseId));
+        return writeOffMapper.map(writeOffRepo.findAllByWarehouseCustomerIdAndWarehouseId(customerId, warehouseId, PageRequest.of(page, count)));
     }
 
     @GetMapping("/customer/{customerId}/writeOffs/driver/{driverId}")
     @PreAuthorize("hasAnyAuthority('writeOff:read', 'driverWriteOff:read')")
-    List<WriteOffDto> findAllWriteOffsByDriver(@PathVariable Long customerId, @PathVariable Long driverId){
+    List<WriteOffDto> findAllWriteOffsByDriver(@PathVariable Long customerId,
+                                               @PathVariable Long driverId,
+                                               @RequestParam(required = false, defaultValue = "0") int page,
+                                               @RequestParam(required = false, defaultValue = "10") int count){
         Employee driver = employeeRepo.getById(driverId);
         final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if(!driver.getLogin().equals(auth.getName())){
             throw new BadRequestException("Input driverId isn't your");
         }
-        return writeOffMapper.map(writeOffRepo.findAllByCarCustomerIdAndCreatingUserIdOrderByDateTime(customerId, driverId));
+        return writeOffMapper.map(writeOffRepo.findAllByCarCustomerIdAndCreatingUserIdOrderByDateTime(customerId, driverId, PageRequest.of(page, count)));
+    }
+
+    @GetMapping("/customer/{customerId}/writeOffs/count")
+    @PreAuthorize("hasAuthority('writeOff:read')")
+    Integer findAllWriteOffsCount(@PathVariable Long customerId){
+        return writeOffRepo.countByWarehouseCustomerIdOrCarCustomerIdOrderByDateTime(customerId);
+    }
+
+    @GetMapping("/customer/{customerId}/writeOffs/warehouse/{warehouseId}/count")
+    @PreAuthorize("hasAnyAuthority('writeOff:read', 'warehouseWriteOff:read')")
+    Integer findAllWriteOffsByWarehouseCount(@PathVariable Long customerId, @PathVariable Long warehouseId){
+        final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if(!warehouseDispatcherRepo.existsByWarehouseIdAndDispatcherLogin(warehouseId, auth.getName())){
+            throw new BadRequestException("You don't belong this Warehouse");
+        }
+        return writeOffRepo.countByWarehouseCustomerIdAndWarehouseId(customerId, warehouseId);
+    }
+
+    @GetMapping("/customer/{customerId}/writeOffs/driver/{driverId}/count")
+    @PreAuthorize("hasAnyAuthority('writeOff:read', 'driverWriteOff:read')")
+    Integer findAllWriteOffsByDriverCount(@PathVariable Long customerId, @PathVariable Long driverId){
+        Employee driver = employeeRepo.getById(driverId);
+        final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if(!driver.getLogin().equals(auth.getName())){
+            throw new BadRequestException("Input driverId isn't your");
+        }
+        return writeOffRepo.countByCarCustomerIdAndCreatingUserIdOrderByDateTime(customerId, driverId);
     }
 
     @PostMapping("/customer/{customerId}/writeOff")

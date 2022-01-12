@@ -38,6 +38,12 @@ public class WarehouseItemController {
     }
 
     @PreAuthorize("hasAuthority('warehouseItems:read')")
+    @GetMapping("/warehouse/{id}/items/all")
+    List<WarehouseItemDto> findAllEnabled(@PathVariable Long id) {
+        return warehouseItemMapper.map(warehouseItemRepo.findAllByWarehouseIdAndActiveStatus(id, ActiveStatus.ACTIVE));
+    }
+
+    @PreAuthorize("hasAuthority('warehouseItems:read')")
     @GetMapping("/warehouse/{id}/items/count")
     int getCount(@PathVariable Long id, @RequestParam(required = false, defaultValue="ALL") String activeStatus) {
         if (activeStatus.equals("ALL")) {
