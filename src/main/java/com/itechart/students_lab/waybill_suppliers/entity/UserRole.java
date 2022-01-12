@@ -18,7 +18,7 @@ public enum UserRole {
     ROLE_DISPATCHER(Set.of(Permission.ACCOUNT_READ, Permission.ACCOUNT_WRITE, Permission.ITEMS_WRITE, Permission.ITEMS_READ,
             Permission.WAREHOUSE_ITEMS_WRITE, Permission.WAREHOUSE_ITEMS_READ, Permission.ALL_APPLICATIONS_READ,
             Permission.DISPATCHING_APPLICATIONS_READ, Permission.ALL_APPLICATIONS_WRITE, Permission.WRITE_OFF_READ_BY_WAREHOUSE,
-            Permission.WRITE_OFF_WRITE, Permission.WAREHOUSES_READ)),
+            Permission.WRITE_OFF_WRITE, Permission.WAREHOUSES_READ, Permission.STATE_TAXES_READ)),
     ROLE_DIRECTOR(Set.of(Permission.ACCOUNT_READ, Permission.ACCOUNT_WRITE, Permission.WRITE_OFF_READ_ALL, Permission.CATEGORIES_WRITE, Permission.CATEGORIES_READ));
 
     private final Set<Permission> permissions;
