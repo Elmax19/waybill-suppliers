@@ -164,7 +164,10 @@ public class WaybillService {
 
         if (!dbWaybillApplicationIds.equals(editWaybillApplicationIds)) {
             applicationRepo.clearApplicationsWaybillInfo(dbWaybillApplicationIds);
-            applicationRepo.setApplicationsWaybillId(waybillId, editWaybillApplicationIds);
+            for (Application a : dbWaybill.getApplications()) {
+                applicationRepo.setApplicationWaybillAndSequenceNumber(
+                        a.getSequenceNumber(), a.getWaybill().getId(), a.getId());
+            }
         }
 
         return waybillMapper.waybillToWaybillDetailsDto(dbWaybill);

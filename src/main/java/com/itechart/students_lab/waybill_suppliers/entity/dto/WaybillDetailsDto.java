@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 public class WaybillDetailsDto {
     private Long id;
-    private Integer number;
+    private String number;
     private WarehouseDto warehouse;
     private List<ApplicationRecordDto> applicationRecords;
     private CarDto car;

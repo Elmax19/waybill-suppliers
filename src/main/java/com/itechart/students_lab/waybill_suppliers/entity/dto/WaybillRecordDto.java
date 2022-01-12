@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 public class WaybillRecordDto {
     private Long id;
-    private Integer number;
+    private String number;
     private WarehouseDto warehouse;
     private List<ApplicationRecordDto> applications;
     private LocalDateTime lastUpdateTime;

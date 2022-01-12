@@ -14,8 +14,7 @@ public class WaybillEditDto {
     private Long id;
 
     @NotNull(message = "Waybill number must be specified")
-    @Min(value = 1, message = "Waybill number must be positive number")
-    private Integer number;
+    private String number;
 
     @NotNull(message = "Warehouse id must be specified")
     @Min(value = 1L, message = "Warehouse id must be positive number")
