@@ -19,7 +19,7 @@ public class WriteOff extends BaseEntity {
     @Column(name = "date_time", nullable = false)
     private LocalDateTime dateTime;
 
-    @OneToMany(mappedBy = "writeOff", orphanRemoval = true, cascade = CascadeType.MERGE)
+    @OneToMany(mappedBy = "writeOff")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @JsonManagedReference("writeOff")

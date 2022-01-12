@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class WriteOffItemDto {
     private Long id;
-    private Long itemId;
+    private ItemDto item;
     private int amount;
     private WriteOffReason reason;
 }

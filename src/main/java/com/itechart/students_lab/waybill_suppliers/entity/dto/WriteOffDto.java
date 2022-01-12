@@ -7,6 +7,7 @@ import java.util.Set;
 
 @Data
 public class WriteOffDto {
+    private Long id;
     private LocalDateTime dateTime;
     private Set<WriteOffItemDto> writeOffItems;
     private Long creatingUserId;
