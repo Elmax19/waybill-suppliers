@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface WarehouseRepo extends JpaRepository<Warehouse, Long> {
     @Query("SELECT DISTINCT w "
@@ -22,6 +23,8 @@ public interface WarehouseRepo extends JpaRepository<Warehouse, Long> {
     Page<Warehouse> findByPageAndContainingOutApplicationStatus(@Param("id") Long customerId,
                                                                 @Param("status") ApplicationStatus applicationStatus,
                                                                 Pageable pageable);
+
+    List<Warehouse> findAllByCustomerId(Long customerId);
 
     @Modifying
     @Query("DELETE FROM Warehouse w WHERE w.id IN :ids AND w.id NOT IN "

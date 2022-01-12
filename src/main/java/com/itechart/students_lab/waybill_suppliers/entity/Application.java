@@ -65,7 +65,7 @@ public class Application extends BaseEntity {
     @Column(name = "sequence_number")
     private Integer sequenceNumber;
 
-    @OneToMany(mappedBy = "application", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "application", cascade = CascadeType.MERGE)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @JsonManagedReference("application")

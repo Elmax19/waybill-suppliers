@@ -57,6 +57,10 @@ public class WarehouseService {
         return Optional.empty();
     }
 
+    public List<WarehouseDto> findAll(Long customerId) {
+        return warehouseMapper.warehousesListToWarehousesDtoList(warehouseRepo.findAllByCustomerId(customerId));
+    }
+
     public List<WarehouseDto> findByPage(int page, int size, Long customerId) {
         Example<Warehouse> warehouseExample = Example.of(new Warehouse(new Customer(customerId)));
         return warehouseMapper.warehousesListToWarehousesDtoList(
