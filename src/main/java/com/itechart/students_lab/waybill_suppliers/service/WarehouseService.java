@@ -68,18 +68,14 @@ public class WarehouseService {
                         PageRequest.of(page, size)).getContent());
     }
 
-    public Integer getTotal(Long id){
+    public Integer getTotal(Long id) {
         return warehouseRepo.countByCustomerId(id);
     }
 
-    public List<WarehouseDto> findByPageAndContainingOutApplicationStatus(int page,
-                                                                          int size,
-                                                                          Long customerId,
-                                                                          ApplicationStatus status) {
+    public List<WarehouseDto> findByContainingOutApplicationStatus(Long customerId,
+                                                                   ApplicationStatus status) {
         return warehouseMapper.warehousesListToWarehousesDtoList(
-                warehouseRepo.findByPageAndContainingOutApplicationStatus(
-                                customerId, status, PageRequest.of(page, size))
-                        .getContent());
+                warehouseRepo.findByContainingOutApplicationStatus(customerId, status));
     }
 
     public WarehouseDto findById(Long id) {

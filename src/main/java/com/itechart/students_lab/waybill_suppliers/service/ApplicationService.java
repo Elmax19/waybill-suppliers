@@ -82,12 +82,10 @@ public class ApplicationService {
         return applicationMapper.map(applicationRepo.findAllByStatusAndWarehouseCustomerId(status, customerId, PageRequest.of(page, count)));
     }
 
-    public List<ApplicationRecordDto> findOutgoingApplications(Long customerId,
-                                                               Long warehouseId,
-                                                               ApplicationStatus status,
-                                                               int page,
-                                                               int size) {
-        Example<Application> applicationExample = Example.of(
+    public List<ApplicationRecordDto> findAllOutgoingApplications(Long customerId,
+                                                                  Long warehouseId,
+                                                                  ApplicationStatus status) {
+/*        Example<Application> applicationExample = Example.of(
                 new Application(
                         new Warehouse(
                                 warehouseId,
@@ -96,10 +94,10 @@ public class ApplicationService {
                         status,
                         true
                 )
-        );
+        );*/
         return applicationMapper.applicationListToApplicationRecordDtoList(
-                applicationRepo.findAll(applicationExample, PageRequest.of(page, size))
-                        .getContent());
+                applicationRepo.findAllByWarehouseIdAndOutgoingAndWarehouseCustomerIdAndWaybillIdNullAndStatus(
+                                warehouseId, true, customerId, status));
     }
 
     @Transactional

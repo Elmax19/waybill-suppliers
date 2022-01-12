@@ -2,8 +2,6 @@ package com.itechart.students_lab.waybill_suppliers.repository;
 
 import com.itechart.students_lab.waybill_suppliers.entity.ApplicationStatus;
 import com.itechart.students_lab.waybill_suppliers.entity.Warehouse;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -19,10 +17,10 @@ public interface WarehouseRepo extends JpaRepository<Warehouse, Long> {
             + "ON w.id = a.warehouse.id "
             + "WHERE w.customer.id = :id "
             + "AND a.status = :status "
-            + "AND a.outgoing = true")
-    Page<Warehouse> findByPageAndContainingOutApplicationStatus(@Param("id") Long customerId,
-                                                                @Param("status") ApplicationStatus applicationStatus,
-                                                                Pageable pageable);
+            + "AND a.outgoing = true "
+            + "AND a.waybill.id IS NULL")
+    List<Warehouse> findByContainingOutApplicationStatus(@Param("id") Long customerId,
+                                                         @Param("status") ApplicationStatus applicationStatus);
 
     List<Warehouse> findAllByCustomerId(Long customerId);
 

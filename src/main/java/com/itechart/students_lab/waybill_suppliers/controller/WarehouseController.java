@@ -50,7 +50,7 @@ public class WarehouseController {
 
     @PreAuthorize("hasAuthority('warehouses:read')")
     @GetMapping("/customer/{id}/warehouses")
-    ResponseEntity<List<WarehouseDto>> getByPage(
+    ResponseEntity<List<WarehouseDto>> getByPageOrAllByContainingOutApplicationsStatus(
             @Min(value = 1L, message = "Customer id must be positive number")
             @PathVariable Long id,
             @RequestParam(required = false) ApplicationStatus withApplicationStatus,
@@ -58,8 +58,7 @@ public class WarehouseController {
             @RequestParam(required = false, defaultValue = "10") int size) {
         List<WarehouseDto> warehouses = withApplicationStatus == null
                 ? warehouseService.findByPage(page, size, id)
-                : warehouseService.findByPageAndContainingOutApplicationStatus(
-                page, size, id, withApplicationStatus);
+                : warehouseService.findByContainingOutApplicationStatus(id, withApplicationStatus);
         return warehouses.isEmpty()
                 ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
                 : new ResponseEntity<>(warehouses, HttpStatus.OK);

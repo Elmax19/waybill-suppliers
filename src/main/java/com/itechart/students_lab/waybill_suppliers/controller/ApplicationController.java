@@ -76,14 +76,12 @@ public class ApplicationController {
 
     @GetMapping("/customer/{customerId}/applications/outgoing")
     @PreAuthorize("hasAuthority('applications.dispatching:read')")
-    ResponseEntity<List<ApplicationRecordDto>> findOutgoingApplications(
+    ResponseEntity<List<ApplicationRecordDto>> findAllOutgoingApplications(
             @PathVariable Long customerId,
             @RequestParam(required = false) ApplicationStatus status,
-            @RequestParam(required = false) Long warehouseId,
-            @RequestParam(required = false, defaultValue = "0") int page,
-            @RequestParam(required = false, defaultValue = "10") int size) {
-        List<ApplicationRecordDto> applications = applicationService.findOutgoingApplications(
-                customerId, warehouseId, status, page, size);
+            @RequestParam(required = false) Long warehouseId) {
+        List<ApplicationRecordDto> applications = applicationService
+                .findAllOutgoingApplications(customerId, warehouseId, status);
         return applications.isEmpty()
                 ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
                 : new ResponseEntity<>(applications, HttpStatus.OK);

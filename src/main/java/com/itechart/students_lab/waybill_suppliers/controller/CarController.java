@@ -53,7 +53,7 @@ public class CarController {
     Integer getTotalCarsCount(
             @Min(value = 1L, message = "Customer id must be positive number")
             @PathVariable Long id) {
-       return carService.getAllCustomerCars(id).size();
+        return carService.getAllCustomerCars(id).size();
     }
 
     @PreAuthorize("hasAuthority('cars:read')")

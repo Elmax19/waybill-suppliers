@@ -2,6 +2,7 @@ package com.itechart.students_lab.waybill_suppliers.service;
 
 import com.itechart.students_lab.waybill_suppliers.entity.Application;
 import com.itechart.students_lab.waybill_suppliers.entity.Customer;
+import com.itechart.students_lab.waybill_suppliers.entity.Employee;
 import com.itechart.students_lab.waybill_suppliers.entity.Warehouse;
 import com.itechart.students_lab.waybill_suppliers.entity.Waybill;
 import com.itechart.students_lab.waybill_suppliers.entity.WaybillState;
@@ -24,7 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -53,8 +53,7 @@ public class WaybillService {
                                             Long creatorId,
                                             Collection<WaybillState> states) {
         if (states == null) {
-            states = new ArrayList<>();
-            states.addAll(List.of(WaybillState.values()));
+            states = List.of(WaybillState.values());
         }
 
         return waybillMapper.waybillListToWaybillRecordDtoList(
@@ -88,8 +87,7 @@ public class WaybillService {
                          Long customerId,
                          Collection<WaybillState> states) {
         if (states == null) {
-            states = new ArrayList<>();
-            states.addAll(List.of(WaybillState.values()));
+            states = List.of(WaybillState.values());
         }
 
         return creatorId != null
@@ -149,12 +147,14 @@ public class WaybillService {
 
         Waybill dbWaybill = waybillRepo.findById(waybillId).orElseThrow(()
                 -> new EntityNotFoundException(WAYBILL_WITH_ID_NOT_FOUND + waybillId));
+        Employee creator = dbWaybill.getCreator();
         List<Long> dbWaybillApplicationIds = dbWaybill.getApplications().stream()
                 .map(Application::getId)
                 .collect(Collectors.toList());
 
         waybillMapper.update(waybillEditDto, dbWaybill);
         dbWaybill.setLastUpdateTime(LocalDateTime.now());
+        dbWaybill.setCreator(creator);
 
         dbWaybill = waybillRepo.save(dbWaybill);
 

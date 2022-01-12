@@ -57,4 +57,7 @@ public interface ApplicationRepo extends JpaRepository<Application, Long> {
             + "WHERE w.customer.id = :cId)")
     void clearApplicationsWaybillInfo(@Param("cId") Long customerId,
                                       @Param("wbId") Long waybillId);
+
+    List<Application> findAllByWarehouseIdAndOutgoingAndWarehouseCustomerIdAndWaybillIdNullAndStatus(
+            Long warehouseId, boolean outgoing, Long customerId, ApplicationStatus status);
 }
