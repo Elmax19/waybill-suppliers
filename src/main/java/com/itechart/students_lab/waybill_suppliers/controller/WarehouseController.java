@@ -39,8 +39,18 @@ public class WarehouseController {
     private final WarehouseDispatcherRepo warehouseDispatcherRepo;
 
     @PreAuthorize("hasAuthority('warehouses:read')")
+    @GetMapping({"/customer/{id}/allWarehouses", "/customer/{id}/warehouses/all"})
+    ResponseEntity<List<WarehouseDto>> getAll(@Min(value = 1L, message = "Customer id must be positive number")
+                                              @PathVariable Long id) {
+        List<WarehouseDto> warehouses = warehouseService.findAll(id);
+        return warehouses.isEmpty()
+                ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
+                : new ResponseEntity<>(warehouses, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAuthority('warehouses:read')")
     @GetMapping("/customer/{id}/warehouses")
-    ResponseEntity<List<WarehouseDto>> getByPage(
+    ResponseEntity<List<WarehouseDto>> getByPageOrAllByContainingOutApplicationsStatus(
             @Min(value = 1L, message = "Customer id must be positive number")
             @PathVariable Long id,
             @RequestParam(required = false) ApplicationStatus withApplicationStatus,
@@ -48,19 +58,7 @@ public class WarehouseController {
             @RequestParam(required = false, defaultValue = "10") int size) {
         List<WarehouseDto> warehouses = withApplicationStatus == null
                 ? warehouseService.findByPage(page, size, id)
-                : warehouseService.findByPageAndContainingOutApplicationStatus(
-                page, size, id, withApplicationStatus);
-        return warehouses.isEmpty()
-                ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
-                : new ResponseEntity<>(warehouses, HttpStatus.OK);
-    }
-
-    @PreAuthorize("hasAuthority('warehouses:read')")
-    @GetMapping("/customer/{id}/allWarehouses")
-    ResponseEntity<List<WarehouseDto>> getAll(
-            @Min(value = 1L, message = "Customer id must be positive number")
-            @PathVariable Long id) {
-        List<WarehouseDto> warehouses = warehouseService.findAll(id);
+                : warehouseService.findByContainingOutApplicationStatus(id, withApplicationStatus);
         return warehouses.isEmpty()
                 ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
                 : new ResponseEntity<>(warehouses, HttpStatus.OK);

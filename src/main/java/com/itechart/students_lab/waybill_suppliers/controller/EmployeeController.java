@@ -5,7 +5,6 @@ import com.itechart.students_lab.waybill_suppliers.entity.Customer;
 import com.itechart.students_lab.waybill_suppliers.entity.Employee;
 import com.itechart.students_lab.waybill_suppliers.entity.dto.EmployeeDto;
 import com.itechart.students_lab.waybill_suppliers.exception.AccountNotMatchException;
-import com.itechart.students_lab.waybill_suppliers.exception.BadRequestException;
 import com.itechart.students_lab.waybill_suppliers.mapper.EmployeeMapper;
 import com.itechart.students_lab.waybill_suppliers.repository.EmployeeRepo;
 import lombok.RequiredArgsConstructor;
@@ -16,13 +15,19 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@CrossOrigin(origins={ "http://localhost:3000" })
+@CrossOrigin(origins = {"http://localhost:3000"})
 @RestController
 @RequiredArgsConstructor
 public class EmployeeController {
@@ -47,7 +52,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/employee/{employeeName}/customer")
-    public Customer getCustomer(@PathVariable String employeeName){
+    public Customer getCustomer(@PathVariable String employeeName) {
         Employee employee = employeeRepo.findByLogin(employeeName);
         return employee.getCustomer();
     }
@@ -101,20 +106,11 @@ public class EmployeeController {
 
     @GetMapping("/customer/{id}/free-drivers")
     @PreAuthorize("hasAuthority('employees:read')")
-    public ResponseEntity<List<EmployeeDto>> findFreeDrivers(
-            @PathVariable Long id,
-            @RequestParam(required = false, defaultValue = "0") int page,
-            @RequestParam(required = false, defaultValue = "10") int size) {
-        if (page < 0) {
-            throw new BadRequestException("Page index must not be less than zero!");
-        }
-        if (size < 1) {
-            throw new BadRequestException("Page size must not be less than one!");
-        }
-        int offset = page * size;
+    public ResponseEntity<List<EmployeeDto>> findAllFreeDrivers(@PathVariable Long id) {
         List<EmployeeDto> drivers = employeeMapper.employeeListToEmployeeRecordDtoList(
-                employeeRepo.findFreeDrivers(id, offset, size));
-        return drivers.isEmpty() ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
+                employeeRepo.findAllFreeDrivers(id));
+        return drivers.isEmpty()
+                ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
                 : new ResponseEntity<>(drivers, HttpStatus.OK);
     }
 }

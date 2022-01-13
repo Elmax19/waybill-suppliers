@@ -34,7 +34,7 @@ public class CarController {
 
     @PreAuthorize("hasAuthority('cars:read')")
     @GetMapping("/customer/{id}/cars")
-    ResponseEntity<List<CarDto>> getByPage(
+    ResponseEntity<List<CarDto>> getByPageOrAllByMinCapacity(
             @Min(value = 1L, message = "Customer id must be positive number")
             @PathVariable Long id,
             @RequestParam(required = false) Integer minCapacity,
@@ -42,7 +42,7 @@ public class CarController {
             @RequestParam(required = false, defaultValue = "10") int size) {
         List<CarDto> cars = minCapacity == null
                 ? carService.findByPage(page, size, id)
-                : carService.findByPageAndMinCapacity(page, size, id, minCapacity);
+                : carService.findAllByMinCapacity(id, minCapacity);
         return cars.isEmpty()
                 ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
                 : new ResponseEntity<>(cars, HttpStatus.OK);
@@ -53,7 +53,7 @@ public class CarController {
     Integer getTotalCarsCount(
             @Min(value = 1L, message = "Customer id must be positive number")
             @PathVariable Long id) {
-       return carService.getAllCustomerCars(id).size();
+        return carService.getAllCustomerCars(id).size();
     }
 
     @PreAuthorize("hasAuthority('cars:read')")

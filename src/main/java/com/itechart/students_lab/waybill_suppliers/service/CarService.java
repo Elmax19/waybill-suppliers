@@ -67,14 +67,10 @@ public class CarService {
                         PageRequest.of(page, size)).getContent());
     }
 
-    public List<CarDto> findByPageAndMinCapacity(int page,
-                                                 int size,
-                                                 Long customerId,
-                                                 Integer minCapacity) {
+    public List<CarDto> findAllByMinCapacity(Long customerId,
+                                             Integer minCapacity) {
         return carMapper.carsListToCarDtoList(
-                carRepo.findAllByTotalCapacityGreaterThanEqualAndCustomer_Id(
-                        minCapacity, customerId, PageRequest.of(page, size)
-                ).getContent()
+                carRepo.findAllByCustomerIdAndTotalCapacityGreaterThanEqual(customerId, minCapacity)
         );
     }
 

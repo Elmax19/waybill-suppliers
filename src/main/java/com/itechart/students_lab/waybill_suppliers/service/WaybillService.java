@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,19 +51,22 @@ public class WaybillService {
                                             int size,
                                             Long customerId,
                                             Long creatorId,
-                                            WaybillState state) {
-        Example<Waybill> waybillExample = Example.of(
-                new Waybill(
-                        new Warehouse(
-                                new Customer(customerId)
-                        ),
-                        new Employee(creatorId),
-                        state
-                )
-        );
+                                            Collection<WaybillState> states) {
+        if (states == null) {
+            states = List.of(WaybillState.values());
+        }
+
         return waybillMapper.waybillListToWaybillRecordDtoList(
-                waybillRepo.findAll(waybillExample,
-                        PageRequest.of(page, size)).getContent());
+                (creatorId != null
+                        ? waybillRepo.findByCreatorIdAndWarehouseCustomerIdAndStateIn(
+                        creatorId, customerId, states,
+                        PageRequest.of(page, size))
+                        : waybillRepo.findByWarehouseCustomerIdAndStateIn(
+                        customerId, states,
+                        PageRequest.of(page, size))
+                )
+                        .getContent()
+        );
     }
 
     public WaybillDetailsDto getById(Long customerId, Long waybillId) {
@@ -79,12 +83,24 @@ public class WaybillService {
                         .orElse(null));
     }
 
+    public long getCount(Long creatorId,
+                         Long customerId,
+                         Collection<WaybillState> states) {
+        if (states == null) {
+            states = List.of(WaybillState.values());
+        }
+
+        return creatorId != null
+                ? waybillRepo.countByCreatorIdAndWarehouseCustomerIdAndStateIn(creatorId, customerId, states)
+                : waybillRepo.countByWarehouseCustomerIdAndStateIn(customerId, states);
+    }
+
     @Transactional
     public WaybillDetailsDto create(WaybillEditDto waybillEditDto) {
         if (waybillEditDto.getCreatorId() == null) {
             throw new ServiceException(HttpStatus.CONFLICT, CREATOR_ID_MUST_BE_SPECIFIED);
         }
-        
+
         Waybill waybill = waybillMapper.waybillEditDtoToWaybill(waybillEditDto);
 
         waybillValidator.waybillApplicationCompatibilityConstraint(
@@ -131,12 +147,14 @@ public class WaybillService {
 
         Waybill dbWaybill = waybillRepo.findById(waybillId).orElseThrow(()
                 -> new EntityNotFoundException(WAYBILL_WITH_ID_NOT_FOUND + waybillId));
+        Employee creator = dbWaybill.getCreator();
         List<Long> dbWaybillApplicationIds = dbWaybill.getApplications().stream()
                 .map(Application::getId)
                 .collect(Collectors.toList());
 
         waybillMapper.update(waybillEditDto, dbWaybill);
         dbWaybill.setLastUpdateTime(LocalDateTime.now());
+        dbWaybill.setCreator(creator);
 
         dbWaybill = waybillRepo.save(dbWaybill);
 
@@ -146,7 +164,10 @@ public class WaybillService {
 
         if (!dbWaybillApplicationIds.equals(editWaybillApplicationIds)) {
             applicationRepo.clearApplicationsWaybillInfo(dbWaybillApplicationIds);
-            applicationRepo.setApplicationsWaybillId(waybillId, editWaybillApplicationIds);
+            for (Application a : dbWaybill.getApplications()) {
+                applicationRepo.setApplicationWaybillAndSequenceNumber(
+                        a.getSequenceNumber(), a.getWaybill().getId(), a.getId());
+            }
         }
 
         return waybillMapper.waybillToWaybillDetailsDto(dbWaybill);

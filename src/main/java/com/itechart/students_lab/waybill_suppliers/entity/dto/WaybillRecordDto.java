@@ -8,7 +8,8 @@ import java.util.List;
 
 @Data
 public class WaybillRecordDto {
-    private Integer number;
+    private Long id;
+    private String number;
     private WarehouseDto warehouse;
     private List<ApplicationRecordDto> applications;
     private LocalDateTime lastUpdateTime;

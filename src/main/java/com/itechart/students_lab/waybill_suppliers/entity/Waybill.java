@@ -23,8 +23,8 @@ import java.util.Set;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class Waybill extends BaseEntity {
-    @Column(name = "number")
-    private Integer number;
+    @Column(name = "number", nullable = false)
+    private String number;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "warehouse_id", referencedColumnName = "id", nullable = false)
@@ -52,14 +52,14 @@ public class Waybill extends BaseEntity {
     @JoinColumn(name = "driver_id", referencedColumnName = "id")
     private Employee driver;
 
-    @Column(name = "registration_date_time")
+    @Column(name = "registration_date_time", nullable = false)
     private LocalDateTime registrationTime;
 
-    @Column(name = "last_update_date_time")
+    @Column(name = "last_update_date_time", nullable = false)
     private LocalDateTime lastUpdateTime;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "state")
+    @Column(name = "state", nullable = false)
     private WaybillState state;
 
     public Waybill(Warehouse warehouse, Employee creator, WaybillState state) {

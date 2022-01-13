@@ -1,0 +1,11 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet id="alter-waybill-add-constraints" author="anto-belo">
+        <addNotNullConstraint tableName="waybill" columnName="number" columnDataType="varchar(45)"/>
+        <addNotNullConstraint tableName="waybill" columnName="creating_user_id" columnDataType="bigint"/>
+        <addNotNullConstraint tableName="waybill" columnName="updating_user_id" columnDataType="bigint"/>
+    </changeSet>
+</databaseChangeLog>

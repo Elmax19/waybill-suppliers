@@ -43,6 +43,12 @@ public interface ApplicationRepo extends JpaRepository<Application, Long> {
                                   @Param("appIds") List<Long> applicationIds);
 
     @Modifying
+    @Query("UPDATE Application a SET a.waybill.id = :wbId, a.sequenceNumber = :number WHERE a.id = :id")
+    void setApplicationWaybillAndSequenceNumber(@Param("number") Integer number,
+                                                @Param("wbId") Long waybillId,
+                                                @Param("id") Long id);
+
+    @Modifying
     @Query("UPDATE Application a "
             + "SET a.waybill.id = NULL, a.sequenceNumber = NULL "
             + "WHERE a.id IN :appIds")
@@ -57,4 +63,7 @@ public interface ApplicationRepo extends JpaRepository<Application, Long> {
             + "WHERE w.customer.id = :cId)")
     void clearApplicationsWaybillInfo(@Param("cId") Long customerId,
                                       @Param("wbId") Long waybillId);
+
+    List<Application> findAllByWarehouseIdAndOutgoingAndWarehouseCustomerIdAndWaybillIdNullAndStatus(
+            Long warehouseId, boolean outgoing, Long customerId, ApplicationStatus status);
 }
