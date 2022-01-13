@@ -30,4 +30,11 @@ public class WarehouseItem extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "is_active", nullable = false)
     private ActiveStatus activeStatus;
+
+    public WarehouseItem(Warehouse warehouse, Item item, int count, ActiveStatus activeStatus) {
+        this.warehouse = warehouse;
+        this.item = item;
+        this.count = count;
+        this.activeStatus = activeStatus;
+    }
 }
