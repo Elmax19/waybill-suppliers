@@ -1,12 +1,16 @@
 package com.itechart.students_lab.waybill_suppliers.controller;
 
+import com.itechart.students_lab.waybill_suppliers.entity.ActiveStatus;
 import com.itechart.students_lab.waybill_suppliers.entity.Customer;
 import com.itechart.students_lab.waybill_suppliers.entity.Item;
 import com.itechart.students_lab.waybill_suppliers.entity.ItemCategory;
+import com.itechart.students_lab.waybill_suppliers.entity.WarehouseItem;
 import com.itechart.students_lab.waybill_suppliers.entity.dto.ItemDto;
 import com.itechart.students_lab.waybill_suppliers.mapper.ItemMapper;
 import com.itechart.students_lab.waybill_suppliers.repository.ItemCategoryRepo;
 import com.itechart.students_lab.waybill_suppliers.repository.ItemRepo;
+import com.itechart.students_lab.waybill_suppliers.repository.WarehouseItemRepo;
+import com.itechart.students_lab.waybill_suppliers.repository.WarehouseRepo;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.PageRequest;
@@ -29,6 +33,8 @@ import java.util.Optional;
 public class ItemController {
     private final ItemRepo itemRepo;
     private final ItemCategoryRepo itemCategoryRepo;
+    private final WarehouseItemRepo warehouseItemRepo;
+    private final WarehouseRepo warehouseRepo;
     private final ItemMapper itemMapper = Mappers.getMapper(ItemMapper.class);
 
     @PreAuthorize("hasAuthority('items:read')")
@@ -57,13 +63,16 @@ public class ItemController {
 
     @PreAuthorize("hasAuthority('items:write')")
     @PostMapping("/customer/{customerId}/item")
-    ItemDto createItem(@PathVariable Long customerId, @RequestBody ItemDto newItemDto) {
+    ItemDto createItem(@PathVariable Long customerId, @RequestBody ItemDto newItemDto, @RequestParam Long warehouseId) {
         Item newItem = itemMapper.convertToEntity(newItemDto);
         Optional<ItemCategory> itemCategory = itemCategoryRepo.findByName(newItemDto.getItemCategory().getName());
         itemCategory.ifPresent(newItem::setItemCategory);
         newItem.setCustomer(new Customer());
         newItem.getCustomer().setId(customerId);
-        return itemMapper.convertToDto(itemRepo.save(newItem));
+        itemRepo.save(newItem);
+        WarehouseItem warehouseItem = new WarehouseItem(warehouseRepo.findById(warehouseId).get(), newItem, 0, ActiveStatus.ACTIVE);
+        warehouseItemRepo.save(warehouseItem);
+        return itemMapper.convertToDto(newItem);
     }
 
     @PreAuthorize("hasAuthority('items:write')")
